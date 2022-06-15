@@ -3,6 +3,7 @@ var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 
 $searchCity.addEventListener('submit', getSearchResults);
+$searchResultsRow.addEventListener('click', saveCity);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -24,6 +25,7 @@ function getSearchResults(event) {
 
 function renderSearchResults(resultsObj) {
   $searchResultsRow.textContent = '';
+  data.searchResults = resultsObj._embedded['city:search-results'];
   for (var i = 0; i < resultsObj._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 d-flex center-all">
     //    <a href="#">
@@ -51,6 +53,7 @@ function renderSearchResults(resultsObj) {
     $column.classList.add('d-flex');
     $column.classList.add('center-all');
     $column.classList.add('city-card');
+    $column.setAttribute('data-card-id', i + 1);
     $cityCard.setAttribute('href', '#');
     $cityName.textContent = city;
     $countryName.textContent = country;
@@ -60,4 +63,16 @@ function renderSearchResults(resultsObj) {
     $column.appendChild($cityCard);
     $searchResultsRow.appendChild($column);
   }
+}
+
+function saveCity(event) {
+  if (event.target.closest('.city-card') !== null) {
+    var cityId = event.target.closest('.city-card').getAttribute('data-card-id') - 1;
+    data.currentCityId = cityId;
+    data.currentCity = data.searchResults[cityId];
+    changeView();
+  }
+}
+
+function changeView(view) {
 }
