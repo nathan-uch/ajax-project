@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .btn {
   color: white;
   background-color: #001d6e;
