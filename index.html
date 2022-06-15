@@ -17,7 +17,7 @@
     <nav class="navbar navbar-expand-sm navbar-dark navbar-bg-color">
       <div class="container-fluid">
         <a href="#" class="navbar-brand">ROAM<i class="fa-solid fa-shoe-prints"></i></a>
-        <button class="navbar-toggler border-4" type="button" data-bs-toggle="collapse"
+        <button class="navbar-toggler border-4 m-2" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
         aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon opacity-100"></span>
@@ -35,11 +35,16 @@
   <main>
     <!-- SEARCH CITIES -->
     <div class="container-fluid text-center">
-      <form action="" class="row justify-content-center gap-3">
+      <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City">
-        <button type="submit" class="col-3 btn">Search</button>
+        <button type="submit" class="col-3 btn submit-btn" aria-pressed="true">Search</button>
       </form>
+    </div>
+    <!-- SEARCH RESULTS -->
+    <div class="container-fluid">
+      <div class="row justify-content-center align-items-center search-results-row">
+      </div>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
