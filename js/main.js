@@ -1,9 +1,12 @@
 var $searchCity = document.forms[0];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
+var $dataView = document.querySelectorAll('[data-view]');
+var $searchCitiesAnchor = document.querySelector('.search-cities-anchor');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCity);
+$searchCitiesAnchor.addEventListener('click', navbarClicked);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -70,9 +73,29 @@ function saveCity(event) {
     var cityId = event.target.closest('.city-card').getAttribute('data-card-id') - 1;
     data.currentCityId = cityId;
     data.currentCity = data.searchResults[cityId];
-    changeView();
+    changeView('city-profile');
   }
 }
 
 function changeView(view) {
+  data.currentView = view;
+  for (var v = 0; v < $dataView.length; v++) {
+    if ($dataView[v].getAttribute('data-view') === data.currentView) {
+      $dataView[v].classList.remove('hidden');
+      renderCityProfile();
+    } else {
+      $dataView[v].classList.add('hidden');
+    }
+  }
+}
+
+function renderCityProfile() {
+}
+
+function navbarClicked(event) {
+  if (event.target.classList.contains('search-cities-anchor')) {
+    $searchCity.reset();
+    $searchResultsRow.textContent = '';
+    changeView('search');
+  }
 }
