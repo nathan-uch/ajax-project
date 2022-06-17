@@ -3,7 +3,11 @@ var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
 var $searchCitiesAnchor = document.querySelector('.search-cities-anchor');
-var $cityProfileContainer = document.querySelector('.profile-container');
+var $cityProfileImg = document.querySelector('.profile-img');
+var $cityProfileDesc = document.querySelector('.profile-desc');
+var $cityScoresContainer = document.querySelector('.scores-container');
+var $cityLocationsContainer = document.querySelector('.profile-leisure');
+var $cityCostsContainer = document.querySelector('.profile-costs');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', cityClicked);
@@ -68,15 +72,22 @@ function cityClicked(event) {
   if (event.target.closest('.city-card') !== null) {
     data.currentCity.cityId = event.target.closest('.city-card').getAttribute('data-card-id');
     data.currentCity.cityObj = data.searchResults._embedded['city:search-results'][data.currentCity.cityId];
-    getCityData();
     changeView('city-profile');
+    getCityData();
   }
 }
 
 function changeView(view) {
   data.currentView = view;
   for (var v = 0; v < $dataView.length; v++) {
-    if ($dataView[v].getAttribute('data-view') === data.currentView) {
+    if ($dataView[v].getAttribute('data-view') === data.currentView && data.currentView === 'city-profile') {
+      $cityProfileImg.textContent = '';
+      $cityProfileDesc.textContent = '';
+      $cityScoresContainer.textContent = '';
+      $cityLocationsContainer.textContent = '';
+      $cityCostsContainer.textContent = '';
+      $dataView[v].classList.remove('hidden');
+    } else if ($dataView[v].getAttribute('data-view') === data.currentView) {
       $dataView[v].classList.remove('hidden');
     } else {
       $dataView[v].classList.add('hidden');
@@ -107,8 +118,6 @@ function getCityData() {
 
   var currentCityProfileUrl = data.currentCity.cityObj._links['city:item'].href;
   data.currentCity.cityProfileUrl = currentCityProfileUrl;
-
-  $cityProfileContainer.textContent = '';
 
   var xhr2 = new XMLHttpRequest();
   xhr2.open('GET', currentCityProfileUrl);
@@ -236,23 +245,19 @@ function getCityData() {
 }
 
 function renderImage() {
-  // <div class="row profile-img">
-  //   <div class="col d-flex flex-wrap align-items-center my-4">
-  //     <figure>
-  //       <img src="" class="img-fluid" alt="city">
-  //       <figcaption><a class="caption" href="">Author</a></figcaption>
-  //     </figure>
-  //   </div>
-  // </div >
+  // <div class="col d-flex flex-wrap align-items-center my-4">
+  //   <figure>
+  //     <img src="" class="img-fluid" alt="city">
+  //     <figcaption><a class="caption" href="">Author</a></figcaption>
+  //   </figure>
+  // </div>
 
-  var $imgRow = document.createElement('div');
   var $imgCol = document.createElement('div');
   var $figure = document.createElement('figure');
   var $img = document.createElement('img');
   var $figCap = document.createElement('figcapture');
   var $authorLink = document.createElement('a');
 
-  $imgRow.className = 'row profile-img';
   $imgCol.className = 'col d-flex flex-wrap align-items-center my-4';
   $img.className = 'img-fluid';
   $img.setAttribute('src', data.currentCity.cityImageUrl);
@@ -260,34 +265,29 @@ function renderImage() {
   $authorLink.setAttribute('href', data.currentCity.cityImageAtt.authorUrl);
   $authorLink.textContent = 'Photo by: ' + data.currentCity.cityImageAtt.authorName;
 
-  $imgRow.appendChild($imgCol);
   $imgCol.appendChild($figure);
   $figure.appendChild($img);
   $figure.appendChild($figCap);
   $figCap.appendChild($authorLink);
-
-  $cityProfileContainer.appendChild($imgRow);
+  $cityProfileImg.appendChild($imgCol);
 }
 
 function renderCityDescription() {
-  // <div class="row profile-desc">
-  //  <div class="col align-items-center text-center">
-  //    <h2>city name</h2>
-  //    <p>country<p><br>
-  //    <p>description<p></br>
-  //    <p>total pop</br>
-  //    pop density<sup>2</sup></p>
-  //  </div>
+  // <div class="col align-items-center text-center">
+  //   <h2>city name</h2>
+  //   <p>country<p><br>
+  //   <p>description<p></br>
+  //   <p>total pop</p>
   // </div>
 
-  var $descRow = document.createElement('div');
   var $descCol = document.createElement('div');
   var $cityName = document.createElement('h2');
   var $cityCountry = document.createElement('p');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
+  var $br1 = document.createElement('br');
+  var $br2 = document.createElement('br');
 
-  $descRow.className = 'row profile-desc';
   $descCol.className = 'col align-items-center text-center';
   $cityName.textContent = data.currentCity.cityName;
   $cityCountry.textContent = data.currentCity.cityCountry;
@@ -295,13 +295,13 @@ function renderCityDescription() {
   $cityDesc.textContent = data.currentCity.citySummary;
   $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
 
-  $descRow.appendChild($descCol);
   $descCol.appendChild($cityName);
   $descCol.appendChild($cityCountry);
+  $descCol.appendChild($br1);
   $descCol.appendChild($cityDesc);
+  $descCol.appendChild($br2);
   $descCol.appendChild($pop);
-
-  $cityProfileContainer.appendChild($descRow);
+  $cityProfileDesc.appendChild($descCol);
 }
 
 function renderCityScores() {
@@ -407,12 +407,10 @@ function renderCityScores() {
   $scoresCol.appendChild($outdoorHead);
   $scoresCol.appendChild($outdoorProg);
   $outdoorProg.appendChild($outdoorsScore);
-
-  $cityProfileContainer.appendChild($scoresRow);
+  $cityScoresContainer.appendChild($scoresRow);
 }
 
 function renderLeisureTable() {
-  // <div class="row profile-leisure my-4">
   //   <div class="col align-items-center text-center table-container">
   //     <table class="table table-hover">
   //       <thead>
@@ -428,9 +426,10 @@ function renderLeisureTable() {
   //           <td>num</td>
   //           <td>score</td>
   //         </tr>
-  //         <tr>
+  //       </tbody>
+  //     </table>
+  //   </div>
 
-  var $leiSectionRow = document.createElement('div');
   var $leiSectionCol = document.createElement('div');
   var $leiTable = document.createElement('table');
   var $leiTHead = document.createElement('thead');
@@ -439,7 +438,6 @@ function renderLeisureTable() {
   var $th2 = document.createElement('th');
   var $th3 = document.createElement('th');
 
-  $leiSectionRow.className = 'row profile-leisure my-4';
   $leiSectionCol.className = 'col align-items-center text-center table-container';
   $leiTable.className = 'table table-hover';
   $th1.setAttribute('scope', 'col');
@@ -449,7 +447,6 @@ function renderLeisureTable() {
   $th3.setAttribute('scope', 'col');
   $th3.textContent = 'Score';
 
-  $leiSectionRow.appendChild($leiSectionCol);
   $leiSectionCol.appendChild($leiTable);
   $leiTable.appendChild($leiTHead);
   $leiTHead.appendChild($headRow);
@@ -457,11 +454,10 @@ function renderLeisureTable() {
   $headRow.appendChild($th2);
   $headRow.appendChild($th3);
   $leiTable.appendChild(makeTableBody(data.currentCity.locations));
-  $cityProfileContainer.appendChild($leiSectionRow);
+  $cityLocationsContainer.appendChild($leiSectionCol);
 }
 
 function renderCostTable() {
-  // <div class="row profile-costs my-4">
   //   <div class="col align-items-center text-center table-container">
   //     <table class="table table-hover">
   //       <thead>
@@ -478,9 +474,7 @@ function renderCostTable() {
   //       </tbody>
   //     </table>
   //   </div>
-  // </div>
 
-  var $costSectionRow = document.createElement('div');
   var $costSectionCol = document.createElement('div');
   var $costTable = document.createElement('table');
   var $costTHead = document.createElement('thead');
@@ -488,7 +482,6 @@ function renderCostTable() {
   var $th1 = document.createElement('th');
   var $th2 = document.createElement('th');
 
-  $costSectionRow.className = 'row profile-leisure my-4';
   $costSectionCol.className = 'col align-items-center text-center table-container';
   $costTable.className = 'table table-hover';
   $th1.setAttribute('scope', 'col');
@@ -496,14 +489,13 @@ function renderCostTable() {
   $th2.setAttribute('scope', 'col');
   $th2.textContent = 'Average Cost';
 
-  $costSectionRow.appendChild($costSectionCol);
   $costSectionCol.appendChild($costTable);
   $costTable.appendChild($costTHead);
   $costTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
   $costTable.appendChild(makeTableBody(data.currentCity.costs));
-  $cityProfileContainer.appendChild($costSectionRow);
+  $cityCostsContainer.appendChild($costSectionCol);
 }
 
 function makeTableBody(array) {
