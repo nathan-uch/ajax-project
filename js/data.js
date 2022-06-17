@@ -10,21 +10,23 @@ var data = {
     cityCountry: null,
     cityId: null,
     cityImageUrl: null,
+    citySummary: null,
+    cityPop: null,
+    locations: null,
+    costs: null,
+    hasDetails: null,
+
     cityImageAtt: {
       authorName: null,
       authorUrl: null
     },
-    citySummary: null,
-    cityPop: null,
-    popDensity: null,
+
     scores: {
-      travelConnectivity: null,
+      travel: null,
       safety: null,
       leisure: null,
       outdoors: null
-    },
-    locations: null,
-    costs: null
+    }
   },
   myEntries: []
 };

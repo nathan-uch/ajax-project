@@ -63,6 +63,8 @@ function renderSearchResults() {
 }
 
 function cityClicked(event) {
+  resetDataCurrentCity();
+
   if (event.target.closest('.city-card') !== null) {
     data.currentCity.cityId = event.target.closest('.city-card').getAttribute('data-card-id');
     data.currentCity.cityObj = data.searchResults._embedded['city:search-results'][data.currentCity.cityId];
@@ -112,120 +114,122 @@ function getCityData() {
   xhr2.open('GET', currentCityProfileUrl);
   xhr2.reponseType = 'json';
   xhr2.addEventListener('load', function () {
-    var result = JSON.parse(xhr2.response);
-    if (result._links['city:urban_area'] === undefined) {
+    var result2Result = JSON.parse(xhr2.response);
+    data.currentCity.cityPop = result2Result.population.toLocaleString();
+    if (!result2Result._links['city:urban_area']) {
+      data.currentCity.citySummary = 'Sorry, there are no details about this city.';
       data.currentCity.cityImageUrl = '../images/city-alt.jpg';
       data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
       data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
       renderImage();
       renderCityDescription();
     } else {
-      // GET IMAGE
-      var slugUrl = result._links['city:urban_area'].href + 'images';
-      var xhr3 = new XMLHttpRequest();
-      xhr3.open('GET', slugUrl);
-      xhr3.responseType = 'json';
-      xhr3.addEventListener('load', function () {
-        var xhr3Result = xhr3.response;
-        data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
-        data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
-        data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
+      if (result2Result._links['city:urban_area'] === undefined) {
+        data.currentCity.cityImageUrl = '../images/city-alt.jpg';
+        data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
+        data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
         renderImage();
-      });
-      xhr3.send();
-      // GET POPULATION
-      var xhr4 = new XMLHttpRequest();
-      xhr4.open('GET', data.currentCity.cityProfileUrl);
-      xhr4.responseType = 'json';
-      xhr4.addEventListener('load', function () {
-        var xhr4Result = xhr4.response;
-        data.currentCity.cityPop = xhr4Result.population.toLocaleString();
-      });
-      xhr4.send();
-      // GET DESCRIPTION
-      var scoresUrl = result._links['city:urban_area'].href + 'scores/';
-      var xhr5 = new XMLHttpRequest();
-      xhr5.open('GET', scoresUrl);
-      xhr5.responseType = 'json';
-      xhr5.addEventListener('load', function () {
-        var xhr5Result = xhr5.response;
-        data.currentCity.citySummary = removeHtmlTags(xhr5Result.summary);
-        data.currentCity.scores.travelConnectivity = Math.round(xhr5Result.categories[4].score_out_of_10);
-        data.currentCity.scores.safety = Math.round(xhr5Result.categories[7].score_out_of_10);
-        data.currentCity.scores.leisure = Math.round(xhr5Result.categories[14].score_out_of_10);
-        data.currentCity.scores.outdoors = Math.round(xhr5Result.categories[16].score_out_of_10);
         renderCityDescription();
-        renderCityScores();
-      });
-      xhr5.send();
-      // GET TABLE DETAILS
-      var detailsUrl = result._links['city:urban_area'].href + 'details/';
-      var xhr6 = new XMLHttpRequest();
-      xhr6.open('GET', detailsUrl);
-      xhr6.responseType = 'json';
-      xhr6.addEventListener('load', function () {
-        var xhr6Result = xhr6.response;
-        // CITY LOCATIONS
-        var curLocations = [];
-        var artGal = {};
-        artGal.name = 'Art Galleries';
-        artGal.num = xhr6Result.categories[4].data[1].int_value;
-        artGal.score = Math.round((xhr6Result.categories[4].data[0].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(artGal);
-        var cinemas = {};
-        cinemas.name = 'Cinemas';
-        cinemas.num = xhr6Result.categories[4].data[3].int_value;
-        cinemas.score = Math.round((xhr6Result.categories[4].data[2].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(cinemas);
-        var comClubs = {};
-        comClubs.name = 'Comedy Clubs';
-        comClubs.num = xhr6Result.categories[4].data[5].int_value;
-        comClubs.score = Math.round((xhr6Result.categories[4].data[4].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(comClubs);
-        var conVenues = {};
-        conVenues.name = 'Concert Venues';
-        conVenues.num = xhr6Result.categories[4].data[7].int_value;
-        conVenues.score = Math.round((xhr6Result.categories[4].data[6].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(conVenues);
-        var hisSites = {};
-        hisSites.name = 'Historical Sites';
-        hisSites.num = xhr6Result.categories[4].data[9].int_value;
-        hisSites.score = Math.round((xhr6Result.categories[4].data[8].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(hisSites);
-        var museums = {};
-        museums.name = 'Museums';
-        museums.num = xhr6Result.categories[4].data[11].int_value;
-        museums.score = Math.round((xhr6Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
-        curLocations.push(museums);
-        data.currentCity.locations = curLocations;
-        renderLeisureTable();
+      } else {
+        // GET IMAGE
+        var slugUrl = result2Result._links['city:urban_area'].href + 'images';
+        var xhr3 = new XMLHttpRequest();
+        xhr3.open('GET', slugUrl);
+        xhr3.responseType = 'json';
+        xhr3.addEventListener('load', function () {
+          var xhr3Result = xhr3.response;
+          data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
+          data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
+          data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
+          renderImage();
+        });
+        xhr3.send();
+        // GET DESCRIPTION
+        var scoresUrl = result2Result._links['city:urban_area'].href + 'scores/';
+        var xhr4 = new XMLHttpRequest();
+        xhr4.open('GET', scoresUrl);
+        xhr4.responseType = 'json';
+        xhr4.addEventListener('load', function () {
+          var xhr4Result = xhr4.response;
+          data.currentCity.citySummary = removeHtmlTags(xhr4Result.summary);
+          data.currentCity.scores.travel = Math.round(xhr4Result.categories[4].score_out_of_10);
+          data.currentCity.scores.safety = Math.round(xhr4Result.categories[7].score_out_of_10);
+          data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
+          data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
+          renderCityDescription();
+          renderCityScores();
+        });
+        xhr4.send();
 
-        // CITY COSTS
-        var curCosts = [];
-        var lunch = {};
-        lunch.name = 'Restaurant Lunch';
-        lunch.cost = '$' + xhr6Result.categories[3].data[8].currency_dollar_value;
-        curCosts.push(lunch);
-        var pubTransport = {};
-        pubTransport.name = 'Monthly Public Transport';
-        pubTransport.cost = '$' + xhr6Result.categories[3].data[7].currency_dollar_value;
-        curCosts.push(pubTransport);
-        var beer = {};
-        beer.name = 'Beer';
-        beer.cost = '$' + xhr6Result.categories[3].data[6].currency_dollar_value;
-        curCosts.push(beer);
-        var movies = {};
-        movies.name = 'Movie Tickets';
-        movies.cost = '$' + xhr6Result.categories[3].data[4].currency_dollar_value;
-        curCosts.push(movies);
-        var apples = {};
-        apples.name = 'Apples (kg)';
-        apples.cost = '$' + xhr6Result.categories[3].data[1].currency_dollar_value;
-        curCosts.push(apples);
-        data.currentCity.costs = curCosts;
-        renderCostTable();
-      });
-      xhr6.send();
+        // GET TABLE DETAILS
+        var detailsUrl = result2Result._links['city:urban_area'].href + 'details/';
+        var xhr5 = new XMLHttpRequest();
+        xhr5.open('GET', detailsUrl);
+        xhr5.responseType = 'json';
+        xhr5.addEventListener('load', function () {
+          var xhr5Result = xhr5.response;
+          // CITY LOCATIONS
+          var curLocations = [];
+          var artGal = {};
+          artGal.name = 'Art Galleries';
+          artGal.num = xhr5Result.categories[4].data[1].int_value;
+          artGal.score = Math.round((xhr5Result.categories[4].data[0].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(artGal);
+          var cinemas = {};
+          cinemas.name = 'Cinemas';
+          cinemas.num = xhr5Result.categories[4].data[3].int_value;
+          cinemas.score = Math.round((xhr5Result.categories[4].data[2].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(cinemas);
+          var comClubs = {};
+          comClubs.name = 'Comedy Clubs';
+          comClubs.num = xhr5Result.categories[4].data[5].int_value;
+          comClubs.score = Math.round((xhr5Result.categories[4].data[4].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(comClubs);
+          var conVenues = {};
+          conVenues.name = 'Concert Venues';
+          conVenues.num = xhr5Result.categories[4].data[7].int_value;
+          conVenues.score = Math.round((xhr5Result.categories[4].data[6].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(conVenues);
+          var hisSites = {};
+          hisSites.name = 'Historical Sites';
+          hisSites.num = xhr5Result.categories[4].data[9].int_value;
+          hisSites.score = Math.round((xhr5Result.categories[4].data[8].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(hisSites);
+          var museums = {};
+          museums.name = 'Museums';
+          museums.num = xhr5Result.categories[4].data[11].int_value;
+          museums.score = Math.round((xhr5Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
+          curLocations.push(museums);
+          data.currentCity.locations = curLocations;
+          renderLeisureTable();
+
+          // CITY COSTS
+          var curCosts = [];
+          var lunch = {};
+          lunch.name = 'Restaurant Lunch';
+          lunch.cost = '$' + xhr5Result.categories[3].data[8].currency_dollar_value;
+          curCosts.push(lunch);
+          var pubTransport = {};
+          pubTransport.name = 'Monthly Public Transport';
+          pubTransport.cost = '$' + xhr5Result.categories[3].data[7].currency_dollar_value;
+          curCosts.push(pubTransport);
+          var beer = {};
+          beer.name = 'Beer';
+          beer.cost = '$' + xhr5Result.categories[3].data[6].currency_dollar_value;
+          curCosts.push(beer);
+          var movies = {};
+          movies.name = 'Movie Tickets';
+          movies.cost = '$' + xhr5Result.categories[3].data[4].currency_dollar_value;
+          curCosts.push(movies);
+          var apples = {};
+          apples.name = 'Apples (kg)';
+          apples.cost = '$' + xhr5Result.categories[3].data[1].currency_dollar_value;
+          curCosts.push(apples);
+          data.currentCity.costs = curCosts;
+          renderCostTable();
+        });
+        xhr5.send();
+      }
     }
   });
   xhr2.send();
@@ -287,6 +291,7 @@ function renderCityDescription() {
   $descCol.className = 'col align-items-center text-center';
   $cityName.textContent = data.currentCity.cityName;
   $cityCountry.textContent = data.currentCity.cityCountry;
+  $cityDesc.textContent = '';
   $cityDesc.textContent = data.currentCity.citySummary;
   $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
 
@@ -305,7 +310,7 @@ function renderCityScores() {
 //      <h3>Travel Scores</h3>
 //      <p>Travel Connectivity #/10</p>
 //      <div class="progress">
-//        <div class="progress-bar bg-warning travel-connectivity-score" role="progressbar"
+//        <div class="progress-bar bg-warning travel-score" role="progressbar"
 //            aria-valuenow="#" aria-valuemin="0" aria-valuemax="10"></div>
 //      </div>
 //      <p>Safety #/10</p>
@@ -343,7 +348,7 @@ function renderCityScores() {
   var $leisureScore = document.createElement('div');
   var $outdoorHead = document.createElement('p');
   var $outdoorProg = document.createElement('div');
-  var $outdoorScore = document.createElement('div');
+  var $outdoorsScore = document.createElement('div');
 
   $scoresRow.className = 'row profile-travel-scores my-4';
   $scoresCol.className = 'col align-items-center text-center';
@@ -352,30 +357,41 @@ function renderCityScores() {
   $leisureProg.className = 'progress';
   $outdoorProg.className = 'progress';
   $scoreHeader.textContent = 'Travel Scores';
-  $travelScore.className = 'progress-bar travel-connectivity-score';
-  $travelHead.textContent = 'Travel Connectivity ' + data.currentCity.scores.travelConnectivity + '/10';
+  $travelScore.className = 'progress-bar travel-score';
+  $travelScore.style.width = (data.currentCity.scores.travel * 10) + '%';
+  $travelHead.textContent = 'Travel Connectivity ' + data.currentCity.scores.travel + '/10';
   $travelScore.setAttribute('role', 'progressbar');
-  $travelScore.setAttribute('aria-valuenow', data.currentCity.scores.travelConnectivity);
+  $travelScore.setAttribute('aria-valuenow', data.currentCity.scores.travel);
   $travelScore.setAttribute('aria-valuemin', '0');
   $travelScore.setAttribute('aria-valuemax', '10');
-  $safetyScore.className = 'progress-bar travel-connectivity-score';
+  checkScore($travelScore);
+
+  $safetyScore.className = 'progress-bar safety-score';
+  $safetyScore.style.width = (data.currentCity.scores.safety * 10) + '%';
   $safetyHead.textContent = 'Safety ' + data.currentCity.scores.safety + '/10';
   $safetyScore.setAttribute('role', 'progressbar');
   $safetyScore.setAttribute('aria-valuenow', data.currentCity.scores.safety);
   $safetyScore.setAttribute('aria-valuemin', '0');
   $safetyScore.setAttribute('aria-valuemax', '10');
-  $leisureScore.className = 'progress-bar travel-connectivity-score';
+  checkScore($safetyScore);
+
+  $leisureScore.className = 'progress-bar leisure-score';
+  $leisureScore.style.width = (data.currentCity.scores.leisure * 10) + '%';
   $leisureHead.textContent = 'Leisure and Culture ' + data.currentCity.scores.leisure + '/10';
   $leisureScore.setAttribute('role', 'progressbar');
   $leisureScore.setAttribute('aria-valuenow', data.currentCity.scores.leisure);
   $leisureScore.setAttribute('aria-valuemin', '0');
   $leisureScore.setAttribute('aria-valuemax', '10');
-  $outdoorScore.className = 'progress-bar travel-connectivity-score';
+  checkScore($leisureScore);
+
+  $outdoorsScore.className = 'progress-bar outdoors-score';
+  $outdoorsScore.style.width = (data.currentCity.scores.outdoors * 10) + '%';
   $outdoorHead.textContent = 'Outdoors ' + data.currentCity.scores.outdoors + '/10';
-  $outdoorScore.setAttribute('role', 'progressbar');
-  $outdoorScore.setAttribute('aria-valuenow', data.currentCity.scores.outdoors);
-  $outdoorScore.setAttribute('aria-valuemin', '0');
-  $outdoorScore.setAttribute('aria-valuemax', '10');
+  $outdoorsScore.setAttribute('role', 'progressbar');
+  $outdoorsScore.setAttribute('aria-valuenow', data.currentCity.scores.outdoors);
+  $outdoorsScore.setAttribute('aria-valuemin', '0');
+  $outdoorsScore.setAttribute('aria-valuemax', '10');
+  checkScore($outdoorsScore);
 
   $scoresRow.appendChild($scoresCol);
   $scoresCol.appendChild($scoreHeader);
@@ -390,7 +406,7 @@ function renderCityScores() {
   $leisureProg.appendChild($leisureScore);
   $scoresCol.appendChild($outdoorHead);
   $scoresCol.appendChild($outdoorProg);
-  $outdoorProg.appendChild($outdoorScore);
+  $outdoorProg.appendChild($outdoorsScore);
 
   $cityProfileContainer.appendChild($scoresRow);
 }
@@ -504,4 +520,41 @@ function makeTableBody(array) {
   return $tBody;
 }
 
-// SET WIDTHS FOR PROGRESS BARS
+function resetDataCurrentCity() {
+  data.myEntries.push(data.currentCity);
+  data.currentCity = {
+    cityObj: null,
+    cityProfileUrl: null,
+    cityName: null,
+    cityCountry: null,
+    cityId: null,
+    cityImageUrl: null,
+    citySummary: null,
+    cityPop: null,
+    locations: null,
+    costs: null,
+    hasDetails: null,
+
+    cityImageAtt: {
+      authorName: null,
+      authorUrl: null
+    },
+
+    scores: {
+      travel: null,
+      safety: null,
+      leisure: null,
+      outdoors: null
+    }
+  };
+}
+
+function checkScore(div) {
+  if (+div.getAttribute('aria-valuenow') > 6) {
+    div.classList.add('bg-success');
+  } else if (+div.getAttribute('aria-valuenow') > 3) {
+    div.classList.add('bg-warning');
+  } else {
+    div.classList.add('bg-danger');
+  }
+}
