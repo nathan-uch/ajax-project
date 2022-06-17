@@ -144,11 +144,12 @@ function getCityData() {
       xhr5.addEventListener('load', function () {
         var xhr5Result = xhr5.response;
         data.currentCity.citySummary = xhr5Result.summary.split('<p>').join('').split('</p>').join('').split('<b>').join('').split('</b>').join('').trim();
-        data.currentCity.scores.travelConnectivity = xhr5Result.categories[4].score_out_of_10;
-        data.currentCity.scores.safety = xhr5Result.categories[7].score_out_of_10;
-        data.currentCity.scores.leisure = xhr5Result.categories[14].score_out_of_10;
-        data.currentCity.scores.outdoors = xhr5Result.categories[16].score_out_of_10;
+        data.currentCity.scores.travelConnectivity = Math.round(xhr5Result.categories[4].score_out_of_10);
+        data.currentCity.scores.safety = Math.round(xhr5Result.categories[7].score_out_of_10);
+        data.currentCity.scores.leisure = Math.round(xhr5Result.categories[14].score_out_of_10);
+        data.currentCity.scores.outdoors = Math.round(xhr5Result.categories[16].score_out_of_10);
         renderCityDescription();
+        renderCityScores();
       });
       xhr5.send();
       // GET TABLE DETAILS
@@ -211,30 +212,30 @@ function renderCityDescription() {
   //  </div>
   // </div>
 
-  var $headerRow = document.createElement('div');
-  var $headerCol = document.createElement('div');
+  var $descRow = document.createElement('div');
+  var $descCol = document.createElement('div');
   var $cityName = document.createElement('h2');
   var $cityCountry = document.createElement('p');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
 
-  $headerRow.className = 'row profile-desc';
-  $headerCol.className = 'col align-items-center text-center';
+  $descRow.className = 'row profile-desc';
+  $descCol.className = 'col align-items-center text-center';
   $cityName.textContent = data.currentCity.cityName;
   $cityCountry.textContent = data.currentCity.cityCountry;
   $cityDesc.textContent = data.currentCity.citySummary;
   $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
 
-  $headerRow.appendChild($headerCol);
-  $headerCol.appendChild($cityName);
-  $headerCol.appendChild($cityCountry);
-  $headerCol.appendChild($cityDesc);
-  $headerCol.appendChild($pop);
+  $descRow.appendChild($descCol);
+  $descCol.appendChild($cityName);
+  $descCol.appendChild($cityCountry);
+  $descCol.appendChild($cityDesc);
+  $descCol.appendChild($pop);
 
-  $cityProfileContainer.appendChild($headerRow);
+  $cityProfileContainer.appendChild($descRow);
 }
 
-// function renderCityScores() {
+function renderCityScores() {
 // <div class="row profile-travel-scores my-4">
 //    <div class="col align-items-center text-center">
 //      <h3>Travel Scores</h3>
@@ -244,23 +245,88 @@ function renderCityDescription() {
 //            aria-valuenow="#" aria-valuemin="0" aria-valuemax="10"></div>
 //      </div>
 //      <p>Safety #/10</p>
-//        <div class="progress">
-//          <div class="progress-bar bg-warning safety-score" role="progressbar" aria-valuenow="#"
-//            aria-valuemin="0" aria-valuemax="10"></div>
+//      <div class="progress">
+//        <div class="progress-bar bg-warning safety-score" role="progressbar" aria-valuenow="#"
+//          aria-valuemin="0" aria-valuemax="10">
 //        </div>
-//        <p>Leisure and Culture #/10</p>
-//        <div class="progress">
-//          <div class="progress-bar bg-success leisure-score" role="progressbar" aria-valuenow="#"
-//              aria-valuemin="0" aria-valuemax="10">
-//          </div>
+//      </div>
+//      <p>Leisure and Culture #/10</p>
+//      <div class="progress">
+//        <div class="progress-bar bg-success leisure-score" role="progressbar" aria-valuenow="#"
+//            aria-valuemin="0" aria-valuemax="10">
 //        </div>
-//        <p>Outdoors #/10</p>
-//        <div class="progress">
-//          <div class="progress-bar bg-success outdoors-score" role="progressbar" aria-valuenow="#"
-//             aria-valuemin="0" aria-valuemax="10">
-//          </div>
+//      </div>
+//      <p>Outdoors #/10</p>
+//      <div class="progress">
+//        <div class="progress-bar bg-success outdoors-score" role="progressbar" aria-valuenow="#"
+//           aria-valuemin="0" aria-valuemax="10">
 //        </div>
+//      </div>
 //    </div >
-// </div >
+// </div>
 
-// }
+  var $scoresRow = document.createElement('div');
+  var $scoresCol = document.createElement('div');
+  var $scoreHeader = document.createElement('h3');
+  var $travelHead = document.createElement('p');
+  var $travelProg = document.createElement('div');
+  var $travelScore = document.createElement('div');
+  var $safetyHead = document.createElement('p');
+  var $safetyProg = document.createElement('div');
+  var $safetyScore = document.createElement('div');
+  var $leisureHead = document.createElement('p');
+  var $leisureProg = document.createElement('div');
+  var $leisureScore = document.createElement('div');
+  var $outdoorHead = document.createElement('p');
+  var $outdoorProg = document.createElement('div');
+  var $outdoorScore = document.createElement('div');
+
+  $scoresRow.className = 'row profile-travel-scores my-4';
+  $scoresCol.className = 'col align-items-center text-center';
+  $travelProg.className = 'progress';
+  $safetyProg.className = 'progress';
+  $leisureProg.className = 'progress';
+  $outdoorProg.className = 'progress';
+  $scoreHeader.textContent = 'Travel Scores';
+  $travelScore.className = 'progress-bar travel-connectivity-score';
+  $travelHead.textContent = 'Travel Connectivity ' + data.currentCity.scores.travelConnectivity + '/10';
+  $travelScore.setAttribute('role', 'progressbar');
+  $travelScore.setAttribute('aria-valuenow', data.currentCity.scores.travelConnectivity);
+  $travelScore.setAttribute('aria-valuemin', '0');
+  $travelScore.setAttribute('aria-valuemax', '10');
+  $safetyScore.className = 'progress-bar travel-connectivity-score';
+  $safetyHead.textContent = 'Safety ' + data.currentCity.scores.safety + '/10';
+  $safetyScore.setAttribute('role', 'progressbar');
+  $safetyScore.setAttribute('aria-valuenow', data.currentCity.scores.safety);
+  $safetyScore.setAttribute('aria-valuemin', '0');
+  $safetyScore.setAttribute('aria-valuemax', '10');
+  $leisureScore.className = 'progress-bar travel-connectivity-score';
+  $leisureHead.textContent = 'Leisure and Culture ' + data.currentCity.scores.leisure + '/10';
+  $leisureScore.setAttribute('role', 'progressbar');
+  $leisureScore.setAttribute('aria-valuenow', data.currentCity.scores.leisure);
+  $leisureScore.setAttribute('aria-valuemin', '0');
+  $leisureScore.setAttribute('aria-valuemax', '10');
+  $outdoorScore.className = 'progress-bar travel-connectivity-score';
+  $outdoorHead.textContent = 'Outdoors ' + data.currentCity.scores.outdoors + '/10';
+  $outdoorScore.setAttribute('role', 'progressbar');
+  $outdoorScore.setAttribute('aria-valuenow', data.currentCity.scores.outdoors);
+  $outdoorScore.setAttribute('aria-valuemin', '0');
+  $outdoorScore.setAttribute('aria-valuemax', '10');
+
+  $scoresRow.appendChild($scoresCol);
+  $scoresCol.appendChild($scoreHeader);
+  $scoresCol.appendChild($travelHead);
+  $scoresCol.appendChild($travelProg);
+  $travelProg.appendChild($travelScore);
+  $scoresCol.appendChild($safetyHead);
+  $scoresCol.appendChild($safetyProg);
+  $safetyProg.appendChild($safetyScore);
+  $scoresCol.appendChild($leisureHead);
+  $scoresCol.appendChild($leisureProg);
+  $leisureProg.appendChild($leisureScore);
+  $scoresCol.appendChild($outdoorHead);
+  $scoresCol.appendChild($outdoorProg);
+  $outdoorProg.appendChild($outdoorScore);
+
+  $cityProfileContainer.appendChild($scoresRow);
+}
