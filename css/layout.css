@@ -1,0 +1,15 @@
+.hidden {
+  display: none;
+}
+
+.btn {
+  color: white;
+  background-color: #001d6e;
+  max-width: 140px;
+}
+
+.center-all {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
