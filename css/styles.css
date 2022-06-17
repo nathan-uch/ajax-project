@@ -36,6 +36,10 @@
   color: #001d6e;
 }
 
+.submit-btn {
+  max-width: 140px;
+}
+
 .submit-btn:hover,
 .submit-btn:active,
 .submit-btn:focus {
@@ -54,7 +58,16 @@
   overflow: hidden;
 }
 
-.city-card:hover {
+.city-card a,
+.city-card h5,
+.city-card p {
+  color: #001d6e;
+  text-decoration: none;
+}
+
+.city-card:hover,
+.city-card:hover h5,
+.city-card:hover p {
   background-color: #001d6e;
   color: white;
 }
@@ -78,8 +91,16 @@ figure {
   bottom: 0;
   right: 0;
   background-color: rgba(85, 85, 85, 0.5);
+  color: gray;
+  text-decoration: none;
   font-size: 6px;
   padding: 0 3px;
+}
+
+.caption:hover,
+.caption:visited {
+  text-decoration: none;
+  color: gray;
 }
 
 .progress {
@@ -88,7 +109,7 @@ figure {
 }
 
 .table-container {
-  border: 1px solid rgb(0, 29, 110, 50%);
+  border: 1px solid rgb(0, 29, 110, 0.5);
   padding: 0 3%;
   margin: 0 15%;
 }
@@ -96,4 +117,19 @@ figure {
 .table {
   width: 100%;
   margin: auto;
+}
+
+.add-city-btn {
+  width: 170px;
+  margin: 20px auto;
+}
+
+.back-top {
+  flex-basis: 100%;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #001d6e;
+  text-decoration: underline;
+  text-align: center;
+  margin: 0 auto;
 }

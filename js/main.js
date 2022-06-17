@@ -8,6 +8,7 @@ var $cityProfileDesc = document.querySelector('.profile-desc');
 var $cityScoresContainer = document.querySelector('.scores-container');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
+var $cityFooterContainer = document.querySelector('.profile-footer');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', cityClicked);
@@ -35,7 +36,7 @@ function renderSearchResults() {
   $searchResultsRow.textContent = '';
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 d-flex center-all">
-    //    <a href="#">
+    //    <a href="#" class="searched-card">
     //        <h5>City Name<h5>
     //        <p>Area, Country<p>
     //    </a>
@@ -56,6 +57,7 @@ function renderSearchResults() {
     $column.className = 'col-12 col-sm-4 col-md-3 m-2 d-flex center-all city-card';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
+    $cityCard.className = 'searched-card';
     $cityName.textContent = city;
     $countryName.textContent = country;
 
@@ -86,6 +88,7 @@ function changeView(view) {
       $cityScoresContainer.textContent = '';
       $cityLocationsContainer.textContent = '';
       $cityCostsContainer.textContent = '';
+      $cityFooterContainer.textContent = '';
       $dataView[v].classList.remove('hidden');
     } else if ($dataView[v].getAttribute('data-view') === data.currentView) {
       $dataView[v].classList.remove('hidden');
@@ -132,6 +135,7 @@ function getCityData() {
       data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
       renderImage();
       renderCityDescription();
+      renderFooter();
     } else {
       if (result2Result._links['city:urban_area'] === undefined) {
         data.currentCity.cityImageUrl = '../images/city-alt.jpg';
@@ -139,6 +143,7 @@ function getCityData() {
         data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
         renderImage();
         renderCityDescription();
+        renderFooter();
       } else {
         // GET IMAGE
         var slugUrl = result2Result._links['city:urban_area'].href + 'images';
@@ -151,6 +156,7 @@ function getCityData() {
           data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
           data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
           renderImage();
+          renderFooter();
         });
         xhr3.send();
         // GET DESCRIPTION
@@ -276,6 +282,7 @@ function renderCityDescription() {
   // <div class="col align-items-center text-center">
   //   <h2>city name</h2>
   //   <p>country<p><br>
+  //   <button type="button" class="btn add-city-btn">ADD CITY TO LIST</button></br>
   //   <p>description<p></br>
   //   <p>total pop</p>
   // </div>
@@ -283,6 +290,7 @@ function renderCityDescription() {
   var $descCol = document.createElement('div');
   var $cityName = document.createElement('h2');
   var $cityCountry = document.createElement('p');
+  var $addCityBtn = document.createElement('button');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
   var $br1 = document.createElement('br');
@@ -291,6 +299,9 @@ function renderCityDescription() {
   $descCol.className = 'col align-items-center text-center';
   $cityName.textContent = data.currentCity.cityName;
   $cityCountry.textContent = data.currentCity.cityCountry;
+  $addCityBtn.setAttribute('type', 'button');
+  $addCityBtn.className = 'btn add-city-btn';
+  $addCityBtn.textContent = 'ADD CITY TO LIST';
   $cityDesc.textContent = '';
   $cityDesc.textContent = data.currentCity.citySummary;
   $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
@@ -298,6 +309,7 @@ function renderCityDescription() {
   $descCol.appendChild($cityName);
   $descCol.appendChild($cityCountry);
   $descCol.appendChild($br1);
+  $descCol.appendChild($addCityBtn);
   $descCol.appendChild($cityDesc);
   $descCol.appendChild($br2);
   $descCol.appendChild($pop);
@@ -496,6 +508,21 @@ function renderCostTable() {
   $headRow.appendChild($th2);
   $costTable.appendChild(makeTableBody(data.currentCity.costs));
   $cityCostsContainer.appendChild($costSectionCol);
+}
+
+function renderFooter() {
+  var $addCityBtn = document.createElement('button');
+  var $backTop = document.createElement('a');
+
+  $addCityBtn.className = 'btn add-city-btn';
+  $addCityBtn.setAttribute('type', 'button');
+  $addCityBtn.textContent = 'ADD CITY TO LIST';
+  $backTop.setAttribute('href', '#');
+  $backTop.className = 'back-top';
+  $backTop.textContent = 'Back to Top';
+
+  $cityFooterContainer.appendChild($addCityBtn);
+  $cityFooterContainer.appendChild($backTop);
 }
 
 function makeTableBody(array) {
