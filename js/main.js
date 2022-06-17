@@ -90,6 +90,12 @@ function navbarClicked(event) {
   }
 }
 
+function removeHtmlTags(string) {
+  var t = document.createElement('div');
+  t.innerHTML = string;
+  return t.textContent || t.innerText || '';
+}
+
 function getCityData() {
   var fullName = data.currentCity.cityObj.matching_full_name.split('');
   var commaIndex = fullName.indexOf(',');
@@ -143,7 +149,7 @@ function getCityData() {
       xhr5.responseType = 'json';
       xhr5.addEventListener('load', function () {
         var xhr5Result = xhr5.response;
-        data.currentCity.citySummary = xhr5Result.summary.split('<p>').join('').split('</p>').join('').split('<b>').join('').split('</b>').join('').trim();
+        data.currentCity.citySummary = removeHtmlTags(xhr5Result.summary);
         data.currentCity.scores.travelConnectivity = Math.round(xhr5Result.categories[4].score_out_of_10);
         data.currentCity.scores.safety = Math.round(xhr5Result.categories[7].score_out_of_10);
         data.currentCity.scores.leisure = Math.round(xhr5Result.categories[14].score_out_of_10);
@@ -158,8 +164,33 @@ function getCityData() {
       xhr6.open('GET', detailsUrl);
       xhr6.responseType = 'json';
       xhr6.addEventListener('load', function () {
-        // var xhr6Result = xhr6.response;
+        var xhr6Result = xhr6.response;
         // console.log(xhr6Result);
+        // CITY LOCATIONS
+        var curLocations = {};
+        curLocations.artGalleries = xhr6Result.categories[4].data[1].int_value;
+        curLocations.artScore = xhr6Result.categories[4].data[0].float_value;
+        curLocations.cinemas = xhr6Result.categories[4].data[3].int_value;
+        curLocations.cinemasScore = xhr6Result.categories[4].data[2].float_value;
+        curLocations.comedyClubs = xhr6Result.categories[4].data[5].int_value;
+        curLocations.comedyScore = xhr6Result.categories[4].data[4].float_value;
+        curLocations.concertVenues = xhr6Result.categories[4].data[7].int_value;
+        curLocations.concertScore = xhr6Result.categories[4].data[6].float_value;
+        curLocations.historicalSites = xhr6Result.categories[4].data[9].int_value;
+        curLocations.hisSitesScore = xhr6Result.categories[4].data[8].float_value;
+        curLocations.museums = xhr6Result.categories[4].data[11].int_value;
+        curLocations.museumsScore = xhr6Result.categories[4].data[10].float_value;
+        data.currentCity.locations = curLocations;
+        // CITY COSTS
+        var curCosts = {};
+        curCosts.resLunch = xhr6Result.categories[3].data[8].currency_dollar_value;
+        curCosts.pubTransportMonthly = xhr6Result.categories[3].data[7].currency_dollar_value;
+        curCosts.beer = xhr6Result.categories[3].data[6].currency_dollar_value;
+        curCosts.movieTicket = xhr6Result.categories[3].data[4].currency_dollar_value;
+        curCosts.applesKg = xhr6Result.categories[3].data[1].currency_dollar_value;
+        data.currentCity.costs = curCosts;
+        // console.log(data.currentCity.costs);
+        renderCityTables();
       });
       xhr6.send();
     }
@@ -329,4 +360,8 @@ function renderCityScores() {
   $outdoorProg.appendChild($outdoorScore);
 
   $cityProfileContainer.appendChild($scoresRow);
+}
+
+function renderCityTables() {
+
 }

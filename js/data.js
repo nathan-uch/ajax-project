@@ -23,34 +23,8 @@ var data = {
       leisure: null,
       outdoors: null
     },
-    locations: [
-      {
-        artGalleries: null,
-        score: null
-      },
-      {
-        cinemas: null,
-        score: null
-      },
-      {
-        comedyClubs: null,
-        score: null
-      },
-      {
-        concertVenues: null,
-        score: null
-      },
-      {
-        historicalSites: null,
-        score: null
-      }
-    ],
-    costs: {
-      publicTransport: null,
-      restaurantLunc: null,
-      beer: null,
-      movieTicket: null
-    }
+    locations: null,
+    costs: null
   },
   myEntries: []
 };
