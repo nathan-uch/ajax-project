@@ -165,32 +165,65 @@ function getCityData() {
       xhr6.responseType = 'json';
       xhr6.addEventListener('load', function () {
         var xhr6Result = xhr6.response;
-        // console.log(xhr6Result);
         // CITY LOCATIONS
-        var curLocations = {};
-        curLocations.artGalleries = xhr6Result.categories[4].data[1].int_value;
-        curLocations.artScore = xhr6Result.categories[4].data[0].float_value;
-        curLocations.cinemas = xhr6Result.categories[4].data[3].int_value;
-        curLocations.cinemasScore = xhr6Result.categories[4].data[2].float_value;
-        curLocations.comedyClubs = xhr6Result.categories[4].data[5].int_value;
-        curLocations.comedyScore = xhr6Result.categories[4].data[4].float_value;
-        curLocations.concertVenues = xhr6Result.categories[4].data[7].int_value;
-        curLocations.concertScore = xhr6Result.categories[4].data[6].float_value;
-        curLocations.historicalSites = xhr6Result.categories[4].data[9].int_value;
-        curLocations.hisSitesScore = xhr6Result.categories[4].data[8].float_value;
-        curLocations.museums = xhr6Result.categories[4].data[11].int_value;
-        curLocations.museumsScore = xhr6Result.categories[4].data[10].float_value;
+        var curLocations = [];
+        var artGal = {};
+        artGal.name = 'Art Galleries';
+        artGal.num = xhr6Result.categories[4].data[1].int_value;
+        artGal.score = Math.round((xhr6Result.categories[4].data[0].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(artGal);
+        var cinemas = {};
+        cinemas.name = 'Cinemas';
+        cinemas.num = xhr6Result.categories[4].data[3].int_value;
+        cinemas.score = Math.round((xhr6Result.categories[4].data[2].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(cinemas);
+        var comClubs = {};
+        comClubs.name = 'Comedy Clubs';
+        comClubs.num = xhr6Result.categories[4].data[5].int_value;
+        comClubs.score = Math.round((xhr6Result.categories[4].data[4].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(comClubs);
+        var conVenues = {};
+        conVenues.name = 'Concert Venues';
+        conVenues.num = xhr6Result.categories[4].data[7].int_value;
+        conVenues.score = Math.round((xhr6Result.categories[4].data[6].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(conVenues);
+        var hisSites = {};
+        hisSites.name = 'Historical Sites';
+        hisSites.num = xhr6Result.categories[4].data[9].int_value;
+        hisSites.score = Math.round((xhr6Result.categories[4].data[8].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(hisSites);
+        var museums = {};
+        museums.name = 'Museums';
+        museums.num = xhr6Result.categories[4].data[11].int_value;
+        museums.score = Math.round((xhr6Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(museums);
         data.currentCity.locations = curLocations;
+        renderLeisureTable();
+
         // CITY COSTS
-        var curCosts = {};
-        curCosts.resLunch = xhr6Result.categories[3].data[8].currency_dollar_value;
-        curCosts.pubTransportMonthly = xhr6Result.categories[3].data[7].currency_dollar_value;
-        curCosts.beer = xhr6Result.categories[3].data[6].currency_dollar_value;
-        curCosts.movieTicket = xhr6Result.categories[3].data[4].currency_dollar_value;
-        curCosts.applesKg = xhr6Result.categories[3].data[1].currency_dollar_value;
+        var curCosts = [];
+        var lunch = {};
+        lunch.name = 'Restaurant Lunch';
+        lunch.cost = '$' + xhr6Result.categories[3].data[8].currency_dollar_value;
+        curCosts.push(lunch);
+        var pubTransport = {};
+        pubTransport.name = 'Monthly Public Transport';
+        pubTransport.cost = '$' + xhr6Result.categories[3].data[7].currency_dollar_value;
+        curCosts.push(pubTransport);
+        var beer = {};
+        beer.name = 'Beer';
+        beer.cost = '$' + xhr6Result.categories[3].data[6].currency_dollar_value;
+        curCosts.push(beer);
+        var movies = {};
+        movies.name = 'Movie Tickets';
+        movies.cost = '$' + xhr6Result.categories[3].data[4].currency_dollar_value;
+        curCosts.push(movies);
+        var apples = {};
+        apples.name = 'Apples (kg)';
+        apples.cost = '$' + xhr6Result.categories[3].data[1].currency_dollar_value;
+        curCosts.push(apples);
         data.currentCity.costs = curCosts;
-        // console.log(data.currentCity.costs);
-        renderCityTables();
+        renderCostTable();
       });
       xhr6.send();
     }
@@ -362,6 +395,113 @@ function renderCityScores() {
   $cityProfileContainer.appendChild($scoresRow);
 }
 
-function renderCityTables() {
+function renderLeisureTable() {
+  // <div class="row profile-leisure my-4">
+  //   <div class="col align-items-center text-center table-container">
+  //     <table class="table table-hover">
+  //       <thead>
+  //         <tr>
+  //           <th scope="col">Category</th>
+  //           <th scope="col">Amount</th>
+  //           <th scope="col">Score</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         <tr> * 6
+  //           <td>leisure location</td>
+  //           <td>num</td>
+  //           <td>score</td>
+  //         </tr>
+  //         <tr>
 
+  var $leiSectionRow = document.createElement('div');
+  var $leiSectionCol = document.createElement('div');
+  var $leiTable = document.createElement('table');
+  var $leiTHead = document.createElement('thead');
+  var $headRow = document.createElement('tr');
+  var $th1 = document.createElement('th');
+  var $th2 = document.createElement('th');
+  var $th3 = document.createElement('th');
+
+  $leiSectionRow.className = 'row profile-leisure my-4';
+  $leiSectionCol.className = 'col align-items-center text-center table-container';
+  $leiTable.className = 'table table-hover';
+  $th1.setAttribute('scope', 'col');
+  $th1.textContent = 'Category';
+  $th2.setAttribute('scope', 'col');
+  $th2.textContent = 'Amount';
+  $th3.setAttribute('scope', 'col');
+  $th3.textContent = 'Score';
+
+  $leiSectionRow.appendChild($leiSectionCol);
+  $leiSectionCol.appendChild($leiTable);
+  $leiTable.appendChild($leiTHead);
+  $leiTHead.appendChild($headRow);
+  $headRow.appendChild($th1);
+  $headRow.appendChild($th2);
+  $headRow.appendChild($th3);
+  $leiTable.appendChild(makeTableBody(data.currentCity.locations));
+  $cityProfileContainer.appendChild($leiSectionRow);
 }
+
+function renderCostTable() {
+  // <div class="row profile-costs my-4">
+  //   <div class="col align-items-center text-center table-container">
+  //     <table class="table table-hover">
+  //       <thead>
+  //         <tr>
+  //           <th scope="col">Category</th>
+  //           <th scope="col">Average Cost</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         <tr> * 5
+  //           <td>category</td>
+  //           <td>cost</td>
+  //         </tr>
+  //       </tbody>
+  //     </table>
+  //   </div>
+  // </div>
+
+  var $costSectionRow = document.createElement('div');
+  var $costSectionCol = document.createElement('div');
+  var $costTable = document.createElement('table');
+  var $costTHead = document.createElement('thead');
+  var $headRow = document.createElement('tr');
+  var $th1 = document.createElement('th');
+  var $th2 = document.createElement('th');
+
+  $costSectionRow.className = 'row profile-leisure my-4';
+  $costSectionCol.className = 'col align-items-center text-center table-container';
+  $costTable.className = 'table table-hover';
+  $th1.setAttribute('scope', 'col');
+  $th1.textContent = 'Category';
+  $th2.setAttribute('scope', 'col');
+  $th2.textContent = 'Average Cost';
+
+  $costSectionRow.appendChild($costSectionCol);
+  $costSectionCol.appendChild($costTable);
+  $costTable.appendChild($costTHead);
+  $costTHead.appendChild($headRow);
+  $headRow.appendChild($th1);
+  $headRow.appendChild($th2);
+  $costTable.appendChild(makeTableBody(data.currentCity.costs));
+  $cityProfileContainer.appendChild($costSectionRow);
+}
+
+function makeTableBody(array) {
+  var $tBody = document.createElement('tbody');
+  for (var r = 0; r < array.length; r++) {
+    var $row = document.createElement('tr');
+    for (const prop in array[r]) {
+      var $td = document.createElement('td');
+      $td.textContent = array[r][prop];
+      $row.appendChild($td);
+    }
+    $tBody.appendChild($row);
+  }
+  return $tBody;
+}
+
+// SET WIDTHS FOR PROGRESS BARS
