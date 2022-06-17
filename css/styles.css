@@ -1,4 +1,8 @@
 /* NAVBAR */
+.navbar {
+  min-width: 240px;
+}
+
 .navbar,
 .search-container {
   padding: 0 10%;
@@ -50,6 +54,11 @@
   overflow: hidden;
 }
 
+.city-card:hover {
+  background-color: #001d6e;
+  color: white;
+}
+
 /* CITY PROFILE */
 .profile-container {
   padding: 0 12%;
@@ -57,6 +66,20 @@
 
 .img-fluid {
   min-height: 150px;
+}
+
+figure {
+  position: relative;
+  color: white;
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(85, 85, 85, 0.5);
+  font-size: 6px;
+  padding: 0 3px;
 }
 
 .progress {
