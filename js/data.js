@@ -18,6 +18,7 @@ var data = {
     visitType: null,
     visitMonth: null,
     visitYear: null,
+    notes: [],
 
     cityImageAtt: {
       authorName: null,

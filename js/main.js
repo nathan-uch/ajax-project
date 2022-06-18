@@ -16,6 +16,7 @@ var $saveCityBtn = document.querySelector('.save-city-btn');
 var $typeOfVisit = document.querySelector('#visit-type');
 var $visitMonth = document.querySelector('#month');
 var $visitYear = document.querySelector('#year');
+var $userCitiesList = document.querySelector('.user-cities-display');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -91,16 +92,22 @@ function saveCityInfo(event) {
 function changeView(view) {
   data.currentView = view;
   for (var v = 0; v < $dataView.length; v++) {
-    if ($dataView[v].getAttribute('data-view') === data.currentView && data.currentView === 'city-profile') {
-      $cityProfileImg.textContent = '';
-      $cityProfileDesc.textContent = '';
-      $cityScoresContainer.textContent = '';
-      $cityLocationsContainer.textContent = '';
-      $cityCostsContainer.textContent = '';
-      $cityFooterContainer.textContent = '';
-      $dataView[v].classList.remove('hidden');
-    } else if ($dataView[v].getAttribute('data-view') === data.currentView) {
-      $dataView[v].classList.remove('hidden');
+    if ($dataView[v].getAttribute('data-view') === data.currentView) {
+      if (data.currentView === 'city-profile') {
+        $cityProfileImg.textContent = '';
+        $cityProfileDesc.textContent = '';
+        $cityScoresContainer.textContent = '';
+        $cityLocationsContainer.textContent = '';
+        $cityCostsContainer.textContent = '';
+        $cityFooterContainer.textContent = '';
+        $dataView[v].classList.remove('hidden');
+      } else if (data.currentView === 'user-cities') {
+        $userCitiesList.textContent = '';
+        renderMyCities();
+        $dataView[v].classList.remove('hidden');
+      } else if (data.currentView === 'search') {
+        $dataView[v].classList.remove('hidden');
+      }
     } else {
       $dataView[v].classList.add('hidden');
     }
@@ -288,8 +295,8 @@ function renderCityDescription() {
   //   <h2>city name</h2>
   //   <p>country<p>
   //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
-  //   <p>description<p></br>
-  //   <p>total pop</p>
+  //   <p>total pop</p></br>
+  //   <p>description<p>
   // </div>
 
   var $descCol = document.createElement('div');
@@ -316,9 +323,9 @@ function renderCityDescription() {
   $descCol.appendChild($cityName);
   $descCol.appendChild($cityCountry);
   $descCol.appendChild($addCityBtn);
-  $descCol.appendChild($cityDesc);
-  $descCol.appendChild($br2);
   $descCol.appendChild($pop);
+  $descCol.appendChild($br2);
+  $descCol.appendChild($cityDesc);
   $cityProfileDesc.appendChild($descCol);
 }
 
@@ -555,6 +562,7 @@ function renderTableData(array) {
 function resetDataCurrentCity() {
   data.currentCity = {
     cityObj: null,
+    hasDetails: null,
     cityProfileUrl: null,
     cityName: null,
     cityCountry: null,
@@ -564,7 +572,10 @@ function resetDataCurrentCity() {
     cityPop: null,
     locations: null,
     costs: null,
-    hasDetails: null,
+    visitType: null,
+    visitMonth: null,
+    visitYear: null,
+    notes: [],
 
     cityImageAtt: {
       authorName: null,
@@ -627,4 +638,37 @@ function checkUserCities(cityName) {
     }
   }
   return true;
+}
+
+function renderMyCities() {
+  for (var m = 0; m < data.myEntries.length; m++) {
+    // <div class="col-12 col-sm-4 col-md-3 m-2 d-flex centar-all user-card">
+    //   <a href="#">
+    //     <img class="card-img" src="" alt="city-image">
+    //     <h5 class="mt-2">city name</h5>
+    //     <p>country</p>
+    //   </a>
+    // </div>
+
+    var $userCityCard = document.createElement('div');
+    var $anchor = document.createElement('a');
+    var $cardImg = document.createElement('img');
+    var $cityNameTitle = document.createElement('h5');
+    var $cityCardCountry = document.createElement('p');
+
+    $userCityCard.className = 'col-12 col-sm-4 col-md-3 m-2 d-flex center-all user-card';
+    $anchor.setAttribute('href', '#');
+    $cardImg.className = 'card-img';
+    $cardImg.setAttribute('src', data.myEntries[m].cityImageUrl);
+    $cardImg.setAttribute('alt', 'city-image');
+    $cityNameTitle.className = 'mt-2';
+    $cityNameTitle.textContent = data.myEntries[m].cityName;
+    $cityCardCountry.textContent = data.myEntries[m].cityCountry;
+
+    $userCityCard.appendChild($anchor);
+    $anchor.appendChild($cardImg);
+    $anchor.appendChild($cityNameTitle);
+    $anchor.appendChild($cityCardCountry);
+    $userCitiesList.appendChild($userCityCard);
+  }
 }
