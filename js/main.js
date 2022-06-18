@@ -282,7 +282,7 @@ function renderCityDescription() {
   // <div class="col align-items-center text-center">
   //   <h2>city name</h2>
   //   <p>country<p><br>
-  //   <button type="button" class="btn add-city-btn">ADD CITY TO LIST</button></br>
+  //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
   //   <p>description<p></br>
   //   <p>total pop</p>
   // </div>
@@ -300,7 +300,10 @@ function renderCityDescription() {
   $cityName.textContent = data.currentCity.cityName;
   $cityCountry.textContent = data.currentCity.cityCountry;
   $addCityBtn.setAttribute('type', 'button');
-  $addCityBtn.className = 'btn add-city-btn';
+  $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
+  $addCityBtn.setAttribute('data-bs-toggle', 'modal');
+
+  $addCityBtn.className = 'btn add-city-btn col-12';
   $addCityBtn.textContent = 'ADD CITY TO LIST';
   $cityDesc.textContent = '';
   $cityDesc.textContent = data.currentCity.citySummary;
@@ -424,7 +427,7 @@ function renderCityScores() {
 
 function renderLeisureTable() {
   //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover">
+  //     <table class="table table-hover w-100 m-auto">
   //       <thead>
   //         <tr>
   //           <th scope="col">Category</th>
@@ -451,7 +454,7 @@ function renderLeisureTable() {
   var $th3 = document.createElement('th');
 
   $leiSectionCol.className = 'col align-items-center text-center table-container';
-  $leiTable.className = 'table table-hover';
+  $leiTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
   $th2.setAttribute('scope', 'col');
@@ -471,7 +474,7 @@ function renderLeisureTable() {
 
 function renderCostTable() {
   //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover">
+  //     <table class="table table-hover w-100 m-auto">
   //       <thead>
   //         <tr>
   //           <th scope="col">Category</th>
@@ -495,7 +498,7 @@ function renderCostTable() {
   var $th2 = document.createElement('th');
 
   $costSectionCol.className = 'col align-items-center text-center table-container';
-  $costTable.className = 'table table-hover';
+  $costTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
   $th2.setAttribute('scope', 'col');
@@ -511,11 +514,18 @@ function renderCostTable() {
 }
 
 function renderFooter() {
+  // <button class="btn add-city-btn" type="button" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
+  // <a href="#">Back to Top</a>
+
   var $addCityBtn = document.createElement('button');
   var $backTop = document.createElement('a');
 
   $addCityBtn.className = 'btn add-city-btn';
   $addCityBtn.setAttribute('type', 'button');
+  $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
+  $addCityBtn.setAttribute('data-bs-toggle', 'modal');
+  $addCityBtn.setAttribute('type', 'button');
+
   $addCityBtn.textContent = 'ADD CITY TO LIST';
   $backTop.setAttribute('href', '#');
   $backTop.className = 'back-top';

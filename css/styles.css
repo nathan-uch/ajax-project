@@ -114,22 +114,34 @@ figure {
   margin: 0 15%;
 }
 
-.table {
-  width: 100%;
-  margin: auto;
-}
-
 .add-city-btn {
   width: 170px;
   margin: 20px auto;
 }
 
 .back-top {
-  flex-basis: 100%;
   font-size: 1.3rem;
   font-weight: 600;
   color: #001d6e;
   text-decoration: underline;
   text-align: center;
   margin: 0 auto;
+}
+
+/* ADD CITY MODAL */
+.modal-dialog {
+  max-width: 400px;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.modal-head {
+  font-size: 1.3rem;
+}
+
+#month,
+#year {
+  width: auto;
 }

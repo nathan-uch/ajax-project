@@ -57,6 +57,50 @@
       <div class="row profile-footer">
       </div>
     </div>
+    <!-- ADD CITY MODAL -->
+    <div class="modal fade" id="add-city-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content mx-2">
+          <form>
+            <div class="modal-body px-5 py-4">
+              <h4 class="mt-2 text-center">Add city to your list</h4>
+              <label for="visit-type" class="modal-head mt-4 mb-2">Have you been to this city?</label>
+              <select name="visit-type" id="visit-type" class="form-select" required>
+                <option value="live">I have lived / live in this city</option>
+                <option value="visit">I have visited this city</option>
+                <option value="wantVisit">I want to visit this city</option>
+              </select>
+              <p class="modal-head mt-4 mb-2">When was / is your trip?</p>
+              <label for="month" class="mb-2">Month
+                <select name="month" id="month" class="form-select" required>
+                  <option value="">January</option>
+                  <option value="">February</option>
+                  <option value="">March</option>
+                  <option value="">April</option>
+                  <option value="">May</option>
+                  <option value="">June</option>
+                  <option value="">July</option>
+                  <option value="">August</option>
+                  <option value="">September</option>
+                  <option value="">October</option>
+                  <option value="">November</option>
+                  <option value="">December</option>
+                </select>
+              </label>
+              <label for="year" class="mb-2">Year
+                <select name="year" id="year" class="form-select" required>
+                  <option value="">2022</option>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer justify-content-around">
+              <button type="button" class="btn pl-4 px-4">ADD</button>
+              <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
