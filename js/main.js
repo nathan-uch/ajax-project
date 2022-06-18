@@ -3,6 +3,7 @@ var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
 var $searchCitiesAnchor = document.querySelector('.search-cities-anchor');
+var $userCitiesAnchor = document.querySelector('.user-cities-anchor');
 var $cityProfileImg = document.querySelector('.profile-img');
 var $cityProfileDesc = document.querySelector('.profile-desc');
 var $cityScoresContainer = document.querySelector('.scores-container');
@@ -14,6 +15,7 @@ var $modalYear = document.querySelector('#year');
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
+$userCitiesAnchor.addEventListener('click', switchNavbarPage);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -104,6 +106,8 @@ function switchNavbarPage(event) {
     $searchCity.reset();
     $searchResultsRow.textContent = '';
     changeView('search');
+  } else {
+    changeView('user-cities');
   }
 }
 
@@ -283,7 +287,7 @@ function renderImage() {
 function renderCityDescription() {
   // <div class="col align-items-center text-center">
   //   <h2>city name</h2>
-  //   <p>country<p><br>
+  //   <p>country<p>
   //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
   //   <p>description<p></br>
   //   <p>total pop</p>
@@ -295,7 +299,6 @@ function renderCityDescription() {
   var $addCityBtn = document.createElement('button');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
-  var $br1 = document.createElement('br');
   var $br2 = document.createElement('br');
 
   $descCol.className = 'col align-items-center text-center';
@@ -313,7 +316,6 @@ function renderCityDescription() {
 
   $descCol.appendChild($cityName);
   $descCol.appendChild($cityCountry);
-  $descCol.appendChild($br1);
   $descCol.appendChild($addCityBtn);
   $descCol.appendChild($cityDesc);
   $descCol.appendChild($br2);

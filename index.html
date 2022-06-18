@@ -16,17 +16,20 @@
   <header>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-sm navbar-dark navbar-bg-color">
-      <div class="container-fluid">
+      <div class="container-fluid py-1">
         <a href="index.html" class="navbar-brand">ROAM<i class="fa-solid fa-shoe-prints"></i></a>
         <button class="navbar-toggler border-4 m-2" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
         aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon opacity-100"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="collapse navbar-collapse gap-2" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a href="#" class="nav-link active search-cities-anchor" aria-current="page">Search Cities</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link active user-cities-anchor" aria-current="page">My Cities</a>
             </li>
           </ul>
         </div>
@@ -35,7 +38,7 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center" data-view="search">
+    <div class="container-fluid text-center hidden" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City">
@@ -55,6 +58,19 @@
       <div class="row profile-leisure my-3"></div>
       <div class="row profile-costs my-3"></div>
       <div class="row profile-footer">
+      </div>
+    </div>
+    <!-- USER CITIES -->
+    <div class="container-fluid user-cities" data-view="user-cities">
+      <div class="row justify-content-center gap-3 mb-5 text-center">
+        <h2 class="mt-5 mb-4">My Cities</h2>
+        <div class="col-12 col-sm-4 col-md-3 m-2 d-flex centar-all user-card">
+          <a href="#" class="searched-card">
+            <img class="card-img" src="https://d13k13wj6adfdf.cloudfront.net/urban_areas/los-angeles_web-2eedb2a83e.jpg" alt="city-image">
+            <h5 class="mt-2">Los Angeles</h5>
+            <p>California, USA</p>
+          </a>
+        </div>
       </div>
     </div>
     <!-- ADD CITY MODAL -->
