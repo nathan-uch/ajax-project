@@ -1,4 +1,5 @@
 var $searchCity = document.forms[0];
+var $addToMyCitiesModal = document.forms[1];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
@@ -11,11 +12,16 @@ var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
 var $cityFooterContainer = document.querySelector('.profile-footer');
 var $modalYear = document.querySelector('#year');
+var $saveCityBtn = document.querySelector('.save-city-btn');
+var $typeOfVisit = document.querySelector('#visit-type');
+var $visitMonth = document.querySelector('#month');
+var $visitYear = document.querySelector('#year');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 $userCitiesAnchor.addEventListener('click', switchNavbarPage);
+$saveCityBtn.addEventListener('click', saveCitytoUserList);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -75,8 +81,8 @@ function saveCityInfo(event) {
   resetDataCurrentCity();
 
   if (event.target.closest('.city-card') !== null) {
-    data.currentCity.cityId = event.target.closest('.city-card').getAttribute('data-card-id');
-    data.currentCity.cityObj = data.searchResults._embedded['city:search-results'][data.currentCity.cityId];
+    data.currentCity.searchCardId = event.target.closest('.city-card').getAttribute('data-card-id');
+    data.currentCity.cityObj = data.searchResults._embedded['city:search-results'][data.currentCity.searchCardId];
     changeView('city-profile');
     getCityData();
   }
@@ -134,6 +140,7 @@ function getCityData() {
     var result2Result = JSON.parse(xhr2.response);
     data.currentCity.cityPop = result2Result.population.toLocaleString();
     if (!result2Result._links['city:urban_area']) {
+      data.currentCity.hasDetails = false;
       data.currentCity.citySummary = 'Sorry, there are no details about this city.';
       data.currentCity.cityImageUrl = '../images/city-alt.jpg';
       data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
@@ -142,114 +149,106 @@ function getCityData() {
       renderCityDescription();
       renderFooter();
     } else {
-      if (result2Result._links['city:urban_area'] === undefined) {
-        data.currentCity.cityImageUrl = '../images/city-alt.jpg';
-        data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
-        data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
+      data.currentCity.hasDetails = true;
+      // GET IMAGE
+      var slugUrl = result2Result._links['city:urban_area'].href + 'images';
+      var xhr3 = new XMLHttpRequest();
+      xhr3.open('GET', slugUrl);
+      xhr3.responseType = 'json';
+      xhr3.addEventListener('load', function () {
+        var xhr3Result = xhr3.response;
+        data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
+        data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
+        data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
         renderImage();
-        renderCityDescription();
         renderFooter();
-      } else {
-        // GET IMAGE
-        var slugUrl = result2Result._links['city:urban_area'].href + 'images';
-        var xhr3 = new XMLHttpRequest();
-        xhr3.open('GET', slugUrl);
-        xhr3.responseType = 'json';
-        xhr3.addEventListener('load', function () {
-          var xhr3Result = xhr3.response;
-          data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
-          data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
-          data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
-          renderImage();
-          renderFooter();
-        });
-        xhr3.send();
-        // GET DESCRIPTION
-        var scoresUrl = result2Result._links['city:urban_area'].href + 'scores/';
-        var xhr4 = new XMLHttpRequest();
-        xhr4.open('GET', scoresUrl);
-        xhr4.responseType = 'json';
-        xhr4.addEventListener('load', function () {
-          var xhr4Result = xhr4.response;
-          data.currentCity.citySummary = removeHtmlTags(xhr4Result.summary);
-          data.currentCity.scores.travel = Math.round(xhr4Result.categories[4].score_out_of_10);
-          data.currentCity.scores.safety = Math.round(xhr4Result.categories[7].score_out_of_10);
-          data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
-          data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
-          renderCityDescription();
-          renderCityScores();
-        });
-        xhr4.send();
+      });
+      xhr3.send();
+      // GET DESCRIPTION
+      var scoresUrl = result2Result._links['city:urban_area'].href + 'scores/';
+      var xhr4 = new XMLHttpRequest();
+      xhr4.open('GET', scoresUrl);
+      xhr4.responseType = 'json';
+      xhr4.addEventListener('load', function () {
+        var xhr4Result = xhr4.response;
+        data.currentCity.citySummary = removeHtmlTags(xhr4Result.summary);
+        data.currentCity.scores.travel = Math.round(xhr4Result.categories[4].score_out_of_10);
+        data.currentCity.scores.safety = Math.round(xhr4Result.categories[7].score_out_of_10);
+        data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
+        data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
+        renderCityDescription();
+        renderCityScores();
+      });
+      xhr4.send();
 
-        // GET TABLE DETAILS
-        var detailsUrl = result2Result._links['city:urban_area'].href + 'details/';
-        var xhr5 = new XMLHttpRequest();
-        xhr5.open('GET', detailsUrl);
-        xhr5.responseType = 'json';
-        xhr5.addEventListener('load', function () {
-          var xhr5Result = xhr5.response;
-          // CITY LOCATIONS
-          var curLocations = [];
-          var artGal = {};
-          artGal.name = 'Art Galleries';
-          artGal.num = xhr5Result.categories[4].data[1].int_value;
-          artGal.score = Math.round((xhr5Result.categories[4].data[0].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(artGal);
-          var cinemas = {};
-          cinemas.name = 'Cinemas';
-          cinemas.num = xhr5Result.categories[4].data[3].int_value;
-          cinemas.score = Math.round((xhr5Result.categories[4].data[2].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(cinemas);
-          var comClubs = {};
-          comClubs.name = 'Comedy Clubs';
-          comClubs.num = xhr5Result.categories[4].data[5].int_value;
-          comClubs.score = Math.round((xhr5Result.categories[4].data[4].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(comClubs);
-          var conVenues = {};
-          conVenues.name = 'Concert Venues';
-          conVenues.num = xhr5Result.categories[4].data[7].int_value;
-          conVenues.score = Math.round((xhr5Result.categories[4].data[6].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(conVenues);
-          var hisSites = {};
-          hisSites.name = 'Historical Sites';
-          hisSites.num = xhr5Result.categories[4].data[9].int_value;
-          hisSites.score = Math.round((xhr5Result.categories[4].data[8].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(hisSites);
-          var museums = {};
-          museums.name = 'Museums';
-          museums.num = xhr5Result.categories[4].data[11].int_value;
-          museums.score = Math.round((xhr5Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
-          curLocations.push(museums);
-          data.currentCity.locations = curLocations;
-          renderLeisureTable();
+      // GET TABLE DETAILS
+      var detailsUrl = result2Result._links['city:urban_area'].href + 'details/';
+      var xhr5 = new XMLHttpRequest();
+      xhr5.open('GET', detailsUrl);
+      xhr5.responseType = 'json';
+      xhr5.addEventListener('load', function () {
+        var xhr5Result = xhr5.response;
+        // CITY LOCATIONS
+        var curLocations = [];
+        var artGal = {};
+        artGal.name = 'Art Galleries';
+        artGal.num = xhr5Result.categories[4].data[1].int_value;
+        artGal.score = Math.round((xhr5Result.categories[4].data[0].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(artGal);
+        var cinemas = {};
+        cinemas.name = 'Cinemas';
+        cinemas.num = xhr5Result.categories[4].data[3].int_value;
+        cinemas.score = Math.round((xhr5Result.categories[4].data[2].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(cinemas);
+        var comClubs = {};
+        comClubs.name = 'Comedy Clubs';
+        comClubs.num = xhr5Result.categories[4].data[5].int_value;
+        comClubs.score = Math.round((xhr5Result.categories[4].data[4].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(comClubs);
+        var conVenues = {};
+        conVenues.name = 'Concert Venues';
+        conVenues.num = xhr5Result.categories[4].data[7].int_value;
+        conVenues.score = Math.round((xhr5Result.categories[4].data[6].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(conVenues);
+        var hisSites = {};
+        hisSites.name = 'Historical Sites';
+        hisSites.num = xhr5Result.categories[4].data[9].int_value;
+        hisSites.score = Math.round((xhr5Result.categories[4].data[8].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(hisSites);
+        var museums = {};
+        museums.name = 'Museums';
+        museums.num = xhr5Result.categories[4].data[11].int_value;
+        museums.score = Math.round((xhr5Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
+        curLocations.push(museums);
+        data.currentCity.locations = curLocations;
+        renderLeisureTable();
 
-          // CITY COSTS
-          var curCosts = [];
-          var lunch = {};
-          lunch.name = 'Restaurant Lunch';
-          lunch.cost = '$' + xhr5Result.categories[3].data[8].currency_dollar_value;
-          curCosts.push(lunch);
-          var pubTransport = {};
-          pubTransport.name = 'Monthly Public Transport';
-          pubTransport.cost = '$' + xhr5Result.categories[3].data[7].currency_dollar_value;
-          curCosts.push(pubTransport);
-          var beer = {};
-          beer.name = 'Beer';
-          beer.cost = '$' + xhr5Result.categories[3].data[6].currency_dollar_value;
-          curCosts.push(beer);
-          var movies = {};
-          movies.name = 'Movie Tickets';
-          movies.cost = '$' + xhr5Result.categories[3].data[4].currency_dollar_value;
-          curCosts.push(movies);
-          var apples = {};
-          apples.name = 'Apples (kg)';
-          apples.cost = '$' + xhr5Result.categories[3].data[1].currency_dollar_value;
-          curCosts.push(apples);
-          data.currentCity.costs = curCosts;
-          renderCostTable();
-        });
-        xhr5.send();
-      }
+        // CITY COSTS
+        var curCosts = [];
+        var lunch = {};
+        lunch.name = 'Restaurant Lunch';
+        lunch.cost = '$' + xhr5Result.categories[3].data[8].currency_dollar_value;
+        curCosts.push(lunch);
+        var pubTransport = {};
+        pubTransport.name = 'Monthly Public Transport';
+        pubTransport.cost = '$' + xhr5Result.categories[3].data[7].currency_dollar_value;
+        curCosts.push(pubTransport);
+        var beer = {};
+        beer.name = 'Beer';
+        beer.cost = '$' + xhr5Result.categories[3].data[6].currency_dollar_value;
+        curCosts.push(beer);
+        var movies = {};
+        movies.name = 'Movie Tickets';
+        movies.cost = '$' + xhr5Result.categories[3].data[4].currency_dollar_value;
+        curCosts.push(movies);
+        var apples = {};
+        apples.name = 'Apples (kg)';
+        apples.cost = '$' + xhr5Result.categories[3].data[1].currency_dollar_value;
+        curCosts.push(apples);
+        data.currentCity.costs = curCosts;
+        renderCostTable();
+      });
+      xhr5.send();
     }
   });
   xhr2.send();
@@ -554,13 +553,12 @@ function renderTableData(array) {
 }
 
 function resetDataCurrentCity() {
-  data.myEntries.push(data.currentCity);
   data.currentCity = {
     cityObj: null,
     cityProfileUrl: null,
     cityName: null,
     cityCountry: null,
-    cityId: null,
+    searchCardId: null,
     cityImageUrl: null,
     citySummary: null,
     cityPop: null,
@@ -597,6 +595,36 @@ function renderModalYears() {
     var $yearOpt = document.createElement('option');
     $yearOpt.setAttribute('value', 'year' + y);
     $yearOpt.text = y;
+    if (y === 2022) {
+      $yearOpt.setAttribute('selected', true);
+    }
     $modalYear.appendChild($yearOpt);
   }
+}
+
+function saveCitytoUserList() {
+  delete data.currentCity.searchCardId;
+  var notInUserList = checkUserCities(data.currentCity.cityName);
+  if (notInUserList === true) {
+    data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
+    var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
+    var year = $visitYear.options[$visitYear.selectedIndex].textContent;
+    data.currentCity.visitMonth = month;
+    data.currentCity.visitYear = year;
+    data.myEntries.push(data.currentCity);
+    // var addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
+    // addCityModal.hide();
+    $addToMyCitiesModal.reset();
+    changeView('user-cities');
+  }
+}
+
+function checkUserCities(cityName) {
+  for (var e = 0; e < data.myEntries.length; e++) {
+    if (cityName === data.myEntries[e].cityName) {
+      // console.log('This city is already in your list.');
+      return false;
+    }
+  }
+  return true;
 }

@@ -82,25 +82,26 @@
               <h4 class="mt-2 text-center">Add city to your list</h4>
               <label for="visit-type" class="modal-head mt-4 mb-2">Have you been to this city?</label>
               <select name="visit-type" id="visit-type" class="form-select" required>
-                <option value="live">I have lived / live in this city</option>
-                <option value="visit">I have visited this city</option>
-                <option value="wantVisit">I want to visit this city</option>
+                <option value="lives">I live in this city</option>
+                <option value="lived">I have lived in this city</option>
+                <option value="visited">I have visited this city</option>
+                <option value="willVisit">I want to visit this city</option>
               </select>
-              <p class="modal-head mt-4 mb-2">When was / is your trip?</p>
+              <p class="modal-head mt-4 mb-2">When did you arrive?</p>
               <label for="month" class="mb-2">Month
                 <select name="month" id="month" class="form-select" required>
-                  <option value="">January</option>
-                  <option value="">February</option>
-                  <option value="">March</option>
-                  <option value="">April</option>
-                  <option value="">May</option>
-                  <option value="">June</option>
-                  <option value="">July</option>
-                  <option value="">August</option>
-                  <option value="">September</option>
-                  <option value="">October</option>
-                  <option value="">November</option>
-                  <option value="">December</option>
+                  <option value="jan">January</option>
+                  <option value="feb">February</option>
+                  <option value="mar">March</option>
+                  <option value="apr">April</option>
+                  <option value="may">May</option>
+                  <option value="jun">June</option>
+                  <option value="jul">July</option>
+                  <option value="aug">August</option>
+                  <option value="sep">September</option>
+                  <option value="oct">October</option>
+                  <option value="nov">November</option>
+                  <option value="dec">December</option>
                 </select>
               </label>
               <label for="year" class="mb-2">Year
@@ -109,7 +110,7 @@
               </label>
             </div>
             <div class="modal-footer justify-content-around">
-              <button type="button" class="btn pl-4 px-4">ADD</button>
+              <button type="button" class="save-city-btn btn pl-4 px-4">ADD</button>
               <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
             </div>
           </form>
