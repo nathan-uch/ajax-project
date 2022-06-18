@@ -9,10 +9,11 @@ var $cityScoresContainer = document.querySelector('.scores-container');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
 var $cityFooterContainer = document.querySelector('.profile-footer');
+var $modalYear = document.querySelector('#year');
 
 $searchCity.addEventListener('submit', getSearchResults);
-$searchResultsRow.addEventListener('click', cityClicked);
-$searchCitiesAnchor.addEventListener('click', navbarClicked);
+$searchResultsRow.addEventListener('click', saveCityInfo);
+$searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -68,7 +69,7 @@ function renderSearchResults() {
   }
 }
 
-function cityClicked(event) {
+function saveCityInfo(event) {
   resetDataCurrentCity();
 
   if (event.target.closest('.city-card') !== null) {
@@ -98,7 +99,7 @@ function changeView(view) {
   }
 }
 
-function navbarClicked(event) {
+function switchNavbarPage(event) {
   if (event.target.classList.contains('search-cities-anchor')) {
     $searchCity.reset();
     $searchResultsRow.textContent = '';
@@ -248,6 +249,7 @@ function getCityData() {
     }
   });
   xhr2.send();
+  renderModalYears();
 }
 
 function renderImage() {
@@ -468,7 +470,7 @@ function renderLeisureTable() {
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
   $headRow.appendChild($th3);
-  $leiTable.appendChild(makeTableBody(data.currentCity.locations));
+  $leiTable.appendChild(renderTableData(data.currentCity.locations));
   $cityLocationsContainer.appendChild($leiSectionCol);
 }
 
@@ -509,13 +511,13 @@ function renderCostTable() {
   $costTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
-  $costTable.appendChild(makeTableBody(data.currentCity.costs));
+  $costTable.appendChild(renderTableData(data.currentCity.costs));
   $cityCostsContainer.appendChild($costSectionCol);
 }
 
 function renderFooter() {
   // <button class="btn add-city-btn" type="button" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
-  // <a href="#">Back to Top</a>
+  // <a href="#" class="back-top">Back to Top</a>
 
   var $addCityBtn = document.createElement('button');
   var $backTop = document.createElement('a');
@@ -535,7 +537,7 @@ function renderFooter() {
   $cityFooterContainer.appendChild($backTop);
 }
 
-function makeTableBody(array) {
+function renderTableData(array) {
   var $tBody = document.createElement('tbody');
   for (var r = 0; r < array.length; r++) {
     var $row = document.createElement('tr');
@@ -585,5 +587,14 @@ function checkScore(div) {
     div.classList.add('bg-warning');
   } else {
     div.classList.add('bg-danger');
+  }
+}
+
+function renderModalYears() {
+  for (var y = 1990; y < 2031; y++) {
+    var $yearOpt = document.createElement('option');
+    $yearOpt.setAttribute('value', 'year' + y);
+    $yearOpt.text = y;
+    $modalYear.appendChild($yearOpt);
   }
 }
