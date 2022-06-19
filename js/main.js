@@ -45,10 +45,10 @@ function getSearchResults(event) {
 function renderSearchResults() {
   $searchResultsRow.textContent = '';
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
-    // <div class="city-card m-2 col-sm-4 d-flex center-all">
+    // <div class="city-card m-2 col-sm-4 d-flex justify-content-center text-center">
     //    <a href="#" class="searched-card">
-    //        <h5>City Name<h5>
-    //        <p>Area, Country<p>
+    //        <h5 class="my-2">City Name<h5>
+    //        <p class="search-country text-nowrap">Area, Country<p>
     //    </a>
     // </div>
 
@@ -64,12 +64,14 @@ function renderSearchResults() {
     var country = fullName.splice(countryIndex, fullLength - 1).join('');
     var city = fullName.slice(0, commaIndex).join('');
 
-    $column.className = 'col-12 col-sm-4 col-md-3 m-2 d-flex center-all city-card';
+    $column.className = 'city-card m-2 col-sm-4 d-flex justify-content-center text-center';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card';
     $cityName.textContent = city;
+    $cityName.className = 'my-2';
     $countryName.textContent = country;
+    $countryName.className = 'search-country';
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
@@ -642,33 +644,56 @@ function checkUserCities(cityName) {
 
 function renderMyCities() {
   for (var m = 0; m < data.myEntries.length; m++) {
-    // <div class="col-12 col-sm-4 col-md-3 m-2 d-flex centar-all user-card">
-    //   <a href="#">
-    //     <img class="card-img" src="" alt="city-image">
-    //     <h5 class="mt-2">city name</h5>
-    //     <p>country</p>
-    //   </a>
-    // </div>
+    // <div class="card-wrapper text-start">
+    //   <i class="fa-solid fa-house-chimney card-icon"></i>
+    //   <p class="card-date mx-2">January 2022</p>
+    //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
+    //     <a href="#">
+    //       <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
+    //       <h5 class="mt-3">city name</h5>
+    //       <p class="mx-3 text-nowrap text-center country-card">country</p>
+    //     </a>
+    //   </div>
+    // </div >
 
+    var $cardWrapper = document.createElement('div');
+    var $icon = document.createElement('i');
+    var $cardDate = document.createElement('p');
     var $userCityCard = document.createElement('div');
     var $anchor = document.createElement('a');
     var $cardImg = document.createElement('img');
     var $cityNameTitle = document.createElement('h5');
     var $cityCardCountry = document.createElement('p');
 
-    $userCityCard.className = 'col-12 col-sm-4 col-md-3 m-2 d-flex center-all user-card';
+    $cardWrapper.className = 'card-wrapper text-start';
+    if (data.myEntries[m].visitType === 'lives') {
+      $icon.className = 'fa-solid fa-house-chimney';
+    } else if (data.myEntries[m].visitType === 'lived') {
+      $icon.className = 'fa-solid fa-house-chimney';
+    } else if (data.myEntries[m].visitType === 'visited') {
+      $icon.className = 'fa-solid fa-location-dot';
+    } else if (data.myEntries[m].visitType === 'willVisit') {
+      $icon.className = 'fa-solid fa-plane';
+    }
+    $cardDate.className = 'card-date mx-2';
+    $cardDate.textContent = data.myEntries[m].visitMonth + data.myEntries[m].visitYear;
+    $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
     $cardImg.setAttribute('src', data.myEntries[m].cityImageUrl);
     $cardImg.setAttribute('alt', 'city-image');
-    $cityNameTitle.className = 'mt-2';
+    $cityNameTitle.className = 'mt-3';
     $cityNameTitle.textContent = data.myEntries[m].cityName;
+    $cityCardCountry.className = 'mx-3 text-nowrap text-center country-card';
     $cityCardCountry.textContent = data.myEntries[m].cityCountry;
 
+    $cardWrapper.appendChild($icon);
+    $cardWrapper.appendChild($cardDate);
+    $cardWrapper.appendChild($userCityCard);
     $userCityCard.appendChild($anchor);
     $anchor.appendChild($cardImg);
     $anchor.appendChild($cityNameTitle);
     $anchor.appendChild($cityCardCountry);
-    $userCitiesList.appendChild($userCityCard);
+    $userCitiesList.appendChild($cardWrapper);
   }
 }
