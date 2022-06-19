@@ -32,5 +32,6 @@ var data = {
       outdoors: null
     }
   },
+  hasLivingCity: null,
   myEntries: []
 };

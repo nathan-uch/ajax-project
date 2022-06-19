@@ -17,12 +17,14 @@ var $typeOfVisit = document.querySelector('#visit-type');
 var $visitMonth = document.querySelector('#month');
 var $visitYear = document.querySelector('#year');
 var $userCitiesList = document.querySelector('.user-cities-display');
+var $livesOption = document.querySelector('#lives-option');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 $userCitiesAnchor.addEventListener('click', switchNavbarPage);
 $saveCityBtn.addEventListener('click', saveCitytoUserList);
+$typeOfVisit.addEventListener('change', renderModalYears);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -47,8 +49,8 @@ function renderSearchResults() {
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 d-flex justify-content-center text-center">
     //    <a href="#" class="searched-card">
-    //        <h5 class="my-2">City Name<h5>
-    //        <p class="search-country text-nowrap">Area, Country<p>
+    //        <h5 class="mt-3">City Name<h5>
+    //        <p class="search-country">Area, Country<p>
     //    </a>
     // </div>
 
@@ -69,7 +71,7 @@ function renderSearchResults() {
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card';
     $cityName.textContent = city;
-    $cityName.className = 'my-2';
+    $cityName.className = 'mt-3';
     $countryName.textContent = country;
     $countryName.className = 'search-country';
 
@@ -604,14 +606,32 @@ function checkScore(div) {
 }
 
 function renderModalYears() {
-  for (var y = 1990; y < 2031; y++) {
-    var $yearOpt = document.createElement('option');
-    $yearOpt.setAttribute('value', 'year' + y);
-    $yearOpt.text = y;
-    if (y === 2022) {
-      $yearOpt.setAttribute('selected', true);
+  $modalYear.textContent = '';
+  if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lived' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'visited') {
+    for (var y = 1990; y < 2023; y++) {
+      var $yearOpt = document.createElement('option');
+      $yearOpt.setAttribute('value', 'year' + y);
+      $yearOpt.text = y;
+      if (y === 2022) {
+        $yearOpt.setAttribute('selected', true);
+      }
+      $modalYear.appendChild($yearOpt);
     }
-    $modalYear.appendChild($yearOpt);
+  } else if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'willVisit') {
+    for (var w = 2022; w < 2036; w++) {
+      var $yearOpt2 = document.createElement('option');
+      $yearOpt2.setAttribute('value', 'year' + w);
+      $yearOpt2.text = w;
+      if (w === 2022) {
+        $yearOpt2.setAttribute('selected', true);
+      }
+      $modalYear.appendChild($yearOpt2);
+    }
+  } else {
+    var $yearOpt3 = document.createElement('option');
+    $yearOpt3.setAttribute('value', 'year' + 2022);
+    $yearOpt3.text = 2022;
+    $modalYear.appendChild($yearOpt3);
   }
 }
 
@@ -620,6 +640,10 @@ function saveCitytoUserList() {
   var notInUserList = checkUserCities(data.currentCity.cityName);
   if (notInUserList === true) {
     data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
+    if (data.currentCity.visitType === 'lives') {
+      data.hasLivingCity = true;
+      $livesOption.setAttribute('disabled', true);
+    }
     var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
     var year = $visitYear.options[$visitYear.selectedIndex].textContent;
     data.currentCity.visitMonth = month;
@@ -676,7 +700,7 @@ function renderMyCities() {
       $icon.className = 'fa-solid fa-plane';
     }
     $cardDate.className = 'card-date mx-2';
-    $cardDate.textContent = data.myEntries[m].visitMonth + data.myEntries[m].visitYear;
+    $cardDate.textContent = data.myEntries[m].visitMonth + ' ' + data.myEntries[m].visitYear;
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
