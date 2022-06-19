@@ -695,7 +695,7 @@ function renderMyCities() {
 
     $cardWrapper.className = 'card-wrapper text-start';
     if (data.myEntries[m].visitType === 'lives') {
-      $icon.className = 'fa-solid fa-house-chimney';
+      $icon.className = 'fa-solid fa-house-chimney text-success';
     } else if (data.myEntries[m].visitType === 'lived') {
       $icon.className = 'fa-solid fa-house-chimney';
     } else if (data.myEntries[m].visitType === 'visited') {
