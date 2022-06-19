@@ -609,7 +609,7 @@ function checkScore(div) {
 function renderModalYears() {
   $modalYear.textContent = '';
   $modalMessage.textContent = '';
-  if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lived' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'visited') {
+  if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lived' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'visited' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lives') {
     for (var y = 1990; y < 2023; y++) {
       var $yearOpt = document.createElement('option');
       $yearOpt.setAttribute('value', 'year' + y);
@@ -629,11 +629,6 @@ function renderModalYears() {
       }
       $modalYear.appendChild($yearOpt2);
     }
-  } else {
-    var $yearOpt3 = document.createElement('option');
-    $yearOpt3.setAttribute('value', 'year' + 2022);
-    $yearOpt3.text = 2022;
-    $modalYear.appendChild($yearOpt3);
   }
 }
 
