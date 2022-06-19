@@ -18,6 +18,7 @@ var $visitMonth = document.querySelector('#month');
 var $visitYear = document.querySelector('#year');
 var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
+var $modalMessage = document.querySelector('.modal-message');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -25,6 +26,8 @@ $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 $userCitiesAnchor.addEventListener('click', switchNavbarPage);
 $saveCityBtn.addEventListener('click', saveCitytoUserList);
 $typeOfVisit.addEventListener('change', renderModalYears);
+$visitMonth.addEventListener('change', clearMessage);
+$visitYear.addEventListener('change', clearMessage);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -607,6 +610,7 @@ function checkScore(div) {
 
 function renderModalYears() {
   $modalYear.textContent = '';
+  $modalMessage.textContent = '';
   if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lived' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'visited') {
     for (var y = 1990; y < 2023; y++) {
       var $yearOpt = document.createElement('option');
@@ -636,18 +640,18 @@ function renderModalYears() {
 }
 
 function saveCitytoUserList() {
+  var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
+  var year = $visitYear.options[$visitYear.selectedIndex].textContent;
+  data.currentCity.visitMonth = month;
+  data.currentCity.visitYear = year;
   delete data.currentCity.searchCardId;
-  var notInUserList = checkUserCities(data.currentCity.cityName);
+  var notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitMonth, data.currentCity.visitYear);
   if (notInUserList === true) {
     data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
     if (data.currentCity.visitType === 'lives') {
       data.hasLivingCity = true;
       $livesOption.setAttribute('disabled', true);
     }
-    var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
-    var year = $visitYear.options[$visitYear.selectedIndex].textContent;
-    data.currentCity.visitMonth = month;
-    data.currentCity.visitYear = year;
     data.myEntries.push(data.currentCity);
     // var addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
     // addCityModal.hide();
@@ -656,10 +660,10 @@ function saveCitytoUserList() {
   }
 }
 
-function checkUserCities(cityName) {
+function checkUserCities(cityName, month, year) {
   for (var e = 0; e < data.myEntries.length; e++) {
-    if (cityName === data.myEntries[e].cityName) {
-      // console.log('This city is already in your list.');
+    if (cityName === data.myEntries[e].cityName && month === data.myEntries[e].visitMonth && year === data.myEntries[e].visitYear) {
+      $modalMessage.textContent = 'This trip is already in your list.';
       return false;
     }
   }
@@ -720,4 +724,8 @@ function renderMyCities() {
     $anchor.appendChild($cityCardCountry);
     $userCitiesList.appendChild($cardWrapper);
   }
+}
+
+function clearMessage() {
+  $modalMessage.textContent = '';
 }

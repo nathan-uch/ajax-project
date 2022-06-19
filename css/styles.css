@@ -143,6 +143,12 @@ figure {
   width: auto;
 }
 
+.modal-message {
+  text-align: center;
+  width: 100%;
+  color: red;
+}
+
 /* USER CITIES */
 
 .card-wrapper {
