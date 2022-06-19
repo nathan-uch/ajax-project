@@ -50,7 +50,7 @@ function getSearchResults(event) {
 function renderSearchResults() {
   $searchResultsRow.textContent = '';
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
-    // <div class="city-card m-2 col-sm-4 d-flex justify-content-center text-center">
+    // <div class="city-card m-2 col-sm-3 d-flex justify-content-center text-center">
     //    <a href="#" class="searched-card">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
@@ -69,7 +69,7 @@ function renderSearchResults() {
     var country = fullName.splice(countryIndex, fullLength - 1).join('');
     var city = fullName.slice(0, commaIndex).join('');
 
-    $column.className = 'city-card m-2 col-sm-4 d-flex justify-content-center text-center';
+    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card';
@@ -109,8 +109,6 @@ function changeView(view) {
         $cityFooterContainer.textContent = '';
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'user-cities') {
-        $userCitiesList.textContent = '';
-        renderMyCities();
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'search') {
         $dataView[v].classList.remove('hidden');
@@ -656,6 +654,8 @@ function saveCitytoUserList() {
     // var addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
     // addCityModal.hide();
     $addToMyCitiesModal.reset();
+    $userCitiesList.textContent = '';
+    renderMyCities();
     changeView('user-cities');
   }
 }
