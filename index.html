@@ -16,17 +16,20 @@
   <header>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-sm navbar-dark navbar-bg-color">
-      <div class="container-fluid">
-        <a href="#" class="navbar-brand">ROAM<i class="fa-solid fa-shoe-prints"></i></a>
+      <div class="container-fluid py-1">
+        <a href="index.html" class="navbar-brand">ROAM<i class="fa-solid fa-shoe-prints"></i></a>
         <button class="navbar-toggler border-4 m-2" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
         aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon opacity-100"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="collapse navbar-collapse gap-2" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a href="#" class="nav-link active search-cities-anchor" aria-current="page">Search Cities</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link active user-cities-anchor" aria-current="page">My Cities</a>
             </li>
           </ul>
         </div>
@@ -52,8 +55,61 @@
       <div class="row profile-img"></div>
       <div class="row profile-desc"></div>
       <div class="scores-container"></div>
-      <div class="row profile-leisure my-4"></div>
-      <div class="row profile-costs my-4"></div>
+      <div class="row profile-leisure my-3"></div>
+      <div class="row profile-costs my-3"></div>
+      <div class="row profile-footer">
+      </div>
+    </div>
+    <!-- USER CITIES -->
+    <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
+      <h2 class="mt-5 mb-4">My Cities</h2>
+      <div class="row justify-content-center gap-4 mb-5 text-center user-cities-display">
+      </div>
+    </div>
+    <!-- ADD CITY MODAL -->
+    <div class="modal fade" id="add-city-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content mx-2">
+          <form>
+            <div class="modal-body px-5 py-4">
+              <h4 class="mt-2 text-center">Add city to your list</h4>
+              <label for="visit-type" class="modal-head mt-4 mb-2">Have you been to this city?</label>
+              <select name="visit-type" id="visit-type" class="form-select" required>
+                <option value="lives" id="lives-option">I live in this city</option>
+                <option value="lived">I have lived in this city</option>
+                <option value="visited">I have visited this city</option>
+                <option value="willVisit">I want to visit this city</option>
+              </select>
+              <p class="modal-head mt-4 mb-2">When did you arrive?</p>
+              <label for="month" class="mb-2">Month
+                <select name="month" id="month" class="form-select" required>
+                  <option value="jan">January</option>
+                  <option value="feb">February</option>
+                  <option value="mar">March</option>
+                  <option value="apr">April</option>
+                  <option value="may">May</option>
+                  <option value="jun">June</option>
+                  <option value="jul">July</option>
+                  <option value="aug">August</option>
+                  <option value="sep">September</option>
+                  <option value="oct">October</option>
+                  <option value="nov">November</option>
+                  <option value="dec">December</option>
+                </select>
+              </label>
+              <label for="year" class="mb-2">Year
+                <select name="year" id="year" class="form-select" required>
+                </select>
+              </label>
+            </div>
+            <div class="modal-footer justify-content-around">
+              <p class="modal-message"></p>
+              <button type="button" class="save-city-btn btn pl-4 px-4">ADD</button>
+              <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

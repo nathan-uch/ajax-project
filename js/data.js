@@ -5,16 +5,20 @@ var data = {
   searchResults: null,
   currentCity: {
     cityObj: null,
+    hasDetails: null,
     cityProfileUrl: null,
     cityName: null,
     cityCountry: null,
-    cityId: null,
+    searchCardId: null,
     cityImageUrl: null,
     citySummary: null,
     cityPop: null,
     locations: null,
     costs: null,
-    hasDetails: null,
+    visitType: null,
+    visitMonth: null,
+    visitYear: null,
+    notes: [],
 
     cityImageAtt: {
       authorName: null,
@@ -28,5 +32,6 @@ var data = {
       outdoors: null
     }
   },
+  hasLivingCity: null,
   myEntries: []
 };
