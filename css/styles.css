@@ -151,6 +151,15 @@ figure {
 
 /* USER CITIES */
 
+.filter-label {
+  font-size: 1.2rem;
+}
+
+#filter-cities {
+  min-width: 150px;
+  width: 20%;
+}
+
 .card-wrapper {
   max-width: 270px;
   color: #001d6e;
