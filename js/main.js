@@ -760,13 +760,20 @@ function sortMyCities(event) {
         return 0;
       }
     });
-    // } else if (event.target.value === 'revCity') {
-    //   data.myEntries = data.myEntries.sort(function (a, b) {
-
+  } else if (event.target.value === 'rev-city') {
+    data.myEntries = data.myEntries.sort(function (a, b) {
+      if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
+        return 1;
+      } else if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
     // } else if (event.target.value === 'country') {
     //     data.myEntries = data.myEntries.sort(function (a, b) {
 
-    // } else if (event.target.value === 'revCountry') {
+    // } else if (event.target.value === 'rev-country') {
     //       data.myEntries = data.myEntries.sort(function (a, b) {
 
   }
