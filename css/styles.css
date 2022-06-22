@@ -151,6 +151,15 @@ figure {
 
 /* USER CITIES */
 
+.sort-label {
+  font-size: 1.2rem;
+}
+
+#sort-cities {
+  min-width: 150px;
+  width: 20%;
+}
+
 .card-wrapper {
   max-width: 270px;
   color: #001d6e;

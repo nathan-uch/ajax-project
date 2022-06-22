@@ -8,6 +8,7 @@ var data = {
     hasDetails: null,
     cityProfileUrl: null,
     cityName: null,
+    cityArea: null,
     cityCountry: null,
     searchCardId: null,
     cityImageUrl: null,
@@ -16,8 +17,7 @@ var data = {
     locations: null,
     costs: null,
     visitType: null,
-    visitMonth: null,
-    visitYear: null,
+    visitDate: null,
     notes: [],
 
     cityImageAtt: {

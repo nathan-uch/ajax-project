@@ -19,6 +19,7 @@ var $visitYear = document.querySelector('#year');
 var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
+var $sortOption = document.querySelector('#sort-cities');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -28,6 +29,7 @@ $saveCityBtn.addEventListener('click', saveCitytoUserList);
 $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
+$sortOption.addEventListener('change', sortMyCities);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -140,7 +142,7 @@ function getCityData() {
   var commaIndex = fullName.indexOf(',');
   var countryIndex = commaIndex + 2;
   data.currentCity.cityName = fullName.slice(0, commaIndex).join('');
-  data.currentCity.cityCountry = fullName.splice(countryIndex, fullName.length - 1).join('');
+  data.currentCity.cityArea = fullName.splice(countryIndex, fullName.length - 1).join('');
 
   var currentCityProfileUrl = data.currentCity.cityObj._links['city:item'].href;
   data.currentCity.cityProfileUrl = currentCityProfileUrl;
@@ -306,7 +308,7 @@ function renderCityDescription() {
 
   var $descCol = document.createElement('div');
   var $cityName = document.createElement('h2');
-  var $cityCountry = document.createElement('p');
+  var $cityArea = document.createElement('p');
   var $addCityBtn = document.createElement('button');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
@@ -314,7 +316,7 @@ function renderCityDescription() {
 
   $descCol.className = 'col align-items-center text-center';
   $cityName.textContent = data.currentCity.cityName;
-  $cityCountry.textContent = data.currentCity.cityCountry;
+  $cityArea.textContent = data.currentCity.cityArea;
   $addCityBtn.setAttribute('type', 'button');
   $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
   $addCityBtn.setAttribute('data-bs-toggle', 'modal');
@@ -326,7 +328,7 @@ function renderCityDescription() {
   $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
 
   $descCol.appendChild($cityName);
-  $descCol.appendChild($cityCountry);
+  $descCol.appendChild($cityArea);
   $descCol.appendChild($addCityBtn);
   $descCol.appendChild($pop);
   $descCol.appendChild($br2);
@@ -570,6 +572,7 @@ function resetDataCurrentCity() {
     hasDetails: null,
     cityProfileUrl: null,
     cityName: null,
+    cityArea: null,
     cityCountry: null,
     searchCardId: null,
     cityImageUrl: null,
@@ -578,8 +581,7 @@ function resetDataCurrentCity() {
     locations: null,
     costs: null,
     visitType: null,
-    visitMonth: null,
-    visitYear: null,
+    monthNum: null,
     notes: [],
 
     cityImageAtt: {
@@ -633,12 +635,17 @@ function renderModalYears() {
 }
 
 function saveCitytoUserList() {
-  var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
+  var parenthesis = data.currentCity.cityArea.indexOf('(');
+  if (parenthesis !== -1) {
+    data.currentCity.cityCountry = data.currentCity.cityArea.substring((data.currentCity.cityArea.indexOf(',') + 2), parenthesis - 1);
+  } else {
+    data.currentCity.cityCountry = data.currentCity.cityArea.substring((data.currentCity.cityArea.indexOf(',') + 2));
+  }
   var year = $visitYear.options[$visitYear.selectedIndex].textContent;
-  data.currentCity.visitMonth = month;
-  data.currentCity.visitYear = year;
+  data.currentCity.visitDate = new Date(year, $visitMonth.options[$visitMonth.selectedIndex].value);
   delete data.currentCity.searchCardId;
-  var notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitMonth, data.currentCity.visitYear);
+  data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
+  var notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitType, data.currentCity.visitDate);
   if (notInUserList === true) {
     data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
     if (data.currentCity.visitType === 'lives') {
@@ -655,9 +662,9 @@ function saveCitytoUserList() {
   }
 }
 
-function checkUserCities(cityName, month, year) {
+function checkUserCities(cityName, type, date) {
   for (var e = 0; e < data.myEntries.length; e++) {
-    if (cityName === data.myEntries[e].cityName && month === data.myEntries[e].visitMonth && year === data.myEntries[e].visitYear) {
+    if (cityName === data.myEntries[e].cityName && type === data.myEntries[e].visitType && date.getTime() === data.myEntries[e].visitDate.getTime()) {
       $modalMessage.textContent = 'This trip is already in your list.';
       return false;
     }
@@ -666,6 +673,7 @@ function checkUserCities(cityName, month, year) {
 }
 
 function renderMyCities() {
+  $userCitiesList.textContent = '';
   for (var m = 0; m < data.myEntries.length; m++) {
     // <div class="card-wrapper text-start">
     //   <i class="fa-solid fa-house-chimney card-icon"></i>
@@ -699,7 +707,8 @@ function renderMyCities() {
       $icon.className = 'fa-solid fa-plane';
     }
     $cardDate.className = 'card-date mx-2';
-    $cardDate.textContent = data.myEntries[m].visitMonth + ' ' + data.myEntries[m].visitYear;
+    var currentDate = new Date(data.myEntries[m].visitDate);
+    $cardDate.textContent = currentDate.toLocaleString('en-US', { month: 'short' }) + ' ' + currentDate.getFullYear();
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
@@ -708,7 +717,7 @@ function renderMyCities() {
     $cityNameTitle.className = 'mt-3';
     $cityNameTitle.textContent = data.myEntries[m].cityName;
     $cityCardCountry.className = 'mx-3 text-nowrap text-center country-card';
-    $cityCardCountry.textContent = data.myEntries[m].cityCountry;
+    $cityCardCountry.textContent = data.myEntries[m].cityArea;
 
     $cardWrapper.appendChild($icon);
     $cardWrapper.appendChild($cardDate);
@@ -723,4 +732,101 @@ function renderMyCities() {
 
 function clearMessage() {
   $modalMessage.textContent = '';
+}
+
+function sortMyCities(event) {
+  var entriesArray = data.myEntries;
+  if (event.target.value === 'recent') {
+    entriesArray = sortMostRecent(entriesArray);
+  } else if (event.target.value === 'oldest') {
+    entriesArray = sortOldest(entriesArray);
+  } else if (event.target.value === 'city') {
+    entriesArray = sortCityName(entriesArray);
+  } else if (event.target.value === 'rev-city') {
+    entriesArray = sortCityNameRev(entriesArray);
+  } else if (event.target.value === 'country') {
+    entriesArray = sortCountryName(entriesArray);
+  } else if (event.target.value === 'rev-country') {
+    entriesArray = sortCountryNameRev(entriesArray);
+  }
+  data.myEntries = entriesArray;
+  renderMyCities();
+}
+
+function sortMostRecent(array) {
+  array = array.sort(function (a, b) {
+    if (a.visitDate > b.visitDate) {
+      return -1;
+    } else if (a.visitDate < b.visitDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortOldest(array) {
+  array = array.sort(function (a, b) {
+    if (a.visitDate < b.visitDate) {
+      return -1;
+    } else if (a.visitDate > b.visitDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCityName(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
+      return 1;
+    } else if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCityNameRev(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
+      return 1;
+    } else if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCountryName(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
+      return 1;
+    } else if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCountryNameRev(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
+      return 1;
+    } else if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
 }

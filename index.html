@@ -63,7 +63,19 @@
     <!-- USER CITIES -->
     <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
       <h2 class="mt-5 mb-4">My Cities</h2>
+      <label for="sort-cities" class="sort-label">Sort by:</label>
+      <select name="sort-cities" id="sort-cities" class="form-select d-inline m-3">
+        <option value="opt" disabled selected="true">Select option</option>
+        <option value="recent">Most Recent</option>
+        <option value="oldest">Oldest</option>
+        <option value="city">City (A-Z)</option>
+        <option value="rev-city">City (Z-A)</option>
+        <option value="country">Country (A-Z)</option>
+        <option value="rev-country">Country (Z-A)</option>
+      </select>
       <div class="row justify-content-center gap-4 mb-5 text-center user-cities-display">
+
+
       </div>
     </div>
     <!-- ADD CITY MODAL -->
@@ -83,18 +95,18 @@
               <p class="modal-head mt-4 mb-2">When did you arrive?</p>
               <label for="month" class="mb-2">Month
                 <select name="month" id="month" class="form-select" required>
-                  <option value="jan">January</option>
-                  <option value="feb">February</option>
-                  <option value="mar">March</option>
-                  <option value="apr">April</option>
-                  <option value="may">May</option>
-                  <option value="jun">June</option>
-                  <option value="jul">July</option>
-                  <option value="aug">August</option>
-                  <option value="sep">September</option>
-                  <option value="oct">October</option>
-                  <option value="nov">November</option>
-                  <option value="dec">December</option>
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
                 </select>
               </label>
               <label for="year" class="mb-2">Year
