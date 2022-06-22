@@ -19,6 +19,7 @@ var $visitYear = document.querySelector('#year');
 var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
+var $sortOption = document.querySelector('#sort-cities');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -28,6 +29,7 @@ $saveCityBtn.addEventListener('click', saveCitytoUserList);
 $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
+$sortOption.addEventListener('change', sortMyCities);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -664,6 +666,7 @@ function checkUserCities(cityName, type, date) {
 }
 
 function renderMyCities() {
+  $userCitiesList.textContent = '';
   for (var m = 0; m < data.myEntries.length; m++) {
     // <div class="card-wrapper text-start">
     //   <i class="fa-solid fa-house-chimney card-icon"></i>
@@ -697,7 +700,8 @@ function renderMyCities() {
       $icon.className = 'fa-solid fa-plane';
     }
     $cardDate.className = 'card-date mx-2';
-    $cardDate.textContent = data.myEntries[m].visitDate.toLocaleString('en-US', { month: 'short' }) + ' ' + data.myEntries[m].visitDate.getFullYear();
+    var currentDate = new Date(data.myEntries[m].visitDate);
+    $cardDate.textContent = currentDate.toLocaleString('en-US', { month: 'short' }) + ' ' + currentDate.getFullYear();
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
@@ -725,21 +729,27 @@ function clearMessage() {
 
 renderMyCities();
 
-// function sortMyCities(event) {
-//   console.log(event.target.value);
-//     if (event.target.value = 'recent') {
-//       data.entries = data.entries.sort(function(a, b) {
-//         if
-//       });
-//     } else if (event.target.value = 'oldest') {
+function sortMyCities(event) {
+  if (event.target.value === 'recent') {
+    data.myEntries = data.myEntries.sort(function (a, b) {
+      if (a.visitDate > b.visitDate) {
+        return -1;
+      } else if (a.visitDate < b.visitDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    renderMyCities();
+    // } else if (event.target.value === 'oldest') {
 
-//     } else if (event.target.value = 'name') {
+    // } else if (event.target.value === 'name') {
 
-//     } else if (event.target.value = 'revName') {
+    // } else if (event.target.value === 'revName') {
 
-//     } else if (event.target.value = 'country') {
+    // } else if (event.target.value === 'country') {
 
-//     } else if (event.target.value = 'revCountry') {
+    // } else if (event.target.value === 'revCountry') {
 
-//   }
-// }
+  }
+}
