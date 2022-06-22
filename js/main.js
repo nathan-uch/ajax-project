@@ -735,66 +735,98 @@ function clearMessage() {
 }
 
 function sortMyCities(event) {
+  var entriesArray = data.myEntries;
   if (event.target.value === 'recent') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.visitDate > b.visitDate) {
-        return -1;
-      } else if (a.visitDate < b.visitDate) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortMostRecent(entriesArray);
   } else if (event.target.value === 'oldest') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.visitDate < b.visitDate) {
-        return -1;
-      } else if (a.visitDate > b.visitDate) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortOldest(entriesArray);
   } else if (event.target.value === 'city') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
-        return 1;
-      } else if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortCityName(entriesArray);
   } else if (event.target.value === 'rev-city') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
-        return 1;
-      } else if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortCityNameRev(entriesArray);
   } else if (event.target.value === 'country') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
-        return 1;
-      } else if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortCountryName(entriesArray);
   } else if (event.target.value === 'rev-country') {
-    data.myEntries = data.myEntries.sort(function (a, b) {
-      if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
-        return 1;
-      } else if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    entriesArray = sortCountryNameRev(entriesArray);
   }
+  data.myEntries = entriesArray;
   renderMyCities();
+}
+
+function sortMostRecent(array) {
+  array = array.sort(function (a, b) {
+    if (a.visitDate > b.visitDate) {
+      return -1;
+    } else if (a.visitDate < b.visitDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortOldest(array) {
+  array = array.sort(function (a, b) {
+    if (a.visitDate < b.visitDate) {
+      return -1;
+    } else if (a.visitDate > b.visitDate) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCityName(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
+      return 1;
+    } else if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCityNameRev(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityName.toLowerCase() < b.cityName.toLowerCase()) {
+      return 1;
+    } else if (a.cityName.toLowerCase() > b.cityName.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCountryName(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
+      return 1;
+    } else if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
+}
+
+function sortCountryNameRev(array) {
+  array = array.sort(function (a, b) {
+    if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
+      return 1;
+    } else if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return array;
 }
