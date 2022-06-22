@@ -740,9 +740,16 @@ function sortMyCities(event) {
         return 0;
       }
     });
-    renderMyCities();
-    // } else if (event.target.value === 'oldest') {
-
+  } else if (event.target.value === 'oldest') {
+    data.myEntries = data.myEntries.sort(function (a, b) {
+      if (a.visitDate < b.visitDate) {
+        return -1;
+      } else if (a.visitDate > b.visitDate) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
     // } else if (event.target.value === 'name') {
 
     // } else if (event.target.value === 'revName') {
@@ -752,4 +759,5 @@ function sortMyCities(event) {
     // } else if (event.target.value === 'revCountry') {
 
   }
+  renderMyCities();
 }
