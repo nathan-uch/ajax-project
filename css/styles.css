@@ -151,11 +151,11 @@ figure {
 
 /* USER CITIES */
 
-.filter-label {
+.sort-label {
   font-size: 1.2rem;
 }
 
-#filter-cities {
+#sort-cities {
   min-width: 150px;
   width: 20%;
 }

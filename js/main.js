@@ -578,8 +578,7 @@ function resetDataCurrentCity() {
     locations: null,
     costs: null,
     visitType: null,
-    visitMonth: null,
-    visitYear: null,
+    monthNum: null,
     notes: [],
 
     cityImageAtt: {
@@ -633,12 +632,11 @@ function renderModalYears() {
 }
 
 function saveCitytoUserList() {
-  var month = $visitMonth.options[$visitMonth.selectedIndex].textContent;
   var year = $visitYear.options[$visitYear.selectedIndex].textContent;
-  data.currentCity.visitMonth = month;
-  data.currentCity.visitYear = year;
+  data.currentCity.visitDate = new Date(year, $visitMonth.options[$visitMonth.selectedIndex].value);
   delete data.currentCity.searchCardId;
-  var notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitMonth, data.currentCity.visitYear);
+  data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
+  var notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitType, data.currentCity.visitDate);
   if (notInUserList === true) {
     data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
     if (data.currentCity.visitType === 'lives') {
@@ -655,9 +653,9 @@ function saveCitytoUserList() {
   }
 }
 
-function checkUserCities(cityName, month, year) {
+function checkUserCities(cityName, type, date) {
   for (var e = 0; e < data.myEntries.length; e++) {
-    if (cityName === data.myEntries[e].cityName && month === data.myEntries[e].visitMonth && year === data.myEntries[e].visitYear) {
+    if (cityName === data.myEntries[e].cityName && type === data.myEntries[e].visitType && date.getTime() === data.myEntries[e].visitDate.getTime()) {
       $modalMessage.textContent = 'This trip is already in your list.';
       return false;
     }
@@ -699,7 +697,7 @@ function renderMyCities() {
       $icon.className = 'fa-solid fa-plane';
     }
     $cardDate.className = 'card-date mx-2';
-    $cardDate.textContent = data.myEntries[m].visitMonth + ' ' + data.myEntries[m].visitYear;
+    $cardDate.textContent = data.myEntries[m].visitDate.toLocaleString('en-US', { month: 'short' }) + ' ' + data.myEntries[m].visitDate.getFullYear();
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
@@ -724,3 +722,24 @@ function renderMyCities() {
 function clearMessage() {
   $modalMessage.textContent = '';
 }
+
+renderMyCities();
+
+// function sortMyCities(event) {
+//   console.log(event.target.value);
+//     if (event.target.value = 'recent') {
+//       data.entries = data.entries.sort(function(a, b) {
+//         if
+//       });
+//     } else if (event.target.value = 'oldest') {
+
+//     } else if (event.target.value = 'name') {
+
+//     } else if (event.target.value = 'revName') {
+
+//     } else if (event.target.value = 'country') {
+
+//     } else if (event.target.value = 'revCountry') {
+
+//   }
+// }
