@@ -734,8 +734,6 @@ function clearMessage() {
   $modalMessage.textContent = '';
 }
 
-renderMyCities();
-
 function sortMyCities(event) {
   if (event.target.value === 'recent') {
     data.myEntries = data.myEntries.sort(function (a, b) {
@@ -787,12 +785,16 @@ function sortMyCities(event) {
         return 0;
       }
     });
-    // } else if (event.target.value === 'rev-country') {
-    //       data.myEntries = data.myEntries.sort(function (a, b) {
-
+  } else if (event.target.value === 'rev-country') {
+    data.myEntries = data.myEntries.sort(function (a, b) {
+      if (a.cityCountry.toLowerCase() < b.cityCountry.toLowerCase()) {
+        return 1;
+      } else if (a.cityCountry.toLowerCase() > b.cityCountry.toLowerCase()) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
   }
   renderMyCities();
 }
-
-// in data.myEntries add a country property
-// which removes area and parenthesis behind country name

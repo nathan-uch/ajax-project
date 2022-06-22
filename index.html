@@ -38,7 +38,7 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center hidden" data-view="search">
+    <div class="container-fluid text-center" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City">
@@ -61,10 +61,11 @@
       </div>
     </div>
     <!-- USER CITIES -->
-    <div class="container-fluid user-cities text-center" data-view="user-cities">
+    <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
       <h2 class="mt-5 mb-4">My Cities</h2>
       <label for="sort-cities" class="sort-label">Sort by:</label>
       <select name="sort-cities" id="sort-cities" class="form-select d-inline m-3">
+        <option value="opt" disabled selected="true">Select option</option>
         <option value="recent">Most Recent</option>
         <option value="oldest">Oldest</option>
         <option value="city">City (A-Z)</option>
