@@ -8,6 +8,7 @@ var data = {
     hasDetails: null,
     cityProfileUrl: null,
     cityName: null,
+    cityArea: null,
     cityCountry: null,
     searchCardId: null,
     cityImageUrl: null,
