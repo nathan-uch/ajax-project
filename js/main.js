@@ -21,6 +21,7 @@ var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
 var $removeCityBtn = document.querySelector('#remove-city-btn');
+var $removeCityDisplay = document.querySelector('.remove-city-display');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -683,11 +684,11 @@ function renderMyCities() {
     // <div class="card-wrapper text-start position-relative" data-city-id="idNumber">
     //   <i class="fa-solid fa-icon-name card-icon"></i>
     //   <p class="card-date mx-2">January 2022</p>
-    //   <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i class="fa-solid fa-circle-x fa-lg"></i></button>
+    //   <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i class="fa-regular fa-circle-xmark fa-lg"></i></button>
     //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
     //     <a href="#">
     //       <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
-    //       <h5 class="mt-3">city name</h5>
+    //       <h5 class="mt-3 cName">city name</h5>
     //       <p class="mx-3 text-nowrap text-center country-card">country</p>
     //     </a>
     //   </div>
@@ -729,7 +730,7 @@ function renderMyCities() {
     $cardImg.className = 'card-img';
     $cardImg.setAttribute('src', data.myEntries[m].cityImageUrl);
     $cardImg.setAttribute('alt', 'city-image');
-    $cityNameTitle.className = 'mt-3';
+    $cityNameTitle.className = 'mt-3 cName';
     $cityNameTitle.textContent = data.myEntries[m].cityName;
     $cityCardCountry.className = 'mx-3 text-nowrap text-center country-card';
     $cityCardCountry.textContent = data.myEntries[m].cityArea;
@@ -747,6 +748,7 @@ function renderMyCities() {
 
     $xBtn.addEventListener('click', function (e) {
       data.editCity = event.target.closest('.card-wrapper');
+      $removeCityDisplay.textContent = data.editCity.children[3].children[0].children[1].textContent + ', ' + data.editCity.children[3].children[0].children[2].textContent;
     });
   }
 }
