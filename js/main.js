@@ -677,7 +677,8 @@ function renderMyCities() {
   for (var m = 0; m < data.myEntries.length; m++) {
     // <div class="card-wrapper text-start">
     //   <i class="fa-solid fa-house-chimney card-icon"></i>
-    //   <p class="card-date mx-2">January 2022</p>
+    //   <p class="card-date mx-2 position-relative">January 2022</p>
+    //   <span class="x-span"><i class="fa-solid fa-circle-x fa-lg"></i></span>
     //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
     //     <a href="#">
     //       <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
@@ -685,30 +686,35 @@ function renderMyCities() {
     //       <p class="mx-3 text-nowrap text-center country-card">country</p>
     //     </a>
     //   </div>
-    // </div >
+    // </div>
 
     var $cardWrapper = document.createElement('div');
-    var $icon = document.createElement('i');
+    var $travelIcon = document.createElement('i');
     var $cardDate = document.createElement('p');
+    var $xSpan = document.createElement('span');
+    var $xIcon = document.createElement('i');
     var $userCityCard = document.createElement('div');
     var $anchor = document.createElement('a');
     var $cardImg = document.createElement('img');
     var $cityNameTitle = document.createElement('h5');
     var $cityCardCountry = document.createElement('p');
 
-    $cardWrapper.className = 'card-wrapper text-start';
+    $cardWrapper.className = 'card-wrapper text-start position-relative';
     if (data.myEntries[m].visitType === 'lives') {
-      $icon.className = 'fa-solid fa-house-chimney text-success';
+      $travelIcon.className = 'fa-solid fa-house-chimney text-success';
     } else if (data.myEntries[m].visitType === 'lived') {
-      $icon.className = 'fa-solid fa-house-chimney';
+      $travelIcon.className = 'fa-solid fa-house-chimney';
     } else if (data.myEntries[m].visitType === 'visited') {
-      $icon.className = 'fa-solid fa-location-dot';
+      $travelIcon.className = 'fa-solid fa-location-dot';
     } else if (data.myEntries[m].visitType === 'willVisit') {
-      $icon.className = 'fa-solid fa-plane';
+      $travelIcon.className = 'fa-solid fa-plane';
     }
+
     $cardDate.className = 'card-date mx-2';
     var currentDate = new Date(data.myEntries[m].visitDate);
     $cardDate.textContent = currentDate.toLocaleString('en-US', { month: 'short' }) + ' ' + currentDate.getFullYear();
+    $xSpan.className = 'x-span float-end';
+    $xIcon.className = 'fa-regular fa-circle-xmark fa-lg';
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
     $cardImg.className = 'card-img';
@@ -719,8 +725,10 @@ function renderMyCities() {
     $cityCardCountry.className = 'mx-3 text-nowrap text-center country-card';
     $cityCardCountry.textContent = data.myEntries[m].cityArea;
 
-    $cardWrapper.appendChild($icon);
+    $cardWrapper.appendChild($travelIcon);
     $cardWrapper.appendChild($cardDate);
+    $xSpan.appendChild($xIcon);
+    $cardWrapper.appendChild($xSpan);
     $cardWrapper.appendChild($userCityCard);
     $userCityCard.appendChild($anchor);
     $anchor.appendChild($cardImg);
