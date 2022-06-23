@@ -20,6 +20,7 @@ var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
+var $removeCityBtn = document.querySelector('#remove-city-btn');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -30,6 +31,7 @@ $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
+$removeCityBtn.addEventListener('click', deleteCity);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -151,9 +153,9 @@ function getCityData() {
   xhr2.open('GET', currentCityProfileUrl);
   xhr2.reponseType = 'json';
   xhr2.addEventListener('load', function () {
-    var result2Result = JSON.parse(xhr2.response);
-    data.currentCity.cityPop = result2Result.population.toLocaleString();
-    if (!result2Result._links['city:urban_area']) {
+    var xhr2Result = JSON.parse(xhr2.response);
+    data.currentCity.cityPop = xhr2Result.population.toLocaleString();
+    if (!xhr2Result._links['city:urban_area']) {
       data.currentCity.hasDetails = false;
       data.currentCity.citySummary = 'Sorry, there are no details about this city.';
       data.currentCity.cityImageUrl = '../images/city-alt.jpg';
@@ -165,7 +167,7 @@ function getCityData() {
     } else {
       data.currentCity.hasDetails = true;
       // GET IMAGE
-      var slugUrl = result2Result._links['city:urban_area'].href + 'images';
+      var slugUrl = xhr2Result._links['city:urban_area'].href + 'images';
       var xhr3 = new XMLHttpRequest();
       xhr3.open('GET', slugUrl);
       xhr3.responseType = 'json';
@@ -179,7 +181,7 @@ function getCityData() {
       });
       xhr3.send();
       // GET DESCRIPTION
-      var scoresUrl = result2Result._links['city:urban_area'].href + 'scores/';
+      var scoresUrl = xhr2Result._links['city:urban_area'].href + 'scores/';
       var xhr4 = new XMLHttpRequest();
       xhr4.open('GET', scoresUrl);
       xhr4.responseType = 'json';
@@ -196,7 +198,7 @@ function getCityData() {
       xhr4.send();
 
       // GET TABLE DETAILS
-      var detailsUrl = result2Result._links['city:urban_area'].href + 'details/';
+      var detailsUrl = xhr2Result._links['city:urban_area'].href + 'details/';
       var xhr5 = new XMLHttpRequest();
       xhr5.open('GET', detailsUrl);
       xhr5.responseType = 'json';
@@ -568,6 +570,7 @@ function renderTableData(array) {
 
 function resetDataCurrentCity() {
   data.currentCity = {
+    cityId: null,
     cityObj: null,
     hasDetails: null,
     cityProfileUrl: null,
@@ -636,6 +639,8 @@ function renderModalYears() {
 
 function saveCitytoUserList() {
   var parenthesis = data.currentCity.cityArea.indexOf('(');
+  data.currentCity.cityId = data.nextCityId;
+  data.nextCityId++;
   if (parenthesis !== -1) {
     data.currentCity.cityCountry = data.currentCity.cityArea.substring((data.currentCity.cityArea.indexOf(',') + 2), parenthesis - 1);
   } else {
@@ -675,9 +680,9 @@ function checkUserCities(cityName, type, date) {
 function renderMyCities() {
   $userCitiesList.textContent = '';
   for (var m = 0; m < data.myEntries.length; m++) {
-    // <div class="card-wrapper text-start">
-    //   <i class="fa-solid fa-house-chimney card-icon"></i>
-    //   <p class="card-date mx-2 position-relative">January 2022</p>
+    // <div class="card-wrapper text-start position-relative" data-city-id="idNumber">
+    //   <i class="fa-solid fa-icon-name card-icon"></i>
+    //   <p class="card-date mx-2">January 2022</p>
     //   <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i class="fa-solid fa-circle-x fa-lg"></i></button>
     //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
     //     <a href="#">
@@ -700,6 +705,7 @@ function renderMyCities() {
     var $cityCardCountry = document.createElement('p');
 
     $cardWrapper.className = 'card-wrapper text-start position-relative';
+    $cardWrapper.setAttribute('data-city-id', data.myEntries[m].cityId);
     if (data.myEntries[m].visitType === 'lives') {
       $travelIcon.className = 'fa-solid fa-house-chimney text-success';
     } else if (data.myEntries[m].visitType === 'lived') {
@@ -738,6 +744,10 @@ function renderMyCities() {
     $anchor.appendChild($cityNameTitle);
     $anchor.appendChild($cityCardCountry);
     $userCitiesList.appendChild($cardWrapper);
+
+    $xBtn.addEventListener('click', function (e) {
+      data.editCity = event.target.closest('.card-wrapper');
+    });
   }
 }
 
@@ -840,4 +850,16 @@ function sortCountryNameRev(array) {
     }
   });
   return array;
+}
+
+function deleteCity() {
+  var $allUserCards = document.querySelectorAll('.card-wrapper');
+  for (var c = 0; c < $allUserCards.length; c++) {
+    for (var p = 0; p < data.myEntries.length; p++) {
+      if ($allUserCards[c].getAttribute('data-city-id') === data.editCity.getAttribute('data-city-id') && data.myEntries[p].cityId === +data.editCity.getAttribute('data-city-id')) {
+        data.myEntries.splice(p, 1);
+        $allUserCards[c].remove();
+      }
+    }
+  }
 }
