@@ -126,7 +126,7 @@ figure {
 }
 
 /* ADD CITY MODAL */
-.modal-dialog {
+.add-modal {
   max-width: 400px;
 }
 
@@ -227,4 +227,16 @@ figure {
   border: none;
   background-color: white;
   padding: 0;
+}
+
+/* REMOVE CITY MODAL */
+.remove-modal {
+  width: 75%;
+  min-height: 230px;
+}
+
+.remove-city-display {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
 }
