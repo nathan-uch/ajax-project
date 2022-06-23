@@ -164,16 +164,21 @@ figure {
   color: #001d6e;
 }
 
-.x-span {
+.x-btn {
   position: absolute;
   right: 17px;
   top: 30px;
   z-index: -1;
-  transition: top ease 0.5s;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
+  border: none;
+  transition: all 0.5s ease;
 }
 
-.card-wrapper:hover .x-span {
+.card-wrapper:hover .x-btn {
+  z-index: 0;
   top: 2px;
+  color: rgb(0, 29, 110);
 }
 
 .user-card {
@@ -216,4 +221,10 @@ figure {
 .user-card:hover p {
   background-color: #001d6e;
   color: white;
+}
+
+#test {
+  border: none;
+  background-color: white;
+  padding: 0;
 }

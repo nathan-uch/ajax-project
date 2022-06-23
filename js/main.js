@@ -678,7 +678,7 @@ function renderMyCities() {
     // <div class="card-wrapper text-start">
     //   <i class="fa-solid fa-house-chimney card-icon"></i>
     //   <p class="card-date mx-2 position-relative">January 2022</p>
-    //   <span class="x-span"><i class="fa-solid fa-circle-x fa-lg"></i></span>
+    //   <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i class="fa-solid fa-circle-x fa-lg"></i></button>
     //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
     //     <a href="#">
     //       <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
@@ -691,7 +691,7 @@ function renderMyCities() {
     var $cardWrapper = document.createElement('div');
     var $travelIcon = document.createElement('i');
     var $cardDate = document.createElement('p');
-    var $xSpan = document.createElement('span');
+    var $xBtn = document.createElement('button');
     var $xIcon = document.createElement('i');
     var $userCityCard = document.createElement('div');
     var $anchor = document.createElement('a');
@@ -713,7 +713,10 @@ function renderMyCities() {
     $cardDate.className = 'card-date mx-2';
     var currentDate = new Date(data.myEntries[m].visitDate);
     $cardDate.textContent = currentDate.toLocaleString('en-US', { month: 'short' }) + ' ' + currentDate.getFullYear();
-    $xSpan.className = 'x-span float-end';
+    $xBtn.className = 'x-btn float-end';
+    $xBtn.setAttribute('type', 'button');
+    $xBtn.setAttribute('data-bs-target', '#remove-city-modal');
+    $xBtn.setAttribute('data-bs-toggle', 'modal');
     $xIcon.className = 'fa-regular fa-circle-xmark fa-lg';
     $userCityCard.className = 'col-12 col-sm-4 col-md-3 my-1 d-flex user-card';
     $anchor.setAttribute('href', '#');
@@ -727,8 +730,8 @@ function renderMyCities() {
 
     $cardWrapper.appendChild($travelIcon);
     $cardWrapper.appendChild($cardDate);
-    $xSpan.appendChild($xIcon);
-    $cardWrapper.appendChild($xSpan);
+    $xBtn.appendChild($xIcon);
+    $cardWrapper.appendChild($xBtn);
     $cardWrapper.appendChild($userCityCard);
     $userCityCard.appendChild($anchor);
     $anchor.appendChild($cardImg);
