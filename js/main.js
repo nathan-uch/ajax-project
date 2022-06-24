@@ -72,9 +72,15 @@ function renderSearchResults() {
     var fullLength = data.searchResults._embedded['city:search-results'][i].matching_full_name.length;
     var commaIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf(',');
     var countryIndex = commaIndex + 2;
-    var fullName = data.searchResults._embedded['city:search-results'][i].matching_full_name.split('');
-    var country = fullName.splice(countryIndex, fullLength - 1).join('');
-    var city = fullName.slice(0, commaIndex).join('');
+    var parenIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf('(');
+    var fullName = data.searchResults._embedded['city:search-results'][i].matching_full_name;
+    var country = null;
+    if (+parenIndex === -1) {
+      country = fullName.substring(countryIndex, fullLength);
+    } else {
+      country = fullName.substring(countryIndex, parenIndex);
+    }
+    var city = fullName.substring(0, commaIndex);
 
     $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center';
     $column.setAttribute('data-card-id', i);
