@@ -126,7 +126,7 @@ figure {
 }
 
 /* ADD CITY MODAL */
-.modal-dialog {
+.add-modal {
   max-width: 400px;
 }
 
@@ -150,7 +150,6 @@ figure {
 }
 
 /* USER CITIES */
-
 .sort-label {
   font-size: 1.2rem;
 }
@@ -165,6 +164,24 @@ figure {
   color: #001d6e;
 }
 
+.x-btn {
+  position: absolute;
+  right: 17px;
+  top: 30px;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0);
+  border: none;
+  z-index: -1;
+  transition: all 0.5s ease;
+  animation-fill-mode: forwards;
+}
+
+.card-wrapper:hover .x-btn {
+  top: 3px;
+  color: rgb(0, 29, 110);
+  z-index: 0;
+}
+
 .user-card {
   width: 100%;
   height: 140px;
@@ -174,6 +191,7 @@ figure {
   box-shadow: 0 4px 3px 0 rgb(0, 0, 0, 0.25);
   text-align: center;
   padding: 0;
+  z-index: 1;
 }
 
 .card-icon,
@@ -205,4 +223,30 @@ figure {
 .user-card:hover p {
   background-color: #001d6e;
   color: white;
+}
+
+#test {
+  border: none;
+  background-color: white;
+  padding: 0;
+}
+
+/* REMOVE CITY MODAL */
+.remove-modal {
+  width: 75%;
+  min-height: 230px;
+}
+
+.remove-city-display {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+}
+
+@media screen and (max-width: 576px) {
+  .x-btn {
+    top: 3px;
+    color: rgb(0, 29, 110);
+    z-index: 0;
+  }
 }

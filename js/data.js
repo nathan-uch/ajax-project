@@ -3,7 +3,9 @@
 var data = {
   currentView: null,
   searchResults: null,
+  nextCityId: 0,
   currentCity: {
+    cityId: null,
     cityObj: null,
     hasDetails: null,
     cityProfileUrl: null,
@@ -33,5 +35,6 @@ var data = {
     }
   },
   hasLivingCity: null,
+  editCity: null,
   myEntries: []
 };
