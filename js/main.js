@@ -55,10 +55,11 @@ function getSearchResults(event) {
 function renderSearchResults() {
   $searchResultsRow.textContent = '';
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
-    // <div class="city-card m-2 col-sm-3 d-flex justify-content-center text-center">
-    //    <a href="#" class="searched-card">
+    // <div class="city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center">
+    //    <a href="#" class="searched-card position-relative">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
+    //        <i class="fa-solid fa-plane position-absolute"></i>
     //    </a>
     // </div>
 
@@ -66,6 +67,7 @@ function renderSearchResults() {
     var $cityCard = document.createElement('a');
     var $cityName = document.createElement('h5');
     var $countryName = document.createElement('p');
+    var $cardIcon = document.createElement('i');
 
     var fullLength = data.searchResults._embedded['city:search-results'][i].matching_full_name.length;
     var commaIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf(',');
@@ -77,14 +79,16 @@ function renderSearchResults() {
     $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
-    $cityCard.className = 'searched-card';
+    $cityCard.className = 'searched-card position-relative';
     $cityName.textContent = city;
     $cityName.className = 'mt-3';
     $countryName.textContent = country;
     $countryName.className = 'search-country';
+    $cardIcon.className = 'fa-solid fa-plane position-absolute';
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
+    $cityCard.appendChild($cardIcon);
     $column.appendChild($cityCard);
     $searchResultsRow.appendChild($column);
   }
