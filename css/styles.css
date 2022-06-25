@@ -262,6 +262,18 @@ figure {
   margin: 1.5rem 0;
 }
 
+/* USER CITY PROFILE */
+
+.collapse-head {
+  border: 2px solid #001d6e;
+  color: #001d6e;
+  font-weight: 600;
+  text-decoration: none;
+  min-width: 240px;
+  width: 80%;
+  margin: 2% 10%;
+}
+
 @media screen and (max-width: 576px) {
   .city-card {
     flex: 0 0 auto;
