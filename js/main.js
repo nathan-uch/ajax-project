@@ -457,24 +457,24 @@ function renderCityScores() {
 }
 
 function renderLeisureTable() {
-  //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover w-100 m-auto">
-  //       <thead>
-  //         <tr>
-  //           <th scope="col">Category</th>
-  //           <th scope="col">Amount</th>
-  //           <th scope="col">Score</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         <tr> * 6
-  //           <td>leisure location</td>
-  //           <td>num</td>
-  //           <td>score</td>
-  //         </tr>
-  //       </tbody>
-  //     </table>
-  //   </div>
+  // <div class="col align-items-center text-center table-container">
+  //   <table class="table table-hover w-100 m-auto">
+  //     <thead>
+  //       <tr>
+  //         <th scope="col">Category</th>
+  //         <th scope="col">Amount</th>
+  //         <th scope="col">Score</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       <tr> * 6
+  //         <td>leisure location</td>
+  //         <td>num</td>
+  //         <td>score</td>
+  //       </tr>
+  //     </tbody>
+  //   </table>
+  // </div>
 
   var $leiSectionCol = document.createElement('div');
   var $leiTable = document.createElement('table');
@@ -504,22 +504,22 @@ function renderLeisureTable() {
 }
 
 function renderCostTable() {
-  //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover w-100 m-auto">
-  //       <thead>
-  //         <tr>
-  //           <th scope="col">Category</th>
-  //           <th scope="col">Average Cost</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         <tr> * 5
-  //           <td>category</td>
-  //           <td>cost</td>
-  //         </tr>
-  //       </tbody>
-  //     </table>
-  //   </div>
+  // <div class="col align-items-center text-center table-container">
+  //   <table class="table table-hover w-100 m-auto">
+  //     <thead>
+  //       <tr>
+  //         <th scope="col">Category</th>
+  //         <th scope="col">Average Cost</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       <tr> * 5
+  //         <td>category</td>
+  //         <td>cost</td>
+  //       </tr>
+  //     </tbody>
+  //   </table>
+  // </div>
 
   var $costSectionCol = document.createElement('div');
   var $costTable = document.createElement('table');
