@@ -38,15 +38,15 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center" data-view="search">
+    <div class="container-fluid text-center hidden" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
-        <input type="search" class="form-control searchbox" placeholder="Search City">
+        <input type="search" class="form-control searchbox" placeholder="Search City or Country">
         <button type="submit" class="col-3 btn submit-btn" aria-pressed="true">Search</button>
       </form>
       <!-- SEARCH RESULTS -->
       <div class="container-fluid">
-        <div class="row justify-content-center align-items-center search-results-row m-2">
+        <div class="row center-all search-results-row m-2 gap-3">
         </div>
       </div>
     </div>
@@ -74,21 +74,33 @@
         <option value="rev-country">Country (Z-A)</option>
       </select>
       <div class="row justify-content-center gap-4 mb-5 text-center user-cities-display">
-
-        <div class="card-wrapper text-start position-relative" data-city-id="idNumber">
-          <i class="fa-solid fa-icon-name card-icon"></i>
-          <p class="card-date mx-2">January 2022</p>
-          <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i
-          class="fa-regular fa-circle-xmark fa-lg"></i></button>
-          <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
-            <a href="#">
-              <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
-              <h5 class="mt-3 cName">city name</h5>
-              <p class="mx-3 text-nowrap text-center country-card">country</p>
-            </a>
+      </div>
+    </div>
+    <!-- USER CITY PROFILE -->
+    <div class="container-fluid profile-container" data-view="user-city-profile">
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col d-flex flex-wrap center-all my-4">
+              <figure>
+                <img src="https://d13k13wj6adfdf.cloudfront.net/urban_areas/los-angeles_web-2eedb2a83e.jpg" class="img-fluid"
+                  alt="city">
+                <figcaption><a class="caption"
+                    href="http://en.wikipedia.org/wiki/Kenneth_Hahn_State_Recreation_Area#mediaviewer/File:Los_Angeles_Skyline_telephoto.jpg">Photo
+                    by: BDS2006</a></figcaption>
+              </figure>
+              <h2>Los Angeles</h2>
+              <p class="w-100">California, USA<p>
+            </div>
+            <div class="row about-city"></div>
+            <div class="scores-container"></div>
+            <div class="row profile-leisure my-3"></div>
+            <div class="row profile-costs my-3"></div>
+            <div class="row profile-footer"></div>
           </div>
         </div>
 
+        <!-- <div class="col"></div> -->
       </div>
     </div>
     <!-- ADD CITY MODAL -->

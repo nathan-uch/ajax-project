@@ -59,7 +59,7 @@ function renderSearchResults() {
     //    <a href="#" class="searched-card position-relative">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
-    //        <i class="fa-solid fa-plane position-absolute"></i>
+    //        <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //    </a>
     // </div>
 
@@ -74,23 +74,24 @@ function renderSearchResults() {
     var countryIndex = commaIndex + 2;
     var parenIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf('(');
     var fullName = data.searchResults._embedded['city:search-results'][i].matching_full_name;
-    var country = null;
+    var areaCountry = null;
     if (+parenIndex === -1) {
-      country = fullName.substring(countryIndex, fullLength);
+      areaCountry = fullName.substring(countryIndex, fullLength);
     } else {
-      country = fullName.substring(countryIndex, parenIndex);
+      areaCountry = fullName.substring(countryIndex, parenIndex);
     }
+    var secondComma = areaCountry.indexOf(',') + 2;
+    var country = areaCountry.substring(secondComma, areaCountry.length);
     var city = fullName.substring(0, commaIndex);
 
-    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center';
+    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card position-relative';
     $cityName.textContent = city;
-    $cityName.className = 'mt-3';
     $countryName.textContent = country;
     $countryName.className = 'search-country';
-    $cardIcon.className = 'fa-solid fa-plane position-absolute';
+    $cardIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
@@ -760,6 +761,8 @@ function renderMyCities() {
       data.editCity = event.target.closest('.card-wrapper');
       $removeCityDisplay.textContent = data.editCity.children[3].children[0].children[1].textContent + ', ' + data.editCity.children[3].children[0].children[2].textContent;
     });
+
+    $cardWrapper.addEventListener('click', userCityClicked);
   }
 }
 
@@ -874,4 +877,8 @@ function deleteCity() {
       }
     }
   }
+}
+
+function userCityClicked(event) {
+  changeView('user-city-profile');
 }

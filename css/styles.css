@@ -74,15 +74,15 @@ h2 {
 }
 
 .city-card .fa-plane {
-  top: 35px;
-  right: 5px;
+  top: 25px;
+  right: 7px;
   color: rgba(0, 0, 0, 0);
-  transition: color 1s;
+  transition: color 1.5s;
 }
 
 /* CITY PROFILE */
 .profile-container {
-  padding: 0 12%;
+  padding: 0 10%;
 }
 
 .img-fluid {
@@ -243,17 +243,11 @@ figure {
 
 .city-card:hover h5,
 .city-card:hover p {
-  margin-right: 35px;
+  margin-right: 30px;
 }
 
 .city-card:hover .fa-plane {
   color: rgb(255, 255, 255);
-}
-
-#test {
-  border: none;
-  background-color: white;
-  padding: 0;
 }
 
 /* REMOVE CITY MODAL */
@@ -273,6 +267,10 @@ figure {
     flex: 0 0 auto;
     width: 65%;
     min-width: 280px;
+  }
+
+  .city-card .fa-plane {
+    right: 20px;
   }
 
   .x-btn {
