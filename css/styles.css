@@ -92,12 +92,13 @@ h2 {
 figure {
   position: relative;
   color: white;
+  padding: 0;
 }
 
 .caption {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: 0.8rem;
   background-color: rgba(85, 85, 85, 0.5);
   color: gray;
   text-decoration: none;

@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <!-- CITY PROFILE -->
+    <!-- SEARCHED CITY PROFILE -->
     <div class="container-fluid profile-container hidden" data-view="city-profile">
       <div class="row profile-img"></div>
       <div class="row profile-desc"></div>
@@ -78,149 +78,170 @@
     </div>
     <!-- USER CITY PROFILE -->
     <div class="container-fluid profile-container" data-view="user-city-profile">
-      <div class="row">
-        <div class="col">
-          <div class="row">
-            <div class="col d-flex flex-column center-all my-4">
-              <div class="user-city-description">
-                <figure>
-                  <img src="https://d13k13wj6adfdf.cloudfront.net/urban_areas/los-angeles_web-2eedb2a83e.jpg" class="img-fluid"
-                    alt="city">
-                  <figcaption><a class="caption"
-                      href="http://en.wikipedia.org/wiki/Kenneth_Hahn_State_Recreation_Area#mediaviewer/File:Los_Angeles_Skyline_telephoto.jpg">Photo
-                      by: BDS2006</a></figcaption>
-                </figure>
-                <h2>Los Angeles</h2>
-                <p class="w-100">California, USA
-                <p>
-                <p class="my-4">Visited in February 2019</p>
-                <p class="w-100">Rate Los Angeles</p>
-                <div class="rating-stars mb-4 mt-2">
-                  <i class="fa-regular fa-star fa-2xl"></i>
-                  <i class="fa-regular fa-star fa-2xl"></i>
-                  <i class="fa-regular fa-star fa-2xl"></i>
-                  <i class="fa-regular fa-star fa-2xl"></i>
-                  <i class="fa-regular fa-star fa-2xl"></i>
-                </div>
+      <div class="row text-center gap-2">
+        <figure class="col-12">
+          <img src="https://d13k13wj6adfdf.cloudfront.net/urban_areas/los-angeles_web-2eedb2a83e.jpg" class="img-fluid"
+            alt="city">
+          <figcaption><a class="caption"
+              href="http://en.wikipedia.org/wiki/Kenneth_Hahn_State_Recreation_Area#mediaviewer/File:Los_Angeles_Skyline_telephoto.jpg">Photo
+              by: BDS2006</a></figcaption>
+        </figure>
+        <h2 class="col-12">Los Angeles</h2>
+        <p class="col-12 w-100">California, USA<p>
+
+        <div class="col-sm-12 col-md-6 d-flex flex-column center-all">
+
+          <div class="row user-city-description-section">
+            <!-- START HERE: DESCRIPTION -->
+            <div class="col-12">
+              <p class="my-3">Visited in February 2019</p>
+              <p class="w-100">Rate Los Angeles</p>
+              <div class="rating-stars mb-4 mt-2">
+                <i class="fa-regular fa-star fa-2xl"></i>
+                <i class="fa-regular fa-star fa-2xl"></i>
+                <i class="fa-regular fa-star fa-2xl"></i>
+                <i class="fa-regular fa-star fa-2xl"></i>
+                <i class="fa-regular fa-star fa-2xl"></i>
               </div>
-              <a class="about-collapse-btn collapse-head py-2" href="#user-city-about" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-about">
-                About
-              </a>
-              <p class="collapse p-3" id="user-city-about">Los Angeles is a sprawling city of 500 square miles and the heart of a metropolitan area with 18 million residents. It
+            </div>
+          </div>
+
+          <div class="row w-100 center-all user-city-about-section">
+
+            <!-- ABOUT -->
+            <a class="about-collapse-btn collapse-head py-2 col-12" href="#user-city-about" data-bs-toggle="collapse" role="button"
+              aria-expanded="false" aria-controls="user-city-about">About</a>
+            <p class="collapse p-3 col-12" id="user-city-about">Los Angeles is a sprawling city of 500 square miles and the heart of a
+              metropolitan area with 18 million residents. It
               is a fabled California region, home to Hollywood and America's entertainment industry with year-round sunshine,
               world-famous beaches, and an intense car culture. The City of Angels is a magnet to people from around the world and a
               uniquely exciting environment.</p>
-              <a class="scores-collapse-btn collapse-head py-2" href="#user-city-scores" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                aria-controls="user-city-scores">
-                Travel Scores
-              </a>
-              <div class="collapse p-3" id="user-city-scores">
-                <div class="row profile-travel-scores my-3">
-                  <div class="col align-items-center text-center">
-                    <p>Travel Connectivity 6/10</p>
-                    <div class="progress">
-                      <div class="progress-bar bg-warning travel-score bg-warning" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="10"></div>
+          </div>
+          <div class="row w-100 center-all user-city-scores-section">
+
+            <!-- SCORES -->
+            <a class="scores-collapse-btn collapse-head py-2 col-12" href="#user-city-scores" data-bs-toggle="collapse" role="button"
+              aria-expanded="false" aria-controls="user-city-scores">Travel Scores</a>
+            <div class="collapse p-3  col-12" id="user-city-scores">
+              <div class="row profile-travel-scores my-3">
+                <div class="col align-items-center text-center">
+                  <p>Travel Connectivity 6/10</p>
+                  <div class="progress">
+                    <div class="progress-bar bg-warning travel-score bg-warning" role="progressbar" aria-valuenow="6"
+                      aria-valuemin="0" aria-valuemax="10"></div>
+                  </div>
+                  <p>Safety 9/10</p>
+                  <div class="progress">
+                    <div class="progress-bar bg-warning safety-score bg-success" role="progressbar" aria-valuenow="9"
+                      aria-valuemin="0" aria-valuemax="10">
                     </div>
-                    <p>Safety 9/10</p>
-                    <div class="progress">
-                      <div class="progress-bar bg-warning safety-score bg-success" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="10">
-                      </div>
+                  </div>
+                  <p>Leisure and Culture 6/10</p>
+                  <div class="progress">
+                    <div class="progress-bar bg-success leisure-score bg-warning" role="progressbar" aria-valuenow="6"
+                      aria-valuemin="0" aria-valuemax="10">
                     </div>
-                    <p>Leisure and Culture 6/10</p>
-                    <div class="progress">
-                      <div class="progress-bar bg-success leisure-score bg-warning" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="10">
-                      </div>
-                    </div>
-                    <p>Outdoors 4/10</p>
-                    <div class="progress">
-                      <div class="progress-bar bg-success outdoors-score bg-warning" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="10">
-                      </div>
+                  </div>
+                  <p>Outdoors 4/10</p>
+                  <div class="progress">
+                    <div class="progress-bar bg-success outdoors-score bg-warning" role="progressbar" aria-valuenow="4"
+                      aria-valuemin="0" aria-valuemax="10">
                     </div>
                   </div>
                 </div>
               </div>
-              <a class="leisure-collapse-btn collapse-head py-2" href="#user-city-leisure" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                aria-controls="user-city-leisure">
-                Leisure Activities
-              </a>
-              <div class="collapse px-3" id="user-city-leisure">
-                <div class="col align-items-center text-center">
-                  <table class="table table-hover w-100">
-                    <thead>
-                      <tr>
-                        <th scope="col">Category</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Art Galleries</td>
-                        <td>270</td>
-                        <td>0.94</td>
-                      </tr>
-                      <tr>
-                        <td>Cinemas</td>
-                        <td>215</td>
-                        <td>0.94</td>
-                      </tr>
-                      <tr>
-                        <td>Comedy Clubs</td>
-                        <td>215</td>
-                        <td>1.00</td>
-                      </tr>
-                      <tr>
-                        <td>Concert Venues</td>
-                        <td>282</td>
-                        <td>0.95</td>
-                      </tr>
-                      <tr>
-                        <td>Historical Sites</td>
-                        <td>-</td>
-                        <td>0.92</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <a class="costs-collapse-btn collapse-head py-2" href="#user-city-costs" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                aria-controls="user-city-costs">
-                Costs
-              </a>
-              <div class="collapse px-3" id="user-city-costs">
-                <div class="col align-items-center text-center">
-                  <table class="table table-hover w-100">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="col-6">Category</th>
-                        <th scope="col" class="col-4">Average Cost</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Public Transport (monthly)</td>
-                        <td>$88</td>
-                      </tr>
-                      <tr>
-                        <td>Average Restaurant Lunch</td>
-                        <td>$14</td>
-                      </tr>
-                      <tr>
-                        <td>Average Cost of Beer</td>
-                        <td>$2.60</td>
-                      </tr>
-                      <tr>
-                        <td>Average Cost of Movie Ticket</td>
-                        <td>$15</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+            </div>
+          </div>
+          <div class="row w-100 center-all user-city-leisure-section">
+
+            <!-- LEISURE -->
+            <a class="leisure-collapse-btn collapse-head py-2 col-12" href="#user-city-leisure" data-bs-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="user-city-leisure">
+              Leisure Activities
+            </a>
+            <div class="collapse px-3 col-12" id="user-city-leisure">
+              <div class="col align-items-center text-center">
+                <table class="table table-hover w-100">
+                  <thead>
+                    <tr>
+                      <th scope="col">Category</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Art Galleries</td>
+                      <td>270</td>
+                      <td>0.94</td>
+                    </tr>
+                    <tr>
+                      <td>Cinemas</td>
+                      <td>215</td>
+                      <td>0.94</td>
+                    </tr>
+                    <tr>
+                      <td>Comedy Clubs</td>
+                      <td>215</td>
+                      <td>1.00</td>
+                    </tr>
+                    <tr>
+                      <td>Concert Venues</td>
+                      <td>282</td>
+                      <td>0.95</td>
+                    </tr>
+                    <tr>
+                      <td>Historical Sites</td>
+                      <td>-</td>
+                      <td>0.92</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="user-city-footer text-center"><a href="#" class="back-top">Back to Top</a></div>
           </div>
+          <div class="row w-100 center-all user-city-costs-section">
+
+            <!-- COSTS -->
+            <a class="costs-collapse-btn collapse-head py-2 col-12" href="#user-city-costs" data-bs-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="user-city-costs">
+              Costs
+            </a>
+            <div class="collapse px-3 col-12" id="user-city-costs">
+              <div class="col align-items-center text-center">
+                <table class="table table-hover w-100">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="col-6">Category</th>
+                      <th scope="col" class="col-4">Average Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Public Transport (monthly)</td>
+                      <td>$88</td>
+                    </tr>
+                    <tr>
+                      <td>Average Restaurant Lunch</td>
+                      <td>$14</td>
+                    </tr>
+                    <tr>
+                      <td>Average Cost of Beer</td>
+                      <td>$2.60</td>
+                    </tr>
+                    <tr>
+                      <td>Average Cost of Movie Ticket</td>
+                      <td>$15</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
         </div>
+        <div class="user-city-footer text-center my-3"><a href="#" class="back-top">Back to Top</a></div>
       </div>
     </div>
     <!-- ADD CITY MODAL -->
