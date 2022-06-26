@@ -22,6 +22,7 @@ var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
 var $removeCityBtn = document.querySelector('#remove-city-btn');
 var $removeCityDisplay = document.querySelector('.remove-city-display');
+var $userCityHeader = document.querySelector('.user-city-head');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -880,5 +881,54 @@ function deleteCity() {
 }
 
 function userCityClicked(event) {
+  var card = event.target.closest('.card-wrapper');
+  var id = card.getAttribute('data-city-id');
+  var clickedCity = data.myEntries[id];
+  $userCityHeader.textContent = '';
+
+  renderUserCityDescription(clickedCity);
   changeView('user-city-profile');
 }
+
+function renderUserCityDescription(city) {
+
+  // <figure>
+  //   <img src="url" class="img-fluid"
+  //     alt="city">
+  //   <figcaption><a class="caption"
+  //       href="url">Photo by: name</a></figcaption>
+  // </figure>
+  // <h2 class="col-12">city</h2>
+  // <p class="col-12 w-100">area, country<p>
+
+  var $cityFigure = document.createElement('figure');
+  var $cityImg = document.createElement('img');
+  var $figCaption = document.createElement('figcaption');
+  var $captionAnchor = document.createElement('a');
+  var $city = document.createElement('h2');
+  var $country = document.createElement('p');
+
+  $cityImg.setAttribute('src', city.cityImageUrl);
+  $cityImg.className = 'img-fluid';
+  $cityImg.setAttribute('alt', 'city image');
+  $captionAnchor.className = 'caption';
+  $captionAnchor.setAttribute('href', city.cityImageAtt.authorUrl);
+  $captionAnchor.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
+  $city.className = 'col-12';
+  $city.textContent = city.cityName;
+  $country.className = 'col-12 w-100';
+  $country.textContent = city.cityArea;
+
+  $cityFigure.appendChild($cityImg);
+  $cityFigure.appendChild($figCaption);
+  $figCaption.appendChild($captionAnchor);
+  $cityFigure.appendChild($city);
+  $cityFigure.appendChild($country);
+  $userCityHeader.appendChild($cityFigure);
+  $userCityHeader.appendChild($city);
+  $userCityHeader.appendChild($country);
+}
+
+// function renderUserCityAboutSection() {
+
+// }
