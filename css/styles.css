@@ -284,6 +284,13 @@ figure {
   border-top: none;
 }
 
+.fa-chevron-left,
+.fa-chevron-down {
+  position: absolute;
+  top: 18px;
+  right: 10px;
+}
+
 @media screen and (max-width: 576px) {
   .city-card {
     flex: 0 0 auto;
