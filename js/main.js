@@ -23,6 +23,8 @@ var $sortOption = document.querySelector('#sort-cities');
 var $removeCityBtn = document.querySelector('#remove-city-btn');
 var $removeCityDisplay = document.querySelector('.remove-city-display');
 var $userCityHeader = document.querySelector('.user-city-head');
+var $userCityDescription = document.querySelector('.user-city-description-section');
+var $userCityAbout = document.querySelector('.user-city-about-section');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -125,9 +127,7 @@ function changeView(view) {
         $cityCostsContainer.textContent = '';
         $cityFooterContainer.textContent = '';
         $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'user-cities') {
-        $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'search') {
+      } else if (data.currentView === 'user-cities' || data.currentView === 'search' || data.currentView === 'user-city-profile') {
         $dataView[v].classList.remove('hidden');
       }
     } else {
@@ -886,12 +886,13 @@ function userCityClicked(event) {
   var clickedCity = data.myEntries[id];
   $userCityHeader.textContent = '';
 
-  renderUserCityDescription(clickedCity);
+  renderUserCityTitle(clickedCity);
+  renderUserCityDetails(clickedCity);
+  renderUserCityAboutSection(clickedCity);
   changeView('user-city-profile');
 }
 
-function renderUserCityDescription(city) {
-
+function renderUserCityTitle(city) {
   // <figure>
   //   <img src="url" class="img-fluid"
   //     alt="city">
@@ -929,6 +930,70 @@ function renderUserCityDescription(city) {
   $userCityHeader.appendChild($country);
 }
 
-// function renderUserCityAboutSection() {
+function renderUserCityDetails(city) {
+  // <div class="col-12 mb-4">
+  //   <p class="my-2">Visited in February 2019</p>
+  //   <p class="w-100 mb-3">Rate Los Angeles</p>
+  //   <div class="rating-stars mb-4 mt-2">
+  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //   </div>
+  // </div>
 
-// }
+  var $descCol = document.createElement('div');
+  var $visitDate = document.createElement('p');
+  var $descRateTitle = document.createElement('p');
+  var $ratingContainer = document.createElement('div');
+
+  for (var s = 0; s < 5; s++) {
+    var $star = document.createElement('i');
+    $star.className = 'fa-regular fa-star fa-2xl';
+    $ratingContainer.appendChild($star);
+  }
+
+  $descCol.className = 'col-12 mb-4';
+  $visitDate.className = 'my-2';
+  var cityDate = new Date(city.visitDate);
+  $visitDate.textContent = 'Visited in ' + cityDate.toLocaleString('default', { month: 'long' }) + ' ' + cityDate.getFullYear();
+  $descRateTitle.className = 'w-100 mb-3';
+  $descRateTitle.textContent = 'Rate ' + city.cityName;
+
+  $descCol.appendChild($visitDate);
+  $descCol.appendChild($descRateTitle);
+  $descCol.appendChild($ratingContainer);
+  $userCityDescription.appendChild($descCol);
+}
+
+function renderUserCityAboutSection(city) {
+  // <a class="about-collapse-btn collapse-head py-2 col-12 position-relative" href="#user-city-about" data-bs-toggle="collapse" role="button"
+  //    aria-expanded="false" aria-controls="user-city-about">About
+  //    <i class="fa-solid fa-lg fa-chevron-left"></i></a>
+  // <p class="collapse p-3 col-12" id="user-city-about">Los Angeles is a sprawling city of 500 square miles and the heart of a
+  //    metropolitan area with 18 million residents. It
+  //    is a fabled California region, home to Hollywood and America's entertainment industry with year-round sunshine,
+  //    world-famous beaches, and an intense car culture. The City of Angels is a magnet to people from around the world and a
+  //    uniquely exciting environment.</p>
+
+  var $aboutTitle = document.createElement('a');
+  var $chevronIcon = document.createElement('i');
+  var $aboutCity = document.createElement('p');
+
+  $aboutTitle.className = 'about-collapse-btn collapse-head py-2 col-12 position-relative';
+  $aboutTitle.setAttribute('href', '#user-city-about');
+  $aboutTitle.setAttribute('data-bs-toggle', 'collapse');
+  $aboutTitle.setAttribute('role', 'button');
+  $aboutTitle.setAttribute('aria-expanded', 'false');
+  $aboutTitle.setAttribute('aria-controls', 'user-city-about');
+  $aboutTitle.textContent = 'About';
+  $chevronIcon.className = 'fa-solid fa-lg fa-chevron-left';
+  $aboutCity.className = 'collapse p-3 col-12';
+  $aboutCity.setAttribute('id', 'user-city-about');
+  $aboutCity.textContent = city.citySummary;
+
+  $aboutTitle.appendChild($chevronIcon);
+  $userCityAbout.appendChild($aboutTitle);
+  $userCityAbout.appendChild($aboutCity);
+}
