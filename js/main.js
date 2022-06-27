@@ -778,6 +778,12 @@ function sortMyCities(event) {
     entriesArray = sortCountryNameRev(entriesArray);
   }
   data.myEntries = entriesArray;
+  $userCityHeader.textContent = '';
+  $userCityDescription.textContent = '';
+  $userCityAbout.textContent = '';
+  $userCityScores.textContent = '';
+  $userCityLeisureTable.textContent = '';
+  $userCityCostTable.textContent = '';
   renderMyCities();
 }
 
@@ -873,8 +879,13 @@ function deleteCity() {
 
 function userCityClicked(event) {
   var card = event.target.closest('.card-wrapper');
-  var id = card.getAttribute('data-city-id');
-  var clickedCity = data.myEntries[id];
+  var id = +card.getAttribute('data-city-id');
+  var clickedCity = null;
+  for (var e = 0; e < data.myEntries.length; e++) {
+    if (id === data.myEntries[e].cityId) {
+      clickedCity = data.myEntries[e];
+    }
+  }
   changeView('user-city-profile');
   renderImageAndTitle(clickedCity);
   renderUserCityDateAndReview(clickedCity);
@@ -926,7 +937,7 @@ function renderUserCityDateAndReview(city) {
   });
 
   $descCol.className = 'col-12 mb-3';
-  $visitDate.className = 'my-2';
+  $visitDate.className = 'my-2 visit-date';
   var cityDate = new Date(city.visitDate);
   $visitDate.textContent = 'Visited in ' + cityDate.toLocaleString('default', { month: 'long' }) + ' ' + cityDate.getFullYear();
   $descRateTitle.className = 'w-100 mb-2';
@@ -957,3 +968,5 @@ function updateChevron(event) {
     $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-left';
   }
 }
+
+renderMyCities();
