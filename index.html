@@ -52,7 +52,10 @@
     </div>
     <!-- SEARCHED CITY PROFILE -->
     <div class="container-fluid profile-container hidden" data-view="city-profile">
-      <div class="row profile-img"></div>
+      <div class="row">
+        <div class="col d-flex flex-wrap align-items-center my-4 profile-img"></div>
+      </div>
+
       <div class="row profile-desc"></div>
       <div class="scores-container"></div>
       <div class="row profile-leisure my-3"></div>
@@ -80,45 +83,11 @@
     <div class="container-fluid profile-container" data-view="user-city-profile">
       <div class="row text-center gap-2">
         <div class="user-city-head col-12"></div>
+
         <div class="col-sm-12 col-md-6 d-flex flex-column center-all">
           <div class="row user-city-description-section"></div>
           <div class="row w-100 center-all user-city-about-section"></div>
-
-          <div class="row w-100 center-all user-city-scores-section">
-
-            <!-- SCORES -->
-            <a class="scores-collapse-btn collapse-head py-2 col-12  position-relative" href="#user-city-scores" data-bs-toggle="collapse" role="button"
-              aria-expanded="false" aria-controls="user-city-scores">Travel Scores<i class="fa-solid fa-lg fa-chevron-left"></i></a>
-            <div class="collapse p-3  col-12" id="user-city-scores">
-              <div class="row profile-travel-scores my-3">
-                <div class="col align-items-center text-center">
-                  <p>Travel Connectivity 6/10</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning travel-score bg-warning" role="progressbar" aria-valuenow="6"
-                      aria-valuemin="0" aria-valuemax="10"></div>
-                  </div>
-                  <p>Safety 9/10</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-warning safety-score bg-success" role="progressbar" aria-valuenow="9"
-                      aria-valuemin="0" aria-valuemax="10">
-                    </div>
-                  </div>
-                  <p>Leisure and Culture 6/10</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-success leisure-score bg-warning" role="progressbar" aria-valuenow="6"
-                      aria-valuemin="0" aria-valuemax="10">
-                    </div>
-                  </div>
-                  <p>Outdoors 4/10</p>
-                  <div class="progress">
-                    <div class="progress-bar bg-success outdoors-score bg-warning" role="progressbar" aria-valuenow="4"
-                      aria-valuemin="0" aria-valuemax="10">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="row w-100 center-all user-city-scores-section"></div>
           <div class="row w-100 center-all user-city-leisure-section">
 
             <!-- LEISURE -->
@@ -203,7 +172,6 @@
               </div>
             </div>
           </div>
-
 
         </div>
         <div class="user-city-footer text-center my-3"><a href="#" class="back-top">Back to Top</a></div>

@@ -284,54 +284,59 @@ function getCityData() {
   renderModalYears();
 }
 
-function renderImage() {
-  // <div class="col d-flex flex-wrap align-items-center my-4">
+function renderImage(city) {
   //   <figure>
   //     <img src="" class="img-fluid" alt="city">
   //     <figcaption><a class="caption" href="">Author</a></figcaption>
   //   </figure>
-  // </div>
+  //   <h2>city name</h2>
+  //   <p>country<p>
 
-  var $imgCol = document.createElement('div');
   var $figure = document.createElement('figure');
   var $img = document.createElement('img');
   var $figCap = document.createElement('figcapture');
   var $authorLink = document.createElement('a');
+  var $cityName = document.createElement('h2');
+  var $cityArea = document.createElement('p');
 
-  $imgCol.className = 'col d-flex flex-wrap align-items-center my-4';
+  $img.setAttribute('src', city.cityImageUrl);
   $img.className = 'img-fluid';
-  $img.setAttribute('src', data.currentCity.cityImageUrl);
   $authorLink.className = 'caption';
-  $authorLink.setAttribute('href', data.currentCity.cityImageAtt.authorUrl);
-  $authorLink.textContent = 'Photo by: ' + data.currentCity.cityImageAtt.authorName;
+  $authorLink.setAttribute('href', city.cityImageAtt.authorUrl);
+  $authorLink.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
+  $cityName.textContent = city.cityName;
+  $cityName.className = 'col-12';
+  $cityArea.textContent = city.cityArea;
+  $cityArea.className = 'col-12 w-100';
 
-  $imgCol.appendChild($figure);
   $figure.appendChild($img);
   $figure.appendChild($figCap);
   $figCap.appendChild($authorLink);
-  $cityProfileImg.appendChild($imgCol);
+  if (data.currentView === 'city-profile') {
+    $cityProfileImg.appendChild($figure);
+    $cityProfileImg.appendChild($cityName);
+    $cityProfileImg.appendChild($cityArea);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityHeader.appendChild($figure);
+    $userCityHeader.appendChild($cityName);
+    $userCityHeader.appendChild($cityArea);
+  }
 }
 
-function renderCityDescription() {
+function renderCityDescription(city) {
   // <div class="col align-items-center text-center">
-  //   <h2>city name</h2>
-  //   <p>country<p>
   //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
   //   <p>total pop</p></br>
   //   <p>description<p>
   // </div>
 
   var $descCol = document.createElement('div');
-  var $cityName = document.createElement('h2');
-  var $cityArea = document.createElement('p');
   var $addCityBtn = document.createElement('button');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
   var $br2 = document.createElement('br');
 
   $descCol.className = 'col align-items-center text-center';
-  $cityName.textContent = data.currentCity.cityName;
-  $cityArea.textContent = data.currentCity.cityArea;
   $addCityBtn.setAttribute('type', 'button');
   $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
   $addCityBtn.setAttribute('data-bs-toggle', 'modal');
@@ -339,11 +344,9 @@ function renderCityDescription() {
   $addCityBtn.className = 'btn add-city-btn col-12';
   $addCityBtn.textContent = 'ADD CITY TO LIST';
   $cityDesc.textContent = '';
-  $cityDesc.textContent = data.currentCity.citySummary;
-  $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
+  $cityDesc.textContent = city.citySummary;
+  $pop.textContent = 'Estimated Population: ' + city.cityPop;
 
-  $descCol.appendChild($cityName);
-  $descCol.appendChild($cityArea);
   $descCol.appendChild($addCityBtn);
   $descCol.appendChild($pop);
   $descCol.appendChild($br2);
@@ -886,48 +889,10 @@ function userCityClicked(event) {
   var clickedCity = data.myEntries[id];
   $userCityHeader.textContent = '';
 
-  renderUserCityTitle(clickedCity);
   renderUserCityDetails(clickedCity);
   renderUserCityAboutSection(clickedCity);
+  renderUserCityScores(clickedCity);
   changeView('user-city-profile');
-}
-
-function renderUserCityTitle(city) {
-  // <figure>
-  //   <img src="url" class="img-fluid"
-  //     alt="city">
-  //   <figcaption><a class="caption"
-  //       href="url">Photo by: name</a></figcaption>
-  // </figure>
-  // <h2 class="col-12">city</h2>
-  // <p class="col-12 w-100">area, country<p>
-
-  var $cityFigure = document.createElement('figure');
-  var $cityImg = document.createElement('img');
-  var $figCaption = document.createElement('figcaption');
-  var $captionAnchor = document.createElement('a');
-  var $city = document.createElement('h2');
-  var $country = document.createElement('p');
-
-  $cityImg.setAttribute('src', city.cityImageUrl);
-  $cityImg.className = 'img-fluid';
-  $cityImg.setAttribute('alt', 'city image');
-  $captionAnchor.className = 'caption';
-  $captionAnchor.setAttribute('href', city.cityImageAtt.authorUrl);
-  $captionAnchor.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
-  $city.className = 'col-12';
-  $city.textContent = city.cityName;
-  $country.className = 'col-12 w-100';
-  $country.textContent = city.cityArea;
-
-  $cityFigure.appendChild($cityImg);
-  $cityFigure.appendChild($figCaption);
-  $figCaption.appendChild($captionAnchor);
-  $cityFigure.appendChild($city);
-  $cityFigure.appendChild($country);
-  $userCityHeader.appendChild($cityFigure);
-  $userCityHeader.appendChild($city);
-  $userCityHeader.appendChild($country);
 }
 
 function renderUserCityDetails(city) {
@@ -996,4 +961,104 @@ function renderUserCityAboutSection(city) {
   $aboutTitle.appendChild($chevronIcon);
   $userCityAbout.appendChild($aboutTitle);
   $userCityAbout.appendChild($aboutCity);
+}
+
+function renderUserCityScores(city) {
+  // <a class="scores-collapse-btn collapse-head py-2 col-12 position-relative" href="#user-city-scores" data-bs-toggle="collapse" role="button"
+  //   aria-expanded="false" aria-controls="user-city-scores">Travel Scores<i class="fa-solid fa-lg fa-chevron-left"></i></a>
+  // <div class="collapse p-3 col-12" id="user-city-scores">
+  //   <div class="row profile-travel-scores my-3">
+  //     <div class="col align-items-center text-center">
+  //       <p>Travel Connectivity 6/10</p>
+  //       <div class="progress">
+  //         <div class="progress-bar bg-warning travel-score bg-warning" role="progressbar" aria-valuenow="6"
+  //           aria-valuemin="0" aria-valuemax="10"></div>
+  //       </div>
+  //       <p>Safety 9/10</p>
+  //       <div class="progress">
+  //         <div class="progress-bar bg-warning safety-score bg-success" role="progressbar" aria-valuenow="9"
+  //           aria-valuemin="0" aria-valuemax="10">
+  //         </div>
+  //       </div>
+  //       <p>Leisure and Culture 6/10</p>
+  //       <div class="progress">
+  //         <div class="progress-bar bg-success leisure-score bg-warning" role="progressbar" aria-valuenow="6"
+  //           aria-valuemin="0" aria-valuemax="10">
+  //         </div>
+  //       </div>
+  //       <p>Outdoors 4/10</p>
+  //       <div class="progress">
+  //         <div class="progress-bar bg-success outdoors-score bg-warning" role="progressbar" aria-valuenow="4"
+  //           aria-valuemin="0" aria-valuemax="10">
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>
+
+  var $collapseScoreTitle = document.createElement('a');
+  var $chevronIcon = document.createElement('i');
+  var $scoreContainer = document.createElement('div');
+  var $scoreRow = document.createElement('div');
+  var $scoreCol = document.createElement('div');
+  var $travelHead = document.createElement('p');
+  var $travelProg = document.createElement('div');
+  var $travelScore = document.createElement('div');
+
+  var $safetyHead = document.createElement('p');
+  var $safetyProg = document.createElement('div');
+  var $safetyScore = document.createElement('div');
+
+  var $leisureHead = document.createElement('p');
+  var $leisureProg = document.createElement('div');
+  var $leisureScore = document.createElement('div');
+
+  var $outdoorHead = document.createElement('p');
+  var $outdoorProg = document.createElement('div');
+  var $outdoorsScore = document.createElement('div');
+
+  $collapseScoreTitle.className = 'scores-collapse-btn collapse-head py-2 col-12 position-relative';
+  $collapseScoreTitle.setAttribute('href', '#user-city-scores');
+  $collapseScoreTitle.setAttribute('data-bs-toggle', 'collapse');
+  $collapseScoreTitle.setAttribute('role', 'button');
+  $collapseScoreTitle.setAttribute('aria-expanded', 'false');
+  $collapseScoreTitle.setAttribute('aria-controls', 'user-city-scores');
+  $collapseScoreTitle.textContent = 'Travel Scores';
+  $chevronIcon.className = 'fa-solid fa-lg fa-chevron-left';
+  $scoreContainer.className = 'collapse p-3 col-12';
+  $scoreContainer.setAttribute('id', 'user-city-scores');
+  $scoreRow.className = 'row profile-travel-scores my-3';
+  $scoreCol.className = 'col align-items-center text-center';
+
+  $travelHead.textContent = 'Travel Connectivity' + city.scores.travel + '/10';
+  $travelProg.className = 'progress';
+  $travelScore.className = 'progress-bar bg-warning travel-score';
+  $travelScore.setAttribute('role', 'progressbar');
+  $travelScore.setAttribute('aria-valuenow', city.scores.travel);
+  $travelScore.setAttribute('aria-valuemin', 0);
+  $travelScore.setAttribute('aria-valuemax', 10);
+
+  $safetyHead.textContent = 'Safety' + city.scores.safety + '/10';
+  $safetyProg.className = 'progress';
+  $safetyScore.className = 'progress-bar bg-warning safety-score';
+  $safetyScore.setAttribute('role', 'progressbar');
+  $safetyScore.setAttribute('aria-valuenow', city.scores.safety);
+  $safetyScore.setAttribute('aria-valuemin', 0);
+  $safetyScore.setAttribute('aria-valuemax', 10);
+
+  $leisureHead.textContent = 'Leisure and Culture' + city.scores.leisure + '/10';
+  $leisureProg.className = 'progress';
+  $leisureScore.className = 'progress-bar bg-warning leisure-score';
+  $leisureScore.setAttribute('role', 'progressbar');
+  $leisureScore.setAttribute('aria-valuenow', city.scores.leisure);
+  $leisureScore.setAttribute('aria-valuemin', 0);
+  $leisureScore.setAttribute('aria-valuemax', 10);
+
+  $outdoorHead.textContent = 'Outdoors' + city.scores.outdoors + '/10';
+  $outdoorProg.className = 'progress';
+  $outdoorsScore.className = 'progress-bar bg-warning outdoors-score';
+  $outdoorsScore.setAttribute('role', 'progressbar');
+  $outdoorsScore.setAttribute('aria-valuenow', city.scores.outdoors);
+  $outdoorsScore.setAttribute('aria-valuemin', 0);
+  $outdoorsScore.setAttribute('aria-valuemax', 10);
 }
