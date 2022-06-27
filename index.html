@@ -55,8 +55,11 @@
       <div class="row">
         <div class="col d-flex flex-wrap align-items-center my-4 profile-img"></div>
       </div>
+      <div class="row">
+        <div class="col align-items-center text-center profile-desc"></div>
+      </div>
 
-      <div class="row profile-desc"></div>
+
       <div class="scores-container"></div>
       <div class="row profile-leisure my-3"></div>
       <div class="row profile-costs my-3"></div>
@@ -83,10 +86,14 @@
     <div class="container-fluid profile-container" data-view="user-city-profile">
       <div class="row text-center gap-2">
         <div class="user-city-head col-12"></div>
-
         <div class="col-sm-12 col-md-6 d-flex flex-column center-all">
           <div class="row user-city-description-section"></div>
-          <div class="row w-100 center-all user-city-about-section"></div>
+          <div class="row w-100 center-all user-city-about-section">
+            <a class="about-collapse-btn collapse-head py-2 col-12 position-relative" href="#user-city-about"
+              data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-about">About
+              <i class="fa-solid fa-lg fa-chevron-left"></i></a>
+          </div>
+
           <div class="row w-100 center-all user-city-scores-section"></div>
           <div class="row w-100 center-all user-city-leisure-section">
 
