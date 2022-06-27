@@ -343,6 +343,7 @@ function renderCityDescription(city) {
   var $pop = document.createElement('p');
 
   $cityDesc.textContent = city.citySummary;
+  $cityDesc.className = 'p-3';
   $pop.textContent = 'Estimated Population: ' + city.cityPop;
 
   if (data.currentView === 'city-profile') {
