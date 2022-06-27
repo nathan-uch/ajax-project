@@ -128,7 +128,15 @@ function changeView(view) {
         $cityLocationsContainer.textContent = '';
         $cityCostsContainer.textContent = '';
         $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'user-cities' || data.currentView === 'search' || data.currentView === 'user-city-profile') {
+      } else if (data.currentView === 'user-city-profile') {
+        $userCityHeader.textContent = '';
+        $userCityDescription.textContent = '';
+        $userCityAbout.textContent = '';
+        $userCityScores.textContent = '';
+        $userCityLeisureTable.textContent = '';
+        $userCityCostTable.textContent = '';
+        $dataView[v].classList.remove('hidden');
+      } else if (data.currentView === 'user-cities' || data.currentView === 'search') {
         $dataView[v].classList.remove('hidden');
       }
     } else {
@@ -344,8 +352,6 @@ function renderCityDescription(city) {
     $cityProfileDesc.appendChild($pop);
 
   } else if (data.currentView === 'user-city-profile') {
-    $cityDesc.className = 'collapse p-3 col-12';
-    $cityDesc.setAttribute('id', 'user-city-about');
     $pop.className = 'w-100 mt-2';
     $cityDesc.appendChild($pop);
     $userCityAbout.appendChild($cityDesc);
@@ -863,7 +869,6 @@ function userCityClicked(event) {
   var card = event.target.closest('.card-wrapper');
   var id = card.getAttribute('data-city-id');
   var clickedCity = data.myEntries[id];
-  $userCityHeader.textContent = '';
   changeView('user-city-profile');
   renderImageAndTitle(clickedCity);
   renderUserCityDateAndReview(clickedCity);
@@ -876,13 +881,13 @@ function userCityClicked(event) {
 function renderUserCityDateAndReview(city) {
   // <div class="col-12 mb-4">
   //   <p class="my-2">Visited in February 2019</p>
-  //   <p class="w-100 mb-3">Rate Los Angeles</p>
-  //   <div class="rating-stars mb-4 mt-2">
-  //     <i class="fa-regular fa-star fa-2xl"></i>
-  //     <i class="fa-regular fa-star fa-2xl"></i>
-  //     <i class="fa-regular fa-star fa-2xl"></i>
-  //     <i class="fa-regular fa-star fa-2xl"></i>
-  //     <i class="fa-regular fa-star fa-2xl"></i>
+  //   <p class="w-100 mb-2">Rate Los Angeles</p>
+  //   <div class="rating-stars mb-3">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="0">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="1">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="2">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="3">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="4">
   //   </div>
   // </div>
 
@@ -892,20 +897,41 @@ function renderUserCityDateAndReview(city) {
   var $ratingContainer = document.createElement('div');
 
   for (var s = 0; s < 5; s++) {
-    var $star = document.createElement('i');
-    $star.className = 'fa-regular fa-star fa-2xl';
+    var $star = document.createElement('img');
+    $star.setAttribute('src', 'images/star-blank.svg');
+    $star.setAttribute('alt', 'rating-star');
+    $star.setAttribute('data-rating-id', s);
+    $star.className = 'mx-1 star-icon';
     $ratingContainer.appendChild($star);
   }
 
-  $descCol.className = 'col-12 mb-4';
+  $ratingContainer.addEventListener('click', function (event) {
+    if (event.target.tagName === 'IMG') {
+      var id = event.target.getAttribute('data-rating-id');
+      starRating(id);
+    }
+  });
+
+  $descCol.className = 'col-12 mb-3';
   $visitDate.className = 'my-2';
   var cityDate = new Date(city.visitDate);
   $visitDate.textContent = 'Visited in ' + cityDate.toLocaleString('default', { month: 'long' }) + ' ' + cityDate.getFullYear();
-  $descRateTitle.className = 'w-100 mb-3';
+  $descRateTitle.className = 'w-100 mb-2';
   $descRateTitle.textContent = 'Rate ' + city.cityName;
 
   $descCol.appendChild($visitDate);
   $descCol.appendChild($descRateTitle);
   $descCol.appendChild($ratingContainer);
   $userCityDescription.appendChild($descCol);
+}
+
+function starRating(id) {
+  var $allStars = document.querySelectorAll('.star-icon');
+  for (var r = 0; r < $allStars.length; r++) {
+    if (r <= id) {
+      $allStars[r].setAttribute('src', 'images/star-filled.svg');
+    } else {
+      $allStars[r].setAttribute('src', 'images/star-blank.svg');
+    }
+  }
 }

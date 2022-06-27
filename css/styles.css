@@ -264,6 +264,9 @@ figure {
 }
 
 /* USER CITY PROFILE */
+.star-icon {
+  width: 30px;
+}
 
 .collapse-head {
   color: #001d6e;
