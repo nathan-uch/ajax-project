@@ -27,6 +27,7 @@ var $userCityAbout = document.querySelector('.user-city-about-section');
 var $userCityScores = document.querySelector('.user-city-scores-row');
 var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
 var $userCityCostTable = document.querySelector('.user-city-cost-table');
+var $sectionsCollapse = document.querySelectorAll('.collapse-head');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -38,6 +39,10 @@ $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityBtn.addEventListener('click', deleteCity);
+
+for (var c = 0; c < $sectionsCollapse.length; c++) {
+  $sectionsCollapse[c].addEventListener('click', updateChevron);
+}
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -941,5 +946,14 @@ function starRating(id) {
     } else {
       $allStars[r].setAttribute('src', 'images/star-blank.svg');
     }
+  }
+}
+
+function updateChevron(event) {
+  var $anchor = event.target.closest('.collapse-head');
+  if ($anchor.getAttribute('aria-expanded') === 'true') {
+    $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-down';
+  } else {
+    $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-left';
   }
 }
