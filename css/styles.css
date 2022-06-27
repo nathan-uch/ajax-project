@@ -256,8 +256,9 @@ figure {
 }
 
 /* REMOVE CITY MODAL */
-.remove-modal {
-  width: 75%;
+.remove-modal,
+.note-modal {
+  width: 85%;
   min-height: 230px;
 }
 
@@ -265,6 +266,19 @@ figure {
   font-size: 1.4rem;
   font-weight: bold;
   margin: 1.5rem 0;
+}
+
+/* ADD NOTE MODAL */
+.note-modal {
+  min-height: 230px;
+}
+
+.add-note-modal-body {
+  padding: 0;
+}
+
+#note-message {
+  resize: none;
 }
 
 /* USER CITY PROFILE */

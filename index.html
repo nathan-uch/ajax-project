@@ -95,7 +95,6 @@
         <div class="user-city-head col-12"></div>
         <!-- LEFT COLUMN -->
         <div class="col-sm-5 d-flex flex-column center-all flex-fill">
-
           <div class="row w-100 center-all">
             <a class="about-collapse-btn collapse-head py-2 col-12 position-relative" href="#user-city-about" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-about">
               About<i class="fa-solid fa-lg fa-chevron-left"></i></a>
@@ -198,6 +197,26 @@
         </div>
       </div>
     </div>
+    <!-- ADD NOTE MODAL -->
+    <div class="modal fade" id="add-note-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content note-modal">
+          <form class="p-4">
+            <div class="modal-body add-note-modal-body">
+              <h4 class="text-center">Add Note</h4>
+              <label for="note-title" class="w-100">Title</label>
+              <input type="text" name="note-title" id="note-title" class="form-label w-100 p-2">
+              <label for="note-message" class="w-100">Notes</label>
+              <textarea name="note-message" id="note-message" rows="8" class="form-label w-100 p-2 mb-3"></textarea>
+              <button type="button" class="btn px-3 mx-2 float-start" id="add-note-btn">ADD NOTE</button>
+              <button type="button" class="btn btn-danger pr-3 mx-2 float-end" data-bs-dismiss="modal"
+                aria-label="Close">CANCEL</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="footer row">
       <a href="https://dryicons.com/free-icons"> Icon by Dryicons </a>
     </div>

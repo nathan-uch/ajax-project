@@ -947,7 +947,7 @@ function renderUserCityDateAndReview(city) {
   $descRateTitle.textContent = 'Rate ' + city.cityName;
   $addNoteBtn.setAttribute('type', 'button');
   $addNoteBtn.className = 'btn add-btn col-12 mt-3';
-  $addNoteBtn.setAttribute('data-bs-target', '#add-modal');
+  $addNoteBtn.setAttribute('data-bs-target', '#add-note-modal');
   $addNoteBtn.setAttribute('data-bs-toggle', 'modal');
   $addNoteBtn.textContent = 'ADD NOTE';
 
