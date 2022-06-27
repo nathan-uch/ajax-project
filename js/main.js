@@ -583,6 +583,7 @@ function resetDataCurrentCity() {
     costs: null,
     visitType: null,
     monthNum: null,
+    rating: null,
     notes: [],
 
     cityImageAtt: {
@@ -898,16 +899,23 @@ function renderUserCityDateAndReview(city) {
 
   for (var s = 0; s < 5; s++) {
     var $star = document.createElement('img');
-    $star.setAttribute('src', 'images/star-blank.svg');
     $star.setAttribute('alt', 'rating-star');
     $star.setAttribute('data-rating-id', s);
     $star.className = 'mx-1 star-icon';
+
+    if (city.rating > s) {
+      $star.setAttribute('src', 'images/star-filled.svg');
+    } else {
+      $star.setAttribute('src', 'images/star-blank.svg');
+    }
+
     $ratingContainer.appendChild($star);
   }
 
   $ratingContainer.addEventListener('click', function (event) {
     if (event.target.tagName === 'IMG') {
       var id = event.target.getAttribute('data-rating-id');
+      city.rating = +id + 1;
       starRating(id);
     }
   });

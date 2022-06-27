@@ -20,6 +20,7 @@ var data = {
     costs: null,
     visitType: null,
     visitDate: null,
+    rating: null,
     notes: [],
 
     cityImageAtt: {
