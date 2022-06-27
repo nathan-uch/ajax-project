@@ -10,7 +10,6 @@ var $cityProfileDesc = document.querySelector('.profile-desc');
 var $cityScoresContainer = document.querySelector('.city-profile-score');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
-var $cityFooterContainer = document.querySelector('.profile-footer');
 var $modalYear = document.querySelector('#year');
 var $saveCityBtn = document.querySelector('.save-city-btn');
 var $typeOfVisit = document.querySelector('#visit-type');
@@ -26,6 +25,8 @@ var $userCityHeader = document.querySelector('.user-city-head');
 var $userCityDescription = document.querySelector('.user-city-description-section');
 var $userCityAbout = document.querySelector('.user-city-about-section');
 var $userCityScores = document.querySelector('.user-city-scores-row');
+var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
+var $userCityCostTable = document.querySelector('.user-city-cost-table');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -126,7 +127,6 @@ function changeView(view) {
         $cityScoresContainer.textContent = '';
         $cityLocationsContainer.textContent = '';
         $cityCostsContainer.textContent = '';
-        $cityFooterContainer.textContent = '';
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'user-cities' || data.currentView === 'search' || data.currentView === 'user-city-profile') {
         $dataView[v].classList.remove('hidden');
@@ -175,9 +175,8 @@ function getCityData() {
       data.currentCity.cityImageUrl = '../images/city-alt.jpg';
       data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
       data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
-      renderImage();
-      renderCityDescription();
-      renderFooter();
+      renderImageAndTitle(data.currentCity);
+      renderCityDescription(data.currentCity);
     } else {
       data.currentCity.hasDetails = true;
       // GET IMAGE
@@ -190,8 +189,7 @@ function getCityData() {
         data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
         data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
         data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
-        renderImage();
-        renderFooter();
+        renderImageAndTitle(data.currentCity);
       });
       xhr3.send();
       // GET DESCRIPTION
@@ -206,8 +204,8 @@ function getCityData() {
         data.currentCity.scores.safety = Math.round(xhr4Result.categories[7].score_out_of_10);
         data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
         data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
-        renderCityDescription();
-        renderCityScores();
+        renderCityDescription(data.currentCity);
+        renderCityScores(data.currentCity);
       });
       xhr4.send();
 
@@ -251,7 +249,7 @@ function getCityData() {
         museums.score = Math.round((xhr5Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
         curLocations.push(museums);
         data.currentCity.locations = curLocations;
-        renderLeisureTable();
+        renderLeisureTable(data.currentCity);
 
         // CITY COSTS
         var curCosts = [];
@@ -276,7 +274,7 @@ function getCityData() {
         apples.cost = '$' + xhr5Result.categories[3].data[1].currency_dollar_value;
         curCosts.push(apples);
         data.currentCity.costs = curCosts;
-        renderCostTable();
+        renderCostTable(data.currentCity);
       });
       xhr5.send();
     }
@@ -285,7 +283,7 @@ function getCityData() {
   renderModalYears();
 }
 
-function renderImage(city) {
+function renderImageAndTitle(city) {
   //   <figure>
   //     <img src="" class="img-fluid" alt="city">
   //     <figcaption><a class="caption" href="">Author</a></figcaption>
@@ -326,8 +324,7 @@ function renderImage(city) {
 
 function renderCityDescription(city) {
   //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
-  //   <p class="w-100">total pop</p>
-  //   <p>description<p>
+  //   <p class="w-100">description <p class="w-100 mt-2">total pop</p><p>
 
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
@@ -349,8 +346,9 @@ function renderCityDescription(city) {
   } else if (data.currentView === 'user-city-profile') {
     $cityDesc.className = 'collapse p-3 col-12';
     $cityDesc.setAttribute('id', 'user-city-about');
+    $pop.className = 'w-100 mt-2';
+    $cityDesc.appendChild($pop);
     $userCityAbout.appendChild($cityDesc);
-    $userCityAbout.appendChild($pop);
   }
 }
 
@@ -459,8 +457,7 @@ function renderCityScores(city) {
   }
 }
 
-function renderLeisureTable() {
-  // <div class="col align-items-center text-center table-container">
+function renderLeisureTable(city) {
   //   <table class="table table-hover w-100 m-auto">
   //     <thead>
   //       <tr>
@@ -470,16 +467,14 @@ function renderLeisureTable() {
   //       </tr>
   //     </thead>
   //     <tbody>
-  //       <tr> * 6
+  //       <tr> *6
   //         <td>leisure location</td>
   //         <td>num</td>
   //         <td>score</td>
   //       </tr>
   //     </tbody>
   //   </table>
-  // </div>
 
-  var $leiSectionCol = document.createElement('div');
   var $leiTable = document.createElement('table');
   var $leiTHead = document.createElement('thead');
   var $headRow = document.createElement('tr');
@@ -487,7 +482,6 @@ function renderLeisureTable() {
   var $th2 = document.createElement('th');
   var $th3 = document.createElement('th');
 
-  $leiSectionCol.className = 'col align-items-center text-center table-container';
   $leiTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
@@ -496,18 +490,21 @@ function renderLeisureTable() {
   $th3.setAttribute('scope', 'col');
   $th3.textContent = 'Score';
 
-  $leiSectionCol.appendChild($leiTable);
   $leiTable.appendChild($leiTHead);
   $leiTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
   $headRow.appendChild($th3);
-  $leiTable.appendChild(renderTableData(data.currentCity.locations));
-  $cityLocationsContainer.appendChild($leiSectionCol);
+  $leiTable.appendChild(renderTableData(city.locations));
+
+  if (data.currentView === 'city-profile') {
+    $cityLocationsContainer.appendChild($leiTable);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityLeisureTable.appendChild($leiTable);
+  }
 }
 
-function renderCostTable() {
-  // <div class="col align-items-center text-center table-container">
+function renderCostTable(city) {
   //   <table class="table table-hover w-100 m-auto">
   //     <thead>
   //       <tr>
@@ -516,7 +513,7 @@ function renderCostTable() {
   //       </tr>
   //     </thead>
   //     <tbody>
-  //       <tr> * 5
+  //       <tr> *5
   //         <td>category</td>
   //         <td>cost</td>
   //       </tr>
@@ -524,49 +521,29 @@ function renderCostTable() {
   //   </table>
   // </div>
 
-  var $costSectionCol = document.createElement('div');
   var $costTable = document.createElement('table');
   var $costTHead = document.createElement('thead');
   var $headRow = document.createElement('tr');
   var $th1 = document.createElement('th');
   var $th2 = document.createElement('th');
 
-  $costSectionCol.className = 'col align-items-center text-center table-container';
   $costTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
   $th2.setAttribute('scope', 'col');
   $th2.textContent = 'Average Cost';
 
-  $costSectionCol.appendChild($costTable);
   $costTable.appendChild($costTHead);
   $costTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
-  $costTable.appendChild(renderTableData(data.currentCity.costs));
-  $cityCostsContainer.appendChild($costSectionCol);
-}
+  $costTable.appendChild(renderTableData(city.costs));
 
-function renderFooter() {
-  // <button class="btn add-city-btn" type="button" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
-  // <a href="#" class="back-top">Back to Top</a>
-
-  var $addCityBtn = document.createElement('button');
-  var $backTop = document.createElement('a');
-
-  $addCityBtn.className = 'btn add-city-btn';
-  $addCityBtn.setAttribute('type', 'button');
-  $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
-  $addCityBtn.setAttribute('data-bs-toggle', 'modal');
-  $addCityBtn.setAttribute('type', 'button');
-
-  $addCityBtn.textContent = 'ADD CITY TO LIST';
-  $backTop.setAttribute('href', '#');
-  $backTop.className = 'back-top';
-  $backTop.textContent = 'Back to Top';
-
-  $cityFooterContainer.appendChild($addCityBtn);
-  $cityFooterContainer.appendChild($backTop);
+  if (data.currentView === 'city-profile') {
+    $cityCostsContainer.appendChild($costTable);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityCostTable.appendChild($costTable);
+  }
 }
 
 function renderTableData(array) {
@@ -887,9 +864,13 @@ function userCityClicked(event) {
   var id = card.getAttribute('data-city-id');
   var clickedCity = data.myEntries[id];
   $userCityHeader.textContent = '';
-
-  renderUserCityDateAndReview(clickedCity);
   changeView('user-city-profile');
+  renderImageAndTitle(clickedCity);
+  renderUserCityDateAndReview(clickedCity);
+  renderCityDescription(clickedCity);
+  renderCityScores(clickedCity);
+  renderLeisureTable(clickedCity);
+  renderCostTable(clickedCity);
 }
 
 function renderUserCityDateAndReview(city) {
