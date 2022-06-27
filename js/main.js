@@ -336,7 +336,7 @@ function renderImageAndTitle(city) {
 }
 
 function renderCityDescription(city) {
-  //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
+  //   <button type="button" class="btn add-btn col-12" data-bs-target="#add-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
   //   <p class="w-100">description <p class="w-100 mt-2">total pop</p><p>
 
   var $cityDesc = document.createElement('p');
@@ -878,21 +878,23 @@ function deleteCity() {
 }
 
 function userCityClicked(event) {
-  var card = event.target.closest('.card-wrapper');
-  var id = +card.getAttribute('data-city-id');
-  var clickedCity = null;
-  for (var e = 0; e < data.myEntries.length; e++) {
-    if (id === data.myEntries[e].cityId) {
-      clickedCity = data.myEntries[e];
+  if (event.target.tagName !== 'I') {
+    var card = event.target.closest('.card-wrapper');
+    var id = +card.getAttribute('data-city-id');
+    var clickedCity = null;
+    for (var e = 0; e < data.myEntries.length; e++) {
+      if (id === data.myEntries[e].cityId) {
+        clickedCity = data.myEntries[e];
+      }
     }
+    changeView('user-city-profile');
+    renderImageAndTitle(clickedCity);
+    renderUserCityDateAndReview(clickedCity);
+    renderCityDescription(clickedCity);
+    renderCityScores(clickedCity);
+    renderLeisureTable(clickedCity);
+    renderCostTable(clickedCity);
   }
-  changeView('user-city-profile');
-  renderImageAndTitle(clickedCity);
-  renderUserCityDateAndReview(clickedCity);
-  renderCityDescription(clickedCity);
-  renderCityScores(clickedCity);
-  renderLeisureTable(clickedCity);
-  renderCostTable(clickedCity);
 }
 
 function renderUserCityDateAndReview(city) {
@@ -906,12 +908,14 @@ function renderUserCityDateAndReview(city) {
   //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="3">
   //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="4">
   //   </div>
+  //   <button type="button" class="btn add-btn col-12" data-bs-target="#add-modal" data-bs-toggle="modal">ADD NOTE</button>
   // </div>
 
   var $descCol = document.createElement('div');
   var $visitDate = document.createElement('p');
   var $descRateTitle = document.createElement('p');
   var $ratingContainer = document.createElement('div');
+  var $addNoteBtn = document.createElement('button');
 
   for (var s = 0; s < 5; s++) {
     var $star = document.createElement('img');
@@ -924,7 +928,6 @@ function renderUserCityDateAndReview(city) {
     } else {
       $star.setAttribute('src', 'images/star-blank.svg');
     }
-
     $ratingContainer.appendChild($star);
   }
 
@@ -942,10 +945,16 @@ function renderUserCityDateAndReview(city) {
   $visitDate.textContent = 'Visited in ' + cityDate.toLocaleString('default', { month: 'long' }) + ' ' + cityDate.getFullYear();
   $descRateTitle.className = 'w-100 mb-2';
   $descRateTitle.textContent = 'Rate ' + city.cityName;
+  $addNoteBtn.setAttribute('type', 'button');
+  $addNoteBtn.className = 'btn add-btn col-12 mt-3';
+  $addNoteBtn.setAttribute('data-bs-target', '#add-modal');
+  $addNoteBtn.setAttribute('data-bs-toggle', 'modal');
+  $addNoteBtn.textContent = 'ADD NOTE';
 
   $descCol.appendChild($visitDate);
   $descCol.appendChild($descRateTitle);
   $descCol.appendChild($ratingContainer);
+  $descCol.appendChild($addNoteBtn);
   $userCityDescription.appendChild($descCol);
 }
 
