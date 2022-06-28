@@ -38,30 +38,43 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center" data-view="search">
+    <div class="container-fluid text-center hidden" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
-        <input type="search" class="form-control searchbox" placeholder="Search City">
+        <input type="search" class="form-control searchbox" placeholder="Search City or Country">
         <button type="submit" class="col-3 btn submit-btn" aria-pressed="true">Search</button>
       </form>
       <!-- SEARCH RESULTS -->
       <div class="container-fluid">
-        <div class="row justify-content-center align-items-center search-results-row m-2">
+        <div class="row center-all search-results-row m-2 gap-3">
         </div>
       </div>
     </div>
-    <!-- CITY PROFILE -->
+    <!-- SEARCHED CITY PROFILE -->
     <div class="container-fluid profile-container hidden" data-view="city-profile">
-      <div class="row profile-img"></div>
-      <div class="row profile-desc"></div>
-      <div class="scores-container"></div>
-      <div class="row profile-leisure my-3"></div>
-      <div class="row profile-costs my-3"></div>
+      <div class="row">
+        <div class="col d-flex flex-wrap align-items-center text-center my-4 profile-img"></div>
+      </div>
+      <div class="row">
+        <div class="col align-items-center text-center profile-desc"></div>
+      </div>
+      <div class="row scores-container">
+        <div class="col my-4 text-center city-profile-score"></div>
+      </div>
+      <div class="row my-3">
+        <div class="col align-items-center text-center table-container profile-leisure"></div>
+      </div>
+      <div class="row my-3">
+        <div class="col align-items-center text-center table-container profile-costs"></div>
+      </div>
       <div class="row profile-footer">
+        <button class="btn add-city-btn" type="button" data-bs-target="#add-city-modal" data-bs-toggle="modal">
+          ADD CITY TO LIST</button>
+        <a href="#" class="back-top">Back to Top</a>
       </div>
     </div>
     <!-- USER CITIES -->
-    <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
+    <div class="container-fluid user-cities text-center" data-view="user-cities">
       <h2 class="mt-5 mb-4">My Cities</h2>
       <label for="sort-cities" class="sort-label">Sort by:</label>
       <select name="sort-cities" id="sort-cities" class="form-select d-inline m-3">
@@ -74,21 +87,61 @@
         <option value="rev-country">Country (Z-A)</option>
       </select>
       <div class="row justify-content-center gap-4 mb-5 text-center user-cities-display">
-
-        <div class="card-wrapper text-start position-relative" data-city-id="idNumber">
-          <i class="fa-solid fa-icon-name card-icon"></i>
-          <p class="card-date mx-2">January 2022</p>
-          <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i
-          class="fa-regular fa-circle-xmark fa-lg"></i></button>
-          <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
-            <a href="#">
-              <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
-              <h5 class="mt-3 cName">city name</h5>
-              <p class="mx-3 text-nowrap text-center country-card">country</p>
-            </a>
+      </div>
+    </div>
+    <!-- USER CITY PROFILE -->
+    <div class="container-fluid profile-container hidden" data-view="user-city-profile">
+      <div class="row text-center gap-2">
+        <div class="user-city-head col-12"></div>
+        <!-- LEFT COLUMN -->
+        <div class="col-sm-5 d-flex flex-column center-all flex-fill mb-auto">
+          <div class="row user-city-description-section">
+          </div>
+          <div class="row w-100 center-all user-city-notes-section">
           </div>
         </div>
+        <!-- RIGHT COLUMN -->
+        <div class="col-sm-5 d-flex flex-column gap-3 center-all flex-fill">
+          <div class="row w-100 center-all">
+            <a class="about-collapse-btn collapse-head p-2 col-12 position-relative" href="#user-city-about"
+              data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-about">
+              About<i class="fa-solid fa-lg fa-chevron-left"></i></a>
+            <div class="w-100 collapse col-12" id="user-city-about">
+              <div class="user-city-about-section"></div>
+            </div>
+          </div>
 
+          <div class="row w-100 center-all user-city-scores-section">
+            <a class="scores-collapse-btn collapse-head p-2 col-12 position-relative" href="#user-city-scores"
+              data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-scores">
+              Travel Scores<i class="fa-solid fa-lg fa-chevron-left"></i></a>
+            <div class="w-100 collapse col-12" id="user-city-scores">
+              <div class="m-3 user-city-scores-row"></div>
+            </div>
+          </div>
+
+          <div class="row w-100 center-all user-city-leisure-section">
+            <a class="leisure-collapse-btn collapse-head p-2 col-12  position-relative" href="#user-city-leisure"
+              data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-leisure">
+              Leisure Activities<i class="fa-solid fa-lg fa-chevron-left"></i></a>
+            <div class="w-100 collapse col-12" id="user-city-leisure">
+              <div class="align-items-center text-center user-city-leisure-table"></div>
+            </div>
+          </div>
+
+          <div class="row w-100 center-all user-city-costs-section">
+            <a class="costs-collapse-btn collapse-head p-2 col-12  position-relative" href="#user-city-costs"
+              data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-costs">
+              Costs <i class="fa-solid fa-lg fa-chevron-left"></i></a>
+            <div class="w-100 collapse col-12" id="user-city-costs">
+              <div class="px-3 align-items-center text-center user-city-cost-table">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="user-city-footer text-center my-3">
+          <a href="#" class="back-top">Back to Top</a>
+        </div>
       </div>
     </div>
     <!-- ADD CITY MODAL -->
@@ -146,6 +199,25 @@
             <button type="button" class="btn btn-danger pl-4 px-3 mx-2 float-start" id="remove-city-btn">REMOVE</button>
             <button type="button" class="btn pr-4 mx-2 float-end" data-bs-dismiss="modal" aria-label="Close">GO BACK</button>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- ADD NOTE MODAL -->
+    <div class="modal fade" id="add-note-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content note-modal">
+          <form class="p-4">
+            <div class="modal-body add-note-modal-body">
+              <h4 class="text-center">Add Note</h4>
+              <label for="note-title" class="w-100">Title</label>
+              <input type="text" name="note-title" id="note-title" class="form-label w-100 p-2">
+              <label for="note-message" class="w-100">Notes</label>
+              <textarea name="note-message" id="note-message" rows="8" class="form-label w-100 p-2 mb-3"></textarea>
+              <button type="button" class="btn px-3 mx-2 float-start" id="add-note-btn">ADD NOTE</button>
+              <button type="button" class="btn btn-danger pr-3 mx-2 float-end" data-bs-dismiss="modal"
+                aria-label="Close">CANCEL</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 var $searchCity = document.forms[0];
 var $addToMyCitiesModal = document.forms[1];
+var $addNotesModal = document.forms[2];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
@@ -7,10 +8,9 @@ var $searchCitiesAnchor = document.querySelector('.search-cities-anchor');
 var $userCitiesAnchor = document.querySelector('.user-cities-anchor');
 var $cityProfileImg = document.querySelector('.profile-img');
 var $cityProfileDesc = document.querySelector('.profile-desc');
-var $cityScoresContainer = document.querySelector('.scores-container');
+var $cityScoresContainer = document.querySelector('.city-profile-score');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
-var $cityFooterContainer = document.querySelector('.profile-footer');
 var $modalYear = document.querySelector('#year');
 var $saveCityBtn = document.querySelector('.save-city-btn');
 var $typeOfVisit = document.querySelector('#visit-type');
@@ -22,6 +22,16 @@ var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
 var $removeCityBtn = document.querySelector('#remove-city-btn');
 var $removeCityDisplay = document.querySelector('.remove-city-display');
+var $userCityHeader = document.querySelector('.user-city-head');
+var $userCityDescription = document.querySelector('.user-city-description-section');
+var $userCityAbout = document.querySelector('.user-city-about-section');
+var $userCityScores = document.querySelector('.user-city-scores-row');
+var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
+var $userCityCostTable = document.querySelector('.user-city-cost-table');
+var $addNotesBtn = document.querySelector('#add-note-btn');
+var $noteTitle = document.querySelector('#note-title');
+var $noteMessage = document.querySelector('#note-message');
+var $notesSection = document.querySelector('.user-city-notes-section');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -33,6 +43,7 @@ $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityBtn.addEventListener('click', deleteCity);
+$addNotesBtn.addEventListener('click', addNotesClickedBtn);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -55,10 +66,11 @@ function getSearchResults(event) {
 function renderSearchResults() {
   $searchResultsRow.textContent = '';
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
-    // <div class="city-card m-2 col-sm-3 d-flex justify-content-center text-center">
-    //    <a href="#" class="searched-card">
+    // <div class="city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center">
+    //    <a href="#" class="searched-card position-relative">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
+    //        <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //    </a>
     // </div>
 
@@ -66,25 +78,35 @@ function renderSearchResults() {
     var $cityCard = document.createElement('a');
     var $cityName = document.createElement('h5');
     var $countryName = document.createElement('p');
+    var $cardIcon = document.createElement('i');
 
     var fullLength = data.searchResults._embedded['city:search-results'][i].matching_full_name.length;
     var commaIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf(',');
     var countryIndex = commaIndex + 2;
-    var fullName = data.searchResults._embedded['city:search-results'][i].matching_full_name.split('');
-    var country = fullName.splice(countryIndex, fullLength - 1).join('');
-    var city = fullName.slice(0, commaIndex).join('');
+    var parenIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf('(');
+    var fullName = data.searchResults._embedded['city:search-results'][i].matching_full_name;
+    var areaCountry = null;
+    if (+parenIndex === -1) {
+      areaCountry = fullName.substring(countryIndex, fullLength);
+    } else {
+      areaCountry = fullName.substring(countryIndex, parenIndex);
+    }
+    var secondComma = areaCountry.indexOf(',') + 2;
+    var country = areaCountry.substring(secondComma, areaCountry.length);
+    var city = fullName.substring(0, commaIndex);
 
-    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center';
+    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
-    $cityCard.className = 'searched-card';
+    $cityCard.className = 'searched-card position-relative';
     $cityName.textContent = city;
-    $cityName.className = 'mt-3';
     $countryName.textContent = country;
     $countryName.className = 'search-country';
+    $cardIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
+    $cityCard.appendChild($cardIcon);
     $column.appendChild($cityCard);
     $searchResultsRow.appendChild($column);
   }
@@ -111,11 +133,17 @@ function changeView(view) {
         $cityScoresContainer.textContent = '';
         $cityLocationsContainer.textContent = '';
         $cityCostsContainer.textContent = '';
-        $cityFooterContainer.textContent = '';
         $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'user-cities') {
+      } else if (data.currentView === 'user-city-profile') {
+        $userCityHeader.textContent = '';
+        $userCityDescription.textContent = '';
+        $userCityAbout.textContent = '';
+        $userCityScores.textContent = '';
+        $userCityLeisureTable.textContent = '';
+        $userCityCostTable.textContent = '';
+        $notesSection.textContent = '';
         $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'search') {
+      } else if (data.currentView === 'user-cities' || data.currentView === 'search') {
         $dataView[v].classList.remove('hidden');
       }
     } else {
@@ -162,9 +190,8 @@ function getCityData() {
       data.currentCity.cityImageUrl = '../images/city-alt.jpg';
       data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
       data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
-      renderImage();
-      renderCityDescription();
-      renderFooter();
+      renderImageAndTitle(data.currentCity);
+      renderCityDescription(data.currentCity);
     } else {
       data.currentCity.hasDetails = true;
       // GET IMAGE
@@ -177,8 +204,7 @@ function getCityData() {
         data.currentCity.cityImageUrl = xhr3Result.photos[0].image.web;
         data.currentCity.cityImageAtt.authorName = xhr3Result.photos[0].attribution.photographer;
         data.currentCity.cityImageAtt.authorUrl = xhr3Result.photos[0].attribution.source;
-        renderImage();
-        renderFooter();
+        renderImageAndTitle(data.currentCity);
       });
       xhr3.send();
       // GET DESCRIPTION
@@ -193,8 +219,8 @@ function getCityData() {
         data.currentCity.scores.safety = Math.round(xhr4Result.categories[7].score_out_of_10);
         data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
         data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
-        renderCityDescription();
-        renderCityScores();
+        renderCityDescription(data.currentCity);
+        renderCityScores(data.currentCity);
       });
       xhr4.send();
 
@@ -238,7 +264,7 @@ function getCityData() {
         museums.score = Math.round((xhr5Result.categories[4].data[10].float_value + Number.EPSILON) * 100) / 100;
         curLocations.push(museums);
         data.currentCity.locations = curLocations;
-        renderLeisureTable();
+        renderLeisureTable(data.currentCity);
 
         // CITY COSTS
         var curCosts = [];
@@ -263,7 +289,7 @@ function getCityData() {
         apples.cost = '$' + xhr5Result.categories[3].data[1].currency_dollar_value;
         curCosts.push(apples);
         data.currentCity.costs = curCosts;
-        renderCostTable();
+        renderCostTable(data.currentCity);
       });
       xhr5.send();
     }
@@ -272,106 +298,102 @@ function getCityData() {
   renderModalYears();
 }
 
-function renderImage() {
-  // <div class="col d-flex flex-wrap align-items-center my-4">
+function renderImageAndTitle(city) {
   //   <figure>
   //     <img src="" class="img-fluid" alt="city">
   //     <figcaption><a class="caption" href="">Author</a></figcaption>
   //   </figure>
-  // </div>
+  //   <h2>city name</h2>
+  //   <p>country<p>
 
-  var $imgCol = document.createElement('div');
   var $figure = document.createElement('figure');
   var $img = document.createElement('img');
   var $figCap = document.createElement('figcapture');
   var $authorLink = document.createElement('a');
+  var $cityName = document.createElement('h2');
+  var $cityArea = document.createElement('p');
 
-  $imgCol.className = 'col d-flex flex-wrap align-items-center my-4';
+  $img.setAttribute('src', city.cityImageUrl);
   $img.className = 'img-fluid';
-  $img.setAttribute('src', data.currentCity.cityImageUrl);
   $authorLink.className = 'caption';
-  $authorLink.setAttribute('href', data.currentCity.cityImageAtt.authorUrl);
-  $authorLink.textContent = 'Photo by: ' + data.currentCity.cityImageAtt.authorName;
+  $authorLink.setAttribute('href', city.cityImageAtt.authorUrl);
+  $authorLink.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
+  $cityName.textContent = city.cityName;
+  $cityName.className = 'col-12';
+  $cityArea.textContent = city.cityArea;
+  $cityArea.className = 'col-12 w-100';
 
-  $imgCol.appendChild($figure);
   $figure.appendChild($img);
   $figure.appendChild($figCap);
   $figCap.appendChild($authorLink);
-  $cityProfileImg.appendChild($imgCol);
+  if (data.currentView === 'city-profile') {
+    $cityProfileImg.appendChild($figure);
+    $cityProfileImg.appendChild($cityName);
+    $cityProfileImg.appendChild($cityArea);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityHeader.appendChild($figure);
+    $userCityHeader.appendChild($cityName);
+    $userCityHeader.appendChild($cityArea);
+  }
 }
 
-function renderCityDescription() {
-  // <div class="col align-items-center text-center">
-  //   <h2>city name</h2>
-  //   <p>country<p>
-  //   <button type="button" class="btn add-city-btn col-12" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button></br>
-  //   <p>total pop</p></br>
-  //   <p>description<p>
-  // </div>
+function renderCityDescription(city) {
+  //   <button type="button" class="btn add-btn col-12" data-bs-target="#add-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
+  //   <p class="w-100">description <p class="w-100 mt-2">total pop</p><p>
 
-  var $descCol = document.createElement('div');
-  var $cityName = document.createElement('h2');
-  var $cityArea = document.createElement('p');
-  var $addCityBtn = document.createElement('button');
   var $cityDesc = document.createElement('p');
   var $pop = document.createElement('p');
-  var $br2 = document.createElement('br');
 
-  $descCol.className = 'col align-items-center text-center';
-  $cityName.textContent = data.currentCity.cityName;
-  $cityArea.textContent = data.currentCity.cityArea;
-  $addCityBtn.setAttribute('type', 'button');
-  $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
-  $addCityBtn.setAttribute('data-bs-toggle', 'modal');
+  $cityDesc.textContent = city.citySummary;
+  $cityDesc.className = 'p-3';
+  $pop.textContent = 'Estimated Population: ' + city.cityPop;
 
-  $addCityBtn.className = 'btn add-city-btn col-12';
-  $addCityBtn.textContent = 'ADD CITY TO LIST';
-  $cityDesc.textContent = '';
-  $cityDesc.textContent = data.currentCity.citySummary;
-  $pop.textContent = 'Estimated Population: ' + data.currentCity.cityPop;
+  if (data.currentView === 'city-profile') {
+    var $addCityBtn = document.createElement('button');
+    $addCityBtn.setAttribute('type', 'button');
+    $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
+    $addCityBtn.setAttribute('data-bs-toggle', 'modal');
+    $addCityBtn.className = 'btn add-city-btn col-12';
+    $addCityBtn.textContent = 'ADD CITY TO LIST';
+    $cityProfileDesc.appendChild($addCityBtn);
+    $cityProfileDesc.appendChild($cityDesc);
+    $cityProfileDesc.appendChild($pop);
 
-  $descCol.appendChild($cityName);
-  $descCol.appendChild($cityArea);
-  $descCol.appendChild($addCityBtn);
-  $descCol.appendChild($pop);
-  $descCol.appendChild($br2);
-  $descCol.appendChild($cityDesc);
-  $cityProfileDesc.appendChild($descCol);
+  } else if (data.currentView === 'user-city-profile') {
+    $pop.className = 'w-100 mt-2';
+    $cityDesc.appendChild($pop);
+    $userCityAbout.appendChild($cityDesc);
+  }
 }
 
-function renderCityScores() {
-// <div class="row profile-travel-scores my-4">
-//    <div class="col align-items-center text-center">
-//      <h3>Travel Scores</h3>
-//      <p>Travel Connectivity #/10</p>
-//      <div class="progress">
-//        <div class="progress-bar bg-warning travel-score" role="progressbar"
+function renderCityScores(city) {
+//     <h3>Travel Scores</h3>
+//     <div class="col align-items-center text-center">
+//       <p>Travel Connectivity #/10</p>
+//       <div class="progress">
+//         <div class="progress-bar bg-warning travel-score" role="progressbar"
 //            aria-valuenow="#" aria-valuemin="0" aria-valuemax="10"></div>
-//      </div>
-//      <p>Safety #/10</p>
-//      <div class="progress">
-//        <div class="progress-bar bg-warning safety-score" role="progressbar" aria-valuenow="#"
+//       </div>
+//       <p>Safety #/10</p>
+//       <div class="progress">
+//         <div class="progress-bar bg-warning safety-score" role="progressbar" aria-valuenow="#"
 //          aria-valuemin="0" aria-valuemax="10">
-//        </div>
-//      </div>
-//      <p>Leisure and Culture #/10</p>
-//      <div class="progress">
-//        <div class="progress-bar bg-success leisure-score" role="progressbar" aria-valuenow="#"
+//         </div>
+//       </div>
+//       <p>Leisure and Culture #/10</p>
+//       <div class="progress">
+//         <div class="progress-bar bg-success leisure-score" role="progressbar" aria-valuenow="#"
 //            aria-valuemin="0" aria-valuemax="10">
-//        </div>
-//      </div>
-//      <p>Outdoors #/10</p>
-//      <div class="progress">
-//        <div class="progress-bar bg-success outdoors-score" role="progressbar" aria-valuenow="#"
+//         </div>
+//       </div>
+//       <p>Outdoors #/10</p>
+//       <div class="progress">
+//         <div class="progress-bar bg-success outdoors-score" role="progressbar" aria-valuenow="#"
 //           aria-valuemin="0" aria-valuemax="10">
-//        </div>
+//         </div>
 //      </div>
-//    </div >
-// </div>
 
-  var $scoresRow = document.createElement('div');
   var $scoresCol = document.createElement('div');
-  var $scoreHeader = document.createElement('h3');
   var $travelHead = document.createElement('p');
   var $travelProg = document.createElement('div');
   var $travelScore = document.createElement('div');
@@ -381,55 +403,51 @@ function renderCityScores() {
   var $leisureHead = document.createElement('p');
   var $leisureProg = document.createElement('div');
   var $leisureScore = document.createElement('div');
-  var $outdoorHead = document.createElement('p');
-  var $outdoorProg = document.createElement('div');
+  var $outdoorsHead = document.createElement('p');
+  var $outdoorsProg = document.createElement('div');
   var $outdoorsScore = document.createElement('div');
 
-  $scoresRow.className = 'row profile-travel-scores my-4';
   $scoresCol.className = 'col align-items-center text-center';
   $travelProg.className = 'progress';
   $safetyProg.className = 'progress';
   $leisureProg.className = 'progress';
-  $outdoorProg.className = 'progress';
-  $scoreHeader.textContent = 'Travel Scores';
+  $outdoorsProg.className = 'progress';
   $travelScore.className = 'progress-bar travel-score';
-  $travelScore.style.width = (data.currentCity.scores.travel * 10) + '%';
-  $travelHead.textContent = 'Travel Connectivity ' + data.currentCity.scores.travel + '/10';
+  $travelScore.style.width = (city.scores.travel * 10) + '%';
+  $travelHead.textContent = 'Travel Connectivity ' + city.scores.travel + '/10';
   $travelScore.setAttribute('role', 'progressbar');
-  $travelScore.setAttribute('aria-valuenow', data.currentCity.scores.travel);
+  $travelScore.setAttribute('aria-valuenow', city.scores.travel);
   $travelScore.setAttribute('aria-valuemin', '0');
   $travelScore.setAttribute('aria-valuemax', '10');
   checkScore($travelScore);
 
   $safetyScore.className = 'progress-bar safety-score';
-  $safetyScore.style.width = (data.currentCity.scores.safety * 10) + '%';
-  $safetyHead.textContent = 'Safety ' + data.currentCity.scores.safety + '/10';
+  $safetyScore.style.width = (city.scores.safety * 10) + '%';
+  $safetyHead.textContent = 'Safety ' + city.scores.safety + '/10';
   $safetyScore.setAttribute('role', 'progressbar');
-  $safetyScore.setAttribute('aria-valuenow', data.currentCity.scores.safety);
+  $safetyScore.setAttribute('aria-valuenow', city.scores.safety);
   $safetyScore.setAttribute('aria-valuemin', '0');
   $safetyScore.setAttribute('aria-valuemax', '10');
   checkScore($safetyScore);
 
   $leisureScore.className = 'progress-bar leisure-score';
-  $leisureScore.style.width = (data.currentCity.scores.leisure * 10) + '%';
-  $leisureHead.textContent = 'Leisure and Culture ' + data.currentCity.scores.leisure + '/10';
+  $leisureScore.style.width = (city.scores.leisure * 10) + '%';
+  $leisureHead.textContent = 'Leisure and Culture ' + city.scores.leisure + '/10';
   $leisureScore.setAttribute('role', 'progressbar');
-  $leisureScore.setAttribute('aria-valuenow', data.currentCity.scores.leisure);
+  $leisureScore.setAttribute('aria-valuenow', city.scores.leisure);
   $leisureScore.setAttribute('aria-valuemin', '0');
   $leisureScore.setAttribute('aria-valuemax', '10');
   checkScore($leisureScore);
 
   $outdoorsScore.className = 'progress-bar outdoors-score';
-  $outdoorsScore.style.width = (data.currentCity.scores.outdoors * 10) + '%';
-  $outdoorHead.textContent = 'Outdoors ' + data.currentCity.scores.outdoors + '/10';
+  $outdoorsScore.style.width = (city.scores.outdoors * 10) + '%';
+  $outdoorsHead.textContent = 'Outdoors ' + city.scores.outdoors + '/10';
   $outdoorsScore.setAttribute('role', 'progressbar');
-  $outdoorsScore.setAttribute('aria-valuenow', data.currentCity.scores.outdoors);
+  $outdoorsScore.setAttribute('aria-valuenow', city.scores.outdoors);
   $outdoorsScore.setAttribute('aria-valuemin', '0');
   $outdoorsScore.setAttribute('aria-valuemax', '10');
   checkScore($outdoorsScore);
 
-  $scoresRow.appendChild($scoresCol);
-  $scoresCol.appendChild($scoreHeader);
   $scoresCol.appendChild($travelHead);
   $scoresCol.appendChild($travelProg);
   $travelProg.appendChild($travelScore);
@@ -439,33 +457,38 @@ function renderCityScores() {
   $scoresCol.appendChild($leisureHead);
   $scoresCol.appendChild($leisureProg);
   $leisureProg.appendChild($leisureScore);
-  $scoresCol.appendChild($outdoorHead);
-  $scoresCol.appendChild($outdoorProg);
-  $outdoorProg.appendChild($outdoorsScore);
-  $cityScoresContainer.appendChild($scoresRow);
+  $scoresCol.appendChild($outdoorsHead);
+  $scoresCol.appendChild($outdoorsProg);
+  $outdoorsProg.appendChild($outdoorsScore);
+
+  if (data.currentView === 'city-profile') {
+    var $scoreHeader = document.createElement('h3');
+    $scoreHeader.textContent = 'Travel Scores';
+    $cityScoresContainer.appendChild($scoreHeader);
+    $cityScoresContainer.appendChild($scoresCol);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityScores.appendChild($scoresCol);
+  }
 }
 
-function renderLeisureTable() {
-  //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover w-100 m-auto">
-  //       <thead>
-  //         <tr>
-  //           <th scope="col">Category</th>
-  //           <th scope="col">Amount</th>
-  //           <th scope="col">Score</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         <tr> * 6
-  //           <td>leisure location</td>
-  //           <td>num</td>
-  //           <td>score</td>
-  //         </tr>
-  //       </tbody>
-  //     </table>
-  //   </div>
+function renderLeisureTable(city) {
+  //   <table class="table table-hover w-100 m-auto">
+  //     <thead>
+  //       <tr>
+  //         <th scope="col">Category</th>
+  //         <th scope="col">Amount</th>
+  //         <th scope="col">Score</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       <tr> *6
+  //         <td>leisure location</td>
+  //         <td>num</td>
+  //         <td>score</td>
+  //       </tr>
+  //     </tbody>
+  //   </table>
 
-  var $leiSectionCol = document.createElement('div');
   var $leiTable = document.createElement('table');
   var $leiTHead = document.createElement('thead');
   var $headRow = document.createElement('tr');
@@ -473,7 +496,6 @@ function renderLeisureTable() {
   var $th2 = document.createElement('th');
   var $th3 = document.createElement('th');
 
-  $leiSectionCol.className = 'col align-items-center text-center table-container';
   $leiTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
@@ -482,77 +504,60 @@ function renderLeisureTable() {
   $th3.setAttribute('scope', 'col');
   $th3.textContent = 'Score';
 
-  $leiSectionCol.appendChild($leiTable);
   $leiTable.appendChild($leiTHead);
   $leiTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
   $headRow.appendChild($th3);
-  $leiTable.appendChild(renderTableData(data.currentCity.locations));
-  $cityLocationsContainer.appendChild($leiSectionCol);
+  $leiTable.appendChild(renderTableData(city.locations));
+
+  if (data.currentView === 'city-profile') {
+    $cityLocationsContainer.appendChild($leiTable);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityLeisureTable.appendChild($leiTable);
+  }
 }
 
-function renderCostTable() {
-  //   <div class="col align-items-center text-center table-container">
-  //     <table class="table table-hover w-100 m-auto">
-  //       <thead>
-  //         <tr>
-  //           <th scope="col">Category</th>
-  //           <th scope="col">Average Cost</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         <tr> * 5
-  //           <td>category</td>
-  //           <td>cost</td>
-  //         </tr>
-  //       </tbody>
-  //     </table>
-  //   </div>
+function renderCostTable(city) {
+  //   <table class="table table-hover w-100 m-auto">
+  //     <thead>
+  //       <tr>
+  //         <th scope="col">Category</th>
+  //         <th scope="col">Average Cost</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       <tr> *5
+  //         <td>category</td>
+  //         <td>cost</td>
+  //       </tr>
+  //     </tbody>
+  //   </table>
+  // </div>
 
-  var $costSectionCol = document.createElement('div');
   var $costTable = document.createElement('table');
   var $costTHead = document.createElement('thead');
   var $headRow = document.createElement('tr');
   var $th1 = document.createElement('th');
   var $th2 = document.createElement('th');
 
-  $costSectionCol.className = 'col align-items-center text-center table-container';
   $costTable.className = 'table table-hover w-100 m-auto';
   $th1.setAttribute('scope', 'col');
   $th1.textContent = 'Category';
   $th2.setAttribute('scope', 'col');
   $th2.textContent = 'Average Cost';
 
-  $costSectionCol.appendChild($costTable);
   $costTable.appendChild($costTHead);
   $costTHead.appendChild($headRow);
   $headRow.appendChild($th1);
   $headRow.appendChild($th2);
-  $costTable.appendChild(renderTableData(data.currentCity.costs));
-  $cityCostsContainer.appendChild($costSectionCol);
-}
+  $costTable.appendChild(renderTableData(city.costs));
 
-function renderFooter() {
-  // <button class="btn add-city-btn" type="button" data-bs-target="#add-city-modal" data-bs-toggle="modal">ADD CITY TO LIST</button>
-  // <a href="#" class="back-top">Back to Top</a>
-
-  var $addCityBtn = document.createElement('button');
-  var $backTop = document.createElement('a');
-
-  $addCityBtn.className = 'btn add-city-btn';
-  $addCityBtn.setAttribute('type', 'button');
-  $addCityBtn.setAttribute('data-bs-target', '#add-city-modal');
-  $addCityBtn.setAttribute('data-bs-toggle', 'modal');
-  $addCityBtn.setAttribute('type', 'button');
-
-  $addCityBtn.textContent = 'ADD CITY TO LIST';
-  $backTop.setAttribute('href', '#');
-  $backTop.className = 'back-top';
-  $backTop.textContent = 'Back to Top';
-
-  $cityFooterContainer.appendChild($addCityBtn);
-  $cityFooterContainer.appendChild($backTop);
+  if (data.currentView === 'city-profile') {
+    $cityCostsContainer.appendChild($costTable);
+  } else if (data.currentView === 'user-city-profile') {
+    $userCityCostTable.appendChild($costTable);
+  }
 }
 
 function renderTableData(array) {
@@ -586,6 +591,7 @@ function resetDataCurrentCity() {
     costs: null,
     visitType: null,
     monthNum: null,
+    rating: null,
     notes: [],
 
     cityImageAtt: {
@@ -750,6 +756,8 @@ function renderMyCities() {
       data.editCity = event.target.closest('.card-wrapper');
       $removeCityDisplay.textContent = data.editCity.children[3].children[0].children[1].textContent + ', ' + data.editCity.children[3].children[0].children[2].textContent;
     });
+
+    $cardWrapper.addEventListener('click', userCityClicked);
   }
 }
 
@@ -773,6 +781,12 @@ function sortMyCities(event) {
     entriesArray = sortCountryNameRev(entriesArray);
   }
   data.myEntries = entriesArray;
+  $userCityHeader.textContent = '';
+  $userCityDescription.textContent = '';
+  $userCityAbout.textContent = '';
+  $userCityScores.textContent = '';
+  $userCityLeisureTable.textContent = '';
+  $userCityCostTable.textContent = '';
   renderMyCities();
 }
 
@@ -863,5 +877,170 @@ function deleteCity() {
         $allUserCards[c].remove();
       }
     }
+  }
+  // var deleteCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('remove-city-modal'));
+  // deleteCityModal.hide();
+}
+
+function userCityClicked(event) {
+  if (event.target.tagName !== 'I') {
+    var card = event.target.closest('.card-wrapper');
+    var id = +card.getAttribute('data-city-id');
+    var clickedCity = null;
+    for (var e = 0; e < data.myEntries.length; e++) {
+      if (id === data.myEntries[e].cityId) {
+        clickedCity = data.myEntries[e];
+        data.editCity = data.myEntries[e];
+      }
+    }
+    changeView('user-city-profile');
+    renderImageAndTitle(clickedCity);
+    renderUserCityDateAndReview(clickedCity);
+    renderCityDescription(clickedCity);
+    renderCityScores(clickedCity);
+    renderLeisureTable(clickedCity);
+    renderCostTable(clickedCity);
+    renderNotes(clickedCity);
+    chevronEvent();
+  }
+}
+
+function renderUserCityDateAndReview(city) {
+  // <div class="col-12 mb-4">
+  //   <p class="my-2">Visited in February 2019</p>
+  //   <p class="w-100 mb-2">Rate Los Angeles</p>
+  //   <div class="rating-stars mb-3">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="0">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="1">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="2">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="3">
+  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="4">
+  //   </div>
+  //   <button type="button" class="btn add-btn col-12" data-bs-target="#add-modal" data-bs-toggle="modal">ADD NOTE</button>
+  // </div>
+
+  var $descCol = document.createElement('div');
+  var $visitDate = document.createElement('p');
+  var $descRateTitle = document.createElement('p');
+  var $ratingContainer = document.createElement('div');
+  var $addNoteBtn = document.createElement('button');
+
+  for (var s = 0; s < 5; s++) {
+    var $star = document.createElement('img');
+    $star.setAttribute('alt', 'rating-star');
+    $star.setAttribute('data-rating-id', s);
+    $star.className = 'mx-1 star-icon';
+
+    if (city.rating > s) {
+      $star.setAttribute('src', 'images/star-filled.svg');
+    } else {
+      $star.setAttribute('src', 'images/star-blank.svg');
+    }
+    $ratingContainer.appendChild($star);
+  }
+
+  $ratingContainer.addEventListener('click', function (event) {
+    if (event.target.tagName === 'IMG') {
+      var id = event.target.getAttribute('data-rating-id');
+      city.rating = +id + 1;
+      starRating(id);
+    }
+  });
+
+  $descCol.className = 'col-12 mb-3';
+  $visitDate.className = 'my-2 visit-date';
+  var cityDate = new Date(city.visitDate);
+  $visitDate.textContent = 'Visited in ' + cityDate.toLocaleString('default', { month: 'long' }) + ' ' + cityDate.getFullYear();
+  $descRateTitle.className = 'w-100 mb-2';
+  $descRateTitle.textContent = 'Rate ' + city.cityName;
+  $addNoteBtn.setAttribute('type', 'button');
+  $addNoteBtn.className = 'btn add-btn col-12 mt-3';
+  $addNoteBtn.setAttribute('data-bs-target', '#add-note-modal');
+  $addNoteBtn.setAttribute('data-bs-toggle', 'modal');
+  $addNoteBtn.textContent = 'ADD NOTE';
+
+  $descCol.appendChild($visitDate);
+  $descCol.appendChild($descRateTitle);
+  $descCol.appendChild($ratingContainer);
+  $descCol.appendChild($addNoteBtn);
+  $userCityDescription.appendChild($descCol);
+}
+
+function starRating(id) {
+  var $allStars = document.querySelectorAll('.star-icon');
+  for (var r = 0; r < $allStars.length; r++) {
+    if (r <= id) {
+      $allStars[r].setAttribute('src', 'images/star-filled.svg');
+    } else {
+      $allStars[r].setAttribute('src', 'images/star-blank.svg');
+    }
+  }
+}
+
+function chevronEvent() {
+  var $sectionsCollapse = document.querySelectorAll('.collapse-head');
+  for (var c = 0; c < $sectionsCollapse.length; c++) {
+    $sectionsCollapse[c].addEventListener('click', updateChevron);
+  }
+}
+
+function updateChevron(event) {
+  var $anchor = event.target.closest('.collapse-head');
+  if ($anchor.getAttribute('aria-expanded') === 'true') {
+    $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-down';
+  } else {
+    $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-left';
+  }
+}
+
+function addNotesClickedBtn(event) {
+  var note = {};
+  if ($noteTitle.value === '' || $noteMessage.vale === '') {
+    return;
+  }
+  note.title = $noteTitle.value;
+  note.message = $noteMessage.value;
+  data.editCity.notes.push(note);
+  renderNotes(data.editCity);
+  $addNotesModal.reset();
+  chevronEvent();
+  // var addNoteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-note-modal'));
+  // addNoteModal.hide();
+}
+
+function renderNotes(city) {
+  // <a class="note-collapse-btn collapse-head p-2 col-12 position-relative" href="#user-city-note"
+  //    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-note">
+  //    TITLE <i class="fa-solid fa-lg fa-chevron-left"></i>
+  // </a>
+  // <div class="w-100 collapse col-12 note" id="user-city-note">
+  //    <div class="px-3 align-items-center text-center user-city-note">
+  //      MESSAGE
+  //    </div>
+  // </div>
+  $notesSection.textContent = '';
+  for (var n = 0; n < city.notes.length; n++) {
+    var $noteHead = document.createElement('a');
+    var $noteChevron = document.createElement('i');
+    var $noteBody = document.createElement('div');
+    var $noteMessage = document.createElement('div');
+
+    $noteHead.className = 'note-collapse-btn collapse-head p-2 col-12 position-relative';
+    $noteHead.setAttribute('href', '#user-city-note' + n);
+    $noteHead.setAttribute('data-bs-toggle', 'collapse');
+    $noteHead.setAttribute('role', 'button');
+    $noteHead.setAttribute('aria-expanded', 'false');
+    $noteHead.setAttribute('aria-controls', 'user-city-note' + n);
+    $noteHead.textContent = data.editCity.notes[n].title;
+    $noteChevron.className = 'fa-solid fa-lg fa-chevron-left';
+    $noteBody.className = 'w-100 collapse col-12 note';
+    $noteBody.setAttribute('id', 'user-city-note' + n);
+    $noteMessage.className = 'px-3 align-items-center text-center user-city-note';
+    $noteMessage.textContent = data.editCity.notes[n].message;
+
+    $noteHead.appendChild($noteChevron);
+    $noteBody.appendChild($noteMessage);
+    $notesSection.appendChild($noteHead);
+    $notesSection.appendChild($noteBody);
   }
 }
