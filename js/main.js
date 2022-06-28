@@ -28,7 +28,6 @@ var $userCityAbout = document.querySelector('.user-city-about-section');
 var $userCityScores = document.querySelector('.user-city-scores-row');
 var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
 var $userCityCostTable = document.querySelector('.user-city-cost-table');
-var $sectionsCollapse = document.querySelectorAll('.collapse-head');
 var $addNotesBtn = document.querySelector('#add-note-btn');
 var $noteTitle = document.querySelector('#note-title');
 var $noteMessage = document.querySelector('#note-message');
@@ -45,10 +44,6 @@ $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityBtn.addEventListener('click', deleteCity);
 $addNotesBtn.addEventListener('click', addNotesClickedBtn);
-
-for (var c = 0; c < $sectionsCollapse.length; c++) {
-  $sectionsCollapse[c].addEventListener('click', updateChevron);
-}
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -146,6 +141,7 @@ function changeView(view) {
         $userCityScores.textContent = '';
         $userCityLeisureTable.textContent = '';
         $userCityCostTable.textContent = '';
+        $notesSection.textContent = '';
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'user-cities' || data.currentView === 'search') {
         $dataView[v].classList.remove('hidden');
@@ -904,6 +900,8 @@ function userCityClicked(event) {
     renderCityScores(clickedCity);
     renderLeisureTable(clickedCity);
     renderCostTable(clickedCity);
+    renderNotes(clickedCity);
+    chevronEvent();
   }
 }
 
@@ -979,6 +977,13 @@ function starRating(id) {
   }
 }
 
+function chevronEvent() {
+  var $sectionsCollapse = document.querySelectorAll('.collapse-head');
+  for (var c = 0; c < $sectionsCollapse.length; c++) {
+    $sectionsCollapse[c].addEventListener('click', updateChevron);
+  }
+}
+
 function updateChevron(event) {
   var $anchor = event.target.closest('.collapse-head');
   if ($anchor.getAttribute('aria-expanded') === 'true') {
@@ -998,6 +1003,7 @@ function addNotesClickedBtn(event) {
   data.editCity.notes.push(note);
   renderNotes(data.editCity);
   $addNotesModal.reset();
+  chevronEvent();
   // var addNoteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-note-modal'));
   // addNoteModal.hide();
 }
@@ -1038,5 +1044,3 @@ function renderNotes(city) {
     $notesSection.appendChild($noteBody);
   }
 }
-
-renderMyCities();
