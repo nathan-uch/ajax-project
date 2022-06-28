@@ -308,7 +308,8 @@ figure {
 #user-city-about,
 #user-city-scores,
 #user-city-leisure,
-#user-city-costs {
+#user-city-costs,
+.note {
   width: 85%;
   border: 1px solid #001d6e;
   border-top: none;

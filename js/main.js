@@ -1,5 +1,6 @@
 var $searchCity = document.forms[0];
 var $addToMyCitiesModal = document.forms[1];
+var $addNotesModal = document.forms[2];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
@@ -28,6 +29,10 @@ var $userCityScores = document.querySelector('.user-city-scores-row');
 var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
 var $userCityCostTable = document.querySelector('.user-city-cost-table');
 var $sectionsCollapse = document.querySelectorAll('.collapse-head');
+var $addNotesBtn = document.querySelector('#add-note-btn');
+var $noteTitle = document.querySelector('#note-title');
+var $noteMessage = document.querySelector('#note-message');
+var $notesSection = document.querySelector('.user-city-notes-section');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -39,6 +44,7 @@ $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityBtn.addEventListener('click', deleteCity);
+$addNotesBtn.addEventListener('click', addNotesClickedBtn);
 
 for (var c = 0; c < $sectionsCollapse.length; c++) {
   $sectionsCollapse[c].addEventListener('click', updateChevron);
@@ -886,6 +892,7 @@ function userCityClicked(event) {
     for (var e = 0; e < data.myEntries.length; e++) {
       if (id === data.myEntries[e].cityId) {
         clickedCity = data.myEntries[e];
+        data.editCity = data.myEntries[e];
       }
     }
     changeView('user-city-profile');
@@ -976,6 +983,52 @@ function updateChevron(event) {
     $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-down';
   } else {
     $anchor.firstElementChild.className = 'fa-solid fa-lg fa-chevron-left';
+  }
+}
+
+function addNotesClickedBtn(event) {
+  var note = {};
+  note.title = $noteTitle.value;
+  note.message = $noteMessage.value;
+  data.editCity.notes.push(note);
+  renderNotes(data.editCity);
+  $addNotesModal.reset();
+}
+
+function renderNotes(city) {
+  // <a class="note-collapse-btn collapse-head p-2 col-12 position-relative" href="#user-city-note"
+  //    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="user-city-note">
+  //    TITLE <i class="fa-solid fa-lg fa-chevron-left"></i>
+  // </a>
+  // <div class="w-100 collapse col-12 note" id="user-city-note">
+  //    <div class="px-3 align-items-center text-center user-city-note">
+  //      MESSAGE
+  //    </div>
+  // </div>
+  $notesSection.textContent = '';
+  for (var n = 0; n < city.notes.length; n++) {
+    var $noteHead = document.createElement('a');
+    var $noteChevron = document.createElement('i');
+    var $noteBody = document.createElement('div');
+    var $noteMessage = document.createElement('div');
+
+    $noteHead.className = 'note-collapse-btn collapse-head p-2 col-12 position-relative';
+    $noteHead.setAttribute('href', '#user-city-note' + n);
+    $noteHead.setAttribute('data-bs-toggle', 'collapse');
+    $noteHead.setAttribute('role', 'button');
+    $noteHead.setAttribute('aria-expanded', 'false');
+    $noteHead.setAttribute('aria-controls', 'user-city-note' + n);
+    $noteHead.textContent = data.editCity.notes[n].title;
+    $noteChevron.className = 'fa-solid fa-lg fa-chevron-left';
+    $noteBody.className = 'w-100 collapse col-12 note';
+    $noteBody.setAttribute('id', 'user-city-note' + n);
+    $noteMessage.className = 'px-3 align-items-center text-center user-city-note';
+    $noteMessage.textContent = data.editCity.notes[n].message;
+
+    $noteHead.appendChild($noteChevron);
+    $noteBody.appendChild($noteMessage);
+    $notesSection.appendChild($noteHead);
+    $notesSection.appendChild($noteBody);
   }
 }
 
