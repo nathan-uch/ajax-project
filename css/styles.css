@@ -316,6 +316,10 @@ figure {
   padding: 0;
 }
 
+.user-city-note {
+  white-space: pre-wrap;
+}
+
 .fa-chevron-left,
 .fa-chevron-down {
   position: absolute;
