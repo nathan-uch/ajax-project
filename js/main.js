@@ -882,6 +882,8 @@ function deleteCity() {
       }
     }
   }
+  // var deleteCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('remove-city-modal'));
+  // deleteCityModal.hide();
 }
 
 function userCityClicked(event) {
@@ -988,11 +990,16 @@ function updateChevron(event) {
 
 function addNotesClickedBtn(event) {
   var note = {};
+  if ($noteTitle.value === '' || $noteMessage.vale === '') {
+    return;
+  }
   note.title = $noteTitle.value;
   note.message = $noteMessage.value;
   data.editCity.notes.push(note);
   renderNotes(data.editCity);
   $addNotesModal.reset();
+  // var addNoteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-note-modal'));
+  // addNoteModal.hide();
 }
 
 function renderNotes(city) {
