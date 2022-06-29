@@ -1,10 +1,16 @@
 body {
+  font-family: Nunito, sans-serif;
   color: #001d6e;
 }
 
 /* NAVBAR */
 .navbar {
   min-width: 240px;
+}
+
+.navbar-brand {
+  font-family: "Gochi Hand", cursive;
+  font-size: 1.7rem;
 }
 
 .navbar,
@@ -28,6 +34,7 @@ body {
 .fa-shoe-prints {
   margin-left: 7px;
   transform: rotate(-45deg);
+  font-size: 1.2rem;
 }
 
 /* SEARCH CITY */
@@ -289,6 +296,7 @@ figure {
 
 .star-icon {
   width: 30px;
+  cursor: pointer;
 }
 
 .collapse-head {
@@ -342,5 +350,21 @@ figure {
     top: 3px;
     color: rgb(0, 29, 110);
     z-index: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .profile-container {
+    padding: 0 5%;
+  }
+
+  .x-btn {
+    top: 3px;
+    color: rgb(0, 29, 110);
+    z-index: 0;
+  }
+
+  #note-message {
+    max-height: 130px;
   }
 }
