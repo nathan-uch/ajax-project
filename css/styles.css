@@ -345,15 +345,9 @@ figure {
   .city-card .fa-plane {
     right: 20px;
   }
-
-  .x-btn {
-    top: 3px;
-    color: rgb(0, 29, 110);
-    z-index: 0;
-  }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   .profile-container {
     padding: 0 5%;
   }
