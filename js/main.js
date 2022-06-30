@@ -32,6 +32,7 @@ var $addNotesBtn = document.querySelector('#add-note-btn');
 var $noteTitle = document.querySelector('#note-title');
 var $noteMessage = document.querySelector('#note-message');
 var $notesSection = document.querySelector('.user-city-notes-section');
+var $loadingSpinner = document.querySelector('.lds-ring');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -47,6 +48,8 @@ $addNotesBtn.addEventListener('click', addNotesClickedBtn);
 
 function getSearchResults(event) {
   event.preventDefault();
+  $searchResultsRow.textContent = '';
+  $loadingSpinner.classList.remove('hidden');
   var searchValue = null;
   var searchRequest = 'https://api.teleport.org/api/cities/?search=';
   if ($searchBox.value !== '') {
@@ -64,7 +67,14 @@ function getSearchResults(event) {
 }
 
 function renderSearchResults() {
-  $searchResultsRow.textContent = '';
+  if (data.searchResults.http_status_code === 500) {
+    $loadingSpinner.classList.add('hidden');
+    $searchResultsRow.textContent = 'Sorry, there was a problem with the servers. Try again later';
+  } else if (data.searchResults._embedded['city:search-results'].length === 0) {
+    $loadingSpinner.classList.add('hidden');
+    $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
+  }
+
   for (var i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 col-md-3 d-flex justify-content-center text-center">
     //    <a href="#" class="searched-card position-relative">
@@ -108,6 +118,7 @@ function renderSearchResults() {
     $cityCard.appendChild($countryName);
     $cityCard.appendChild($cardIcon);
     $column.appendChild($cityCard);
+    $loadingSpinner.classList.add('hidden');
     $searchResultsRow.appendChild($column);
   }
 }
