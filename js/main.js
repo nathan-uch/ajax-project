@@ -1061,6 +1061,7 @@ function renderNotes(city) {
 // PLACEHOLDER WHILE SERVERS ARE DOWN (CODE BELOW)
 
 function renderCurrentCity() {
+  data.currentView = 'city-profile';
   renderImageAndTitle(data.currentCity);
   renderCityDescription(data.currentCity);
   renderCityScores(data.currentCity);

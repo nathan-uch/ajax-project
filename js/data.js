@@ -491,10 +491,10 @@ var data = {
     },
 
     scores: {
-      travel: 3.61,
-      safety: 4.79,
-      leisure: 9.4,
-      outdoors: 7.2
+      travel: 4,
+      safety: 5,
+      leisure: 9,
+      outdoors: 7
     }
   },
   hasLivingCity: null,

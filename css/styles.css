@@ -108,14 +108,17 @@ body {
   padding: 0 4rem;
 }
 
-.img-fluid {
-  min-height: 150px;
-}
-
 figure {
   position: relative;
   color: white;
   padding: 0;
+  width: 100%;
+}
+
+.img-fluid {
+  object-fit: cover;
+  width: 100%;
+  max-height: 250px;
 }
 
 .caption {
