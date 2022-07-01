@@ -63,15 +63,17 @@ function getSearchResults(event) {
       renderSearchResults();
     });
     xhr.send();
+  } else {
+    $loadingSpinner.classList.add('hidden');
+    $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
   }
 }
 
 function renderSearchResults() {
+  $loadingSpinner.classList.add('hidden');
   if (data.searchResults.http_status_code === 500) {
-    $loadingSpinner.classList.add('hidden');
     $searchResultsRow.textContent = 'Sorry, there was a problem with the servers. Try again later';
   } else if (data.searchResults._embedded['city:search-results'].length === 0) {
-    $loadingSpinner.classList.add('hidden');
     $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
   }
 
