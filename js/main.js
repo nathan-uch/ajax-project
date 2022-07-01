@@ -1,6 +1,7 @@
 var $searchCity = document.forms[0];
 var $addToMyCitiesModal = document.forms[1];
-var $addNotesModal = document.forms[2];
+var $removeCityModal = document.forms[2];
+var $addNotesModal = document.forms[3];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
@@ -19,7 +20,6 @@ var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
-var $removeCityBtn = document.querySelector('#remove-city-btn');
 var $removeCityDisplay = document.querySelector('.remove-city-display');
 var $userCityHeader = document.querySelector('.user-city-head');
 var $userCityDescription = document.querySelector('.user-city-description-section');
@@ -41,7 +41,7 @@ $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
-$removeCityBtn.addEventListener('click', deleteCity);
+$removeCityModal.addEventListener('submit', deleteCity);
 $addNotesModal.addEventListener('submit', addNotesClickedBtn);
 
 function getSearchResults(event) {
@@ -880,7 +880,8 @@ function sortCountryNameRev(array) {
   return array;
 }
 
-function deleteCity() {
+function deleteCity(event) {
+  event.preventDefault();
   var $allUserCards = document.querySelectorAll('.card-wrapper');
   for (var c = 0; c < $allUserCards.length; c++) {
     for (var p = 0; p < data.myEntries.length; p++) {
