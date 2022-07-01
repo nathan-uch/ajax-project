@@ -12,7 +12,6 @@ var $cityScoresContainer = document.querySelector('.city-profile-score');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
 var $modalYear = document.querySelector('#year');
-var $saveCityBtn = document.querySelector('.save-city-btn');
 var $typeOfVisit = document.querySelector('#visit-type');
 var $visitMonth = document.querySelector('#month');
 var $visitYear = document.querySelector('#year');
@@ -28,7 +27,6 @@ var $userCityAbout = document.querySelector('.user-city-about-section');
 var $userCityScores = document.querySelector('.user-city-scores-row');
 var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
 var $userCityCostTable = document.querySelector('.user-city-cost-table');
-var $addNotesBtn = document.querySelector('#add-note-btn');
 var $noteTitle = document.querySelector('#note-title');
 var $noteMessage = document.querySelector('#note-message');
 var $notesSection = document.querySelector('.user-city-notes-section');
@@ -38,13 +36,13 @@ $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 $userCitiesAnchor.addEventListener('click', switchNavbarPage);
-$saveCityBtn.addEventListener('click', saveCitytoUserList);
+$addToMyCitiesModal.addEventListener('submit', saveCitytoUserList);
 $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityBtn.addEventListener('click', deleteCity);
-$addNotesBtn.addEventListener('click', addNotesClickedBtn);
+$addNotesModal.addEventListener('submit', addNotesClickedBtn);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -658,6 +656,7 @@ function renderModalYears() {
 }
 
 function saveCitytoUserList() {
+  event.preventDefault();
   var parenthesis = data.currentCity.cityArea.indexOf('(');
   data.currentCity.cityId = data.nextCityId;
   data.nextCityId++;
@@ -1007,6 +1006,7 @@ function updateChevron(event) {
 }
 
 function addNotesClickedBtn(event) {
+  event.preventDefault();
   var note = {};
   if ($noteTitle.value === '' || $noteMessage.vale === '') {
     return;
