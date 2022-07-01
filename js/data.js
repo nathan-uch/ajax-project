@@ -2,37 +2,499 @@
 
 var data = {
   currentView: null,
-  searchResults: null,
+  searchResults: {
+    _embedded: {
+      'city:search-results': [
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:5391959/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, California, United States'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3652462/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco de Quito'
+            }
+          ],
+          matching_full_name: 'Quito, Pichincha, Ecuador (San Francisco de Quito)'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3493146/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco de Macor\u00eds'
+            },
+            {
+              name: 'San Francisco de Macoris'
+            }
+          ],
+          matching_full_name: 'San Francisco de Macor\u00eds, Duarte, Dominican Republic'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3515807/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Tepoiaco'
+            }
+          ],
+          matching_full_name: 'Cuautitl\u00e1n Izcalli, M\u00e9xico, Mexico (San Francisco Tepoiaco)'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3986984/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco del Rinc\u00f3n'
+            },
+            {
+              name: 'San Francisco del Rincon'
+            }
+          ],
+          matching_full_name: 'San Francisco del Rinc\u00f3n, Guanajuato, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3837675/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, Cordoba Province, Argentina'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3621911/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, Heredia, Costa Rica'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3590219/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            },
+            {
+              name: 'San Francisco El Alto'
+            }
+          ],
+          matching_full_name: 'San Francisco El Alto, Totonicap\u00e1n, Guatemala'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3531732/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco de Campeche'
+            }
+          ],
+          matching_full_name: 'Campeche, Campeche, Mexico (San Francisco de Campeche)'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3654215/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco de Milagro'
+            }
+          ],
+          matching_full_name: 'Milagro, Guayas, Ecuador (San Francisco de Milagro)'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3519290/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Acuautla'
+            }
+          ],
+          matching_full_name: 'San Francisco Acuautla, M\u00e9xico, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:1689973/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, Central Luzon, Philippines'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:1690019/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, Caraga, Philippines'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3583747/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            },
+            {
+              name: 'San Francisco Gotera'
+            }
+          ],
+          matching_full_name: 'San Francisco, Moraz\u00e1n, El Salvador'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3590197/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Zapotitlan'
+            },
+            {
+              name: 'San Francisco Zapotitl\u00e1n'
+            }
+          ],
+          matching_full_name: 'San Francisco Zapotitl\u00e1n, Suchitepeque, Guatemala'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:8858142/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Tecoxpa'
+            }
+          ],
+          matching_full_name: 'San Francisco Tecoxpa, Mexico City, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3519249/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Tlalcilalcalpa'
+            },
+            {
+              name: 'San Francisco Tlalcilalcalpan'
+            }
+          ],
+          matching_full_name: 'San Francisco Tlalcilalcalpan, M\u00e9xico, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3522454/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Ocotlan'
+            },
+            {
+              name: 'San Francisco Ocotl\u00e1n'
+            }
+          ],
+          matching_full_name: 'San Francisco Ocotl\u00e1n, Puebla, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3519255/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Telixtlahuaca'
+            },
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco Telixtlahuaca, Oaxaca, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:1690011/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco, Central Visayas, Philippines'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3827448/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Chimalpa'
+            }
+          ],
+          matching_full_name: 'San Francisco Chimalpa, M\u00e9xico, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3449112/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco del Sur'
+            }
+          ],
+          matching_full_name: 'S\u00e3o Francisco do Sul, Santa Catarina, Brazil (San Francisco del Sur)'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3519243/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Zacacalco'
+            },
+            {
+              name: 'San Francisco'
+            }
+          ],
+          matching_full_name: 'San Francisco Zacacalco, Morelos, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3530852/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Chimalpa'
+            }
+          ],
+          matching_full_name: 'San Francisco Chimalpa, Morelos, Mexico'
+        },
+        {
+          _links: {
+            'city:item': {
+              href: 'https://api.teleport.org/api/cities/geonameid:3981791/'
+            }
+          },
+          matching_alternate_names: [
+            {
+              name: 'San Francisco Tesistan'
+            },
+            {
+              name: 'San Francisco Tesist\u00e1n'
+            }
+          ],
+          matching_full_name: 'Tesist\u00e1n, Jalisco, Mexico (San Francisco Tesistan)'
+        }
+      ]
+    },
+    _links: {
+      curies: [
+        {
+          href: 'https://developers.teleport.org/api/resources/Location/#!/relations/{rel}/',
+          name: 'location',
+          templated: true
+        },
+        {
+          href: 'https://developers.teleport.org/api/resources/City/#!/relations/{rel}/',
+          name: 'city',
+          templated: true
+        },
+        {
+          href: 'https://developers.teleport.org/api/resources/UrbanArea/#!/relations/{rel}/',
+          name: 'ua',
+          templated: true
+        },
+        {
+          href: 'https://developers.teleport.org/api/resources/Country/#!/relations/{rel}/',
+          name: 'country',
+          templated: true
+        },
+        {
+          href: 'https://developers.teleport.org/api/resources/Admin1Division/#!/relations/{rel}/',
+          name: 'a1',
+          templated: true
+        },
+        {
+          href: 'https://developers.teleport.org/api/resources/Timezone/#!/relations/{rel}/',
+          name: 'tz',
+          templated: true
+        }
+      ],
+      self: {
+        href: 'https://api.teleport.org/api/cities/?search=San%20Francisco&geohash='
+      }
+    },
+    count: 25
+  },
   nextCityId: 0,
   currentCity: {
     cityId: null,
-    cityObj: null,
-    hasDetails: null,
-    cityProfileUrl: null,
-    cityName: null,
-    cityArea: null,
-    cityCountry: null,
-    searchCardId: null,
-    cityImageUrl: null,
-    citySummary: null,
-    cityPop: null,
-    locations: null,
-    costs: null,
+    cityObj: {
+      _links: {
+        'city:item': {
+          href: 'https://api.teleport.org/api/cities/geonameid:5391959/'
+        }
+      },
+      matching_alternate_names: [
+        {
+          name: 'San Francisco'
+        }
+      ],
+      matching_full_name: 'San Francisco, California, United States'
+    },
+    hasDetails: true,
+    cityProfileUrl: 'https://api.teleport.org/api/cities/geonameid:5391959/',
+    cityName: 'San Francisco',
+    cityArea: 'California, United States',
+    cityCountry: 'United States',
+    searchCardId: 0,
+    cityImageUrl: 'https://d13k13wj6adfdf.cloudfront.net/urban_areas/San_Francisco_9q8yy-7f6d130d20.jpg',
+    citySummary: 'San Francisco Bay Area, California, is among the leading cities with a higher number of accelerators or available funding. According to city rankings, this is a good place to live with high ratings in startups, business freedom and healthcare.',
+    cityPop: '874,784',
+    locations: [
+      {
+        name: 'Art Galleries',
+        num: 416,
+        score: 0.98
+      },
+      {
+        name: 'Cinemas',
+        num: 183,
+        score: 0.90
+      },
+      {
+        name: 'Comedy Clubs',
+        num: 227,
+        score: 0.99
+      },
+      {
+        name: 'Concert Venues',
+        num: 298,
+        score: 0.99
+      },
+      {
+        name: 'Historical Sites',
+        num: 312,
+        score: 0.95
+      },
+      {
+        name: 'Museums',
+        num: 279,
+        score: 0.92
+      }
+    ],
+    costs: [
+      {
+        name: 'Restaurant Lunch',
+        cost: '$16.00'
+      },
+      {
+        name: 'Monthly Public Transport',
+        cost: '$84.00'
+      },
+      {
+        name: 'Beer',
+        cost: '$2.60'
+      },
+      {
+        name: 'Movie Tickets',
+        cost: '$12.00'
+      },
+      {
+        name: 'Apples (kg)',
+        cost: '$4.70'
+      }
+    ],
     visitType: null,
     visitDate: null,
     rating: null,
     notes: [],
 
     cityImageAtt: {
-      authorName: null,
-      authorUrl: null
+      authorName: 'Jitze Couperus',
+      authorUrl: 'https://www.flickr.com/photos/jitze1942/5189324796/'
     },
 
     scores: {
-      travel: null,
-      safety: null,
-      leisure: null,
-      outdoors: null
+      travel: 3.61,
+      safety: 4.79,
+      leisure: 9.4,
+      outdoors: 7.2
     }
   },
   hasLivingCity: null,

@@ -82,8 +82,8 @@ function renderSearchResults() {
     //    <a href="#" class="searched-card position-relative">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
-    //        <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //    </a>
+    //    <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     // </div>
 
     var $column = document.createElement('div');
@@ -107,7 +107,7 @@ function renderSearchResults() {
     var country = areaCountry.substring(secondComma, areaCountry.length);
     var city = fullName.substring(0, commaIndex);
 
-    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all';
+    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card position-relative';
@@ -118,7 +118,7 @@ function renderSearchResults() {
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
-    $cityCard.appendChild($cardIcon);
+    $column.appendChild($cardIcon);
     $column.appendChild($cityCard);
     $loadingSpinner.classList.add('hidden');
     $searchResultsRow.appendChild($column);
@@ -1057,3 +1057,18 @@ function renderNotes(city) {
     $notesSection.appendChild($noteBody);
   }
 }
+
+// PLACEHOLDER WHILE SERVERS ARE DOWN (CODE BELOW)
+
+function renderCurrentCity() {
+  renderImageAndTitle(data.currentCity);
+  renderCityDescription(data.currentCity);
+  renderCityScores(data.currentCity);
+  renderLeisureTable(data.currentCity);
+  renderCostTable(data.currentCity);
+  renderModalYears();
+}
+
+renderMyCities();
+renderSearchResults();
+renderCurrentCity();
