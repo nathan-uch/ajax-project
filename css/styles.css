@@ -73,6 +73,7 @@ body {
 
 .search-country {
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
