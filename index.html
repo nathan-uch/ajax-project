@@ -41,7 +41,7 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center hidden" data-view="search">
+    <div class="container-fluid text-center" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City or Country">
@@ -83,7 +83,7 @@
       </div>
     </div>
     <!-- USER CITIES -->
-    <div class="container-fluid user-cities text-center" data-view="user-cities">
+    <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
       <h2 class="mt-5 mb-4">My Cities</h2>
       <label for="sort-cities" class="sort-label">Sort by:</label>
       <select name="sort-cities" id="sort-cities" class="form-select d-inline m-3">
@@ -216,7 +216,7 @@
       <div class="modal-dialog modal-dialog-centered justify-content-center">
         <div class="modal-content note-modal">
           <form class="p-4">
-            <div class="modal-body add-note-modal-body">
+            <div class="modal-body add-note-modal-body p-0">
               <h4 class="text-center">Add Note</h4>
               <label for="note-title" class="w-100">Title</label>
               <input type="text" name="note-title" id="note-title" class="form-label w-100 p-2">

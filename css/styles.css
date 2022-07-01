@@ -5,18 +5,13 @@ body {
 
 /* NAVBAR */
 .navbar {
-  min-width: 240px;
+  padding: 0 4rem;
+  color: white;
 }
 
 .navbar-brand {
   font-family: "Gochi Hand", cursive;
   font-size: 1.7rem;
-}
-
-.navbar,
-.search-container {
-  padding: 0 10%;
-  color: white;
 }
 
 .navbar-bg-color {
@@ -32,7 +27,7 @@ body {
 }
 
 .fa-shoe-prints {
-  margin-left: 7px;
+  margin-left: 8px;
   transform: rotate(-45deg);
   font-size: 1.2rem;
 }
@@ -43,8 +38,8 @@ body {
   max-width: 380px;
 }
 
-h2 {
-  color: #001d6e;
+.search-container {
+  padding: 0 4rem;
 }
 
 .submit-btn {
@@ -93,7 +88,7 @@ h2 {
 
 /* CITY PROFILE */
 .profile-container {
-  padding: 0 10%;
+  padding: 0 4rem;
 }
 
 .img-fluid {
@@ -130,8 +125,8 @@ figure {
 
 .table-container {
   border: 1px solid rgb(0, 29, 110, 0.5);
-  padding: 0 3%;
-  margin: 0 15%;
+  padding: 0 1.5rem;
+  margin: 0 5rem;
 }
 
 .add-city-btn {
@@ -255,7 +250,7 @@ figure {
 
 .city-card:hover h5,
 .city-card:hover p {
-  margin-right: 30px;
+  margin-right: 3rem;
 }
 
 .city-card:hover .fa-plane {
@@ -280,10 +275,6 @@ figure {
   min-height: 230px;
 }
 
-.add-note-modal-body {
-  padding: 0;
-}
-
 #note-message {
   resize: none;
 }
@@ -305,7 +296,7 @@ figure {
   text-decoration: none;
   border: 1px solid #001d6e;
   min-width: 240px;
-  margin: 5% 10% 0;
+  margin: 2.5rem 4rem 0;
   border-radius: 0.375rem;
 }
 

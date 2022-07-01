@@ -330,7 +330,7 @@ function renderImageAndTitle(city) {
   $authorLink.setAttribute('href', city.cityImageAtt.authorUrl);
   $authorLink.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
   $cityName.textContent = city.cityName;
-  $cityName.className = 'col-12';
+  $cityName.className = 'col-12 fw-bolder fs-1';
   $cityArea.textContent = city.cityArea;
   $cityArea.className = 'col-12 w-100';
 
