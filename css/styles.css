@@ -83,7 +83,7 @@ body {
 
 .city-card .fa-plane {
   top: 50px;
-  right: 15px;
+  right: 20px;
   color: rgba(0, 0, 0, 0);
   transition: color 1.5s;
 }

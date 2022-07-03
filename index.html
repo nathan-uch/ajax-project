@@ -41,7 +41,7 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center" data-view="search">
+    <div class="container-fluid text-center hidden" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City or Country">
@@ -60,7 +60,7 @@
       </div>
     </div>
     <!-- SEARCHED CITY PROFILE -->
-    <div class="container-fluid profile-container hidden" data-view="city-profile">
+    <div class="container-fluid profile-container" data-view="city-profile">
       <div class="row">
         <div class="col d-flex flex-wrap align-items-center text-center my-4 profile-img"></div>
       </div>
@@ -188,11 +188,10 @@
                 <select name="year" id="year" class="form-select" required>
                 </select>
               </label>
-            </div>
-            <div class="modal-footer justify-content-around">
-              <p class="modal-message"></p>
-              <button type="submit" class="save-city-btn btn pl-4 px-4">ADD</button>
-              <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+              <div class="d-flex justify-content-around text-center pt-4">
+                <button type="submit" class="save-city-btn btn pl-4 px-4">ADD</button>
+                <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+              </div>
             </div>
           </form>
         </div>
