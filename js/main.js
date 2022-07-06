@@ -1,6 +1,7 @@
 var $searchCity = document.forms[0];
 var $addToMyCitiesModal = document.forms[1];
-var $addNotesModal = document.forms[2];
+var $removeCityModal = document.forms[2];
+var $addNotesModal = document.forms[3];
 var $searchBox = document.querySelector('.searchbox');
 var $searchResultsRow = document.querySelector('.search-results-row');
 var $dataView = document.querySelectorAll('[data-view]');
@@ -12,7 +13,6 @@ var $cityScoresContainer = document.querySelector('.city-profile-score');
 var $cityLocationsContainer = document.querySelector('.profile-leisure');
 var $cityCostsContainer = document.querySelector('.profile-costs');
 var $modalYear = document.querySelector('#year');
-var $saveCityBtn = document.querySelector('.save-city-btn');
 var $typeOfVisit = document.querySelector('#visit-type');
 var $visitMonth = document.querySelector('#month');
 var $visitYear = document.querySelector('#year');
@@ -20,7 +20,6 @@ var $userCitiesList = document.querySelector('.user-cities-display');
 var $livesOption = document.querySelector('#lives-option');
 var $modalMessage = document.querySelector('.modal-message');
 var $sortOption = document.querySelector('#sort-cities');
-var $removeCityBtn = document.querySelector('#remove-city-btn');
 var $removeCityDisplay = document.querySelector('.remove-city-display');
 var $userCityHeader = document.querySelector('.user-city-head');
 var $userCityDescription = document.querySelector('.user-city-description-section');
@@ -28,7 +27,6 @@ var $userCityAbout = document.querySelector('.user-city-about-section');
 var $userCityScores = document.querySelector('.user-city-scores-row');
 var $userCityLeisureTable = document.querySelector('.user-city-leisure-table');
 var $userCityCostTable = document.querySelector('.user-city-cost-table');
-var $addNotesBtn = document.querySelector('#add-note-btn');
 var $noteTitle = document.querySelector('#note-title');
 var $noteMessage = document.querySelector('#note-message');
 var $notesSection = document.querySelector('.user-city-notes-section');
@@ -38,13 +36,13 @@ $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
 $userCitiesAnchor.addEventListener('click', switchNavbarPage);
-$saveCityBtn.addEventListener('click', saveCitytoUserList);
+$addToMyCitiesModal.addEventListener('submit', saveCitytoUserList);
 $typeOfVisit.addEventListener('change', renderModalYears);
 $visitMonth.addEventListener('change', clearMessage);
 $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
-$removeCityBtn.addEventListener('click', deleteCity);
-$addNotesBtn.addEventListener('click', addNotesClickedBtn);
+$removeCityModal.addEventListener('submit', deleteCity);
+$addNotesModal.addEventListener('submit', addNotesClickedBtn);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -63,15 +61,17 @@ function getSearchResults(event) {
       renderSearchResults();
     });
     xhr.send();
+  } else {
+    $loadingSpinner.classList.add('hidden');
+    $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
   }
 }
 
 function renderSearchResults() {
+  $loadingSpinner.classList.add('hidden');
   if (data.searchResults.http_status_code === 500) {
-    $loadingSpinner.classList.add('hidden');
     $searchResultsRow.textContent = 'Sorry, there was a problem with the servers. Try again later';
   } else if (data.searchResults._embedded['city:search-results'].length === 0) {
-    $loadingSpinner.classList.add('hidden');
     $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
   }
 
@@ -80,8 +80,8 @@ function renderSearchResults() {
     //    <a href="#" class="searched-card position-relative">
     //        <h5 class="mt-3">City Name<h5>
     //        <p class="search-country">Area, Country<p>
-    //        <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //    </a>
+    //    <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     // </div>
 
     var $column = document.createElement('div');
@@ -105,7 +105,7 @@ function renderSearchResults() {
     var country = areaCountry.substring(secondComma, areaCountry.length);
     var city = fullName.substring(0, commaIndex);
 
-    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all';
+    $column.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
     $column.setAttribute('data-card-id', i);
     $cityCard.setAttribute('href', '#');
     $cityCard.className = 'searched-card position-relative';
@@ -116,7 +116,7 @@ function renderSearchResults() {
 
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
-    $cityCard.appendChild($cardIcon);
+    $column.appendChild($cardIcon);
     $column.appendChild($cityCard);
     $loadingSpinner.classList.add('hidden');
     $searchResultsRow.appendChild($column);
@@ -330,7 +330,7 @@ function renderImageAndTitle(city) {
   $authorLink.setAttribute('href', city.cityImageAtt.authorUrl);
   $authorLink.textContent = 'Photo by: ' + city.cityImageAtt.authorName;
   $cityName.textContent = city.cityName;
-  $cityName.className = 'col-12';
+  $cityName.className = 'col-12 fw-bolder fs-1';
   $cityArea.textContent = city.cityArea;
   $cityArea.className = 'col-12 w-100';
 
@@ -656,6 +656,7 @@ function renderModalYears() {
 }
 
 function saveCitytoUserList() {
+  event.preventDefault();
   var parenthesis = data.currentCity.cityArea.indexOf('(');
   data.currentCity.cityId = data.nextCityId;
   data.nextCityId++;
@@ -879,7 +880,8 @@ function sortCountryNameRev(array) {
   return array;
 }
 
-function deleteCity() {
+function deleteCity(event) {
+  event.preventDefault();
   var $allUserCards = document.querySelectorAll('.card-wrapper');
   for (var c = 0; c < $allUserCards.length; c++) {
     for (var p = 0; p < data.myEntries.length; p++) {
@@ -1005,6 +1007,7 @@ function updateChevron(event) {
 }
 
 function addNotesClickedBtn(event) {
+  event.preventDefault();
   var note = {};
   if ($noteTitle.value === '' || $noteMessage.vale === '') {
     return;
@@ -1055,3 +1058,19 @@ function renderNotes(city) {
     $notesSection.appendChild($noteBody);
   }
 }
+
+// PLACEHOLDER WHILE SERVERS ARE DOWN (CODE BELOW)
+
+function renderCurrentCity() {
+  data.currentView = 'city-profile';
+  renderImageAndTitle(data.currentCity);
+  renderCityDescription(data.currentCity);
+  renderCityScores(data.currentCity);
+  renderLeisureTable(data.currentCity);
+  renderCostTable(data.currentCity);
+  renderModalYears();
+}
+
+renderMyCities();
+renderSearchResults();
+renderCurrentCity();

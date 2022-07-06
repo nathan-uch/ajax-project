@@ -41,7 +41,7 @@
   </header>
   <main>
     <!-- SEARCH CITIES -->
-    <div class="container-fluid text-center hidden" data-view="search">
+    <div class="container-fluid text-center" data-view="search">
       <form action="" class="row search-container justify-content-center gap-3 mb-5">
         <h2 class="mt-5 mb-4">Where have you traveled to?</h2>
         <input type="search" class="form-control searchbox" placeholder="Search City or Country">
@@ -83,7 +83,7 @@
       </div>
     </div>
     <!-- USER CITIES -->
-    <div class="container-fluid user-cities text-center" data-view="user-cities">
+    <div class="container-fluid user-cities text-center hidden" data-view="user-cities">
       <h2 class="mt-5 mb-4">My Cities</h2>
       <label for="sort-cities" class="sort-label">Sort by:</label>
       <select name="sort-cities" id="sort-cities" class="form-select d-inline m-3">
@@ -188,11 +188,11 @@
                 <select name="year" id="year" class="form-select" required>
                 </select>
               </label>
-            </div>
-            <div class="modal-footer justify-content-around">
-              <p class="modal-message"></p>
-              <button type="button" class="save-city-btn btn pl-4 px-4">ADD</button>
-              <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+              <p class="modal-message mt-2"></p>
+              <div class="d-flex justify-content-around text-center pt-4">
+                <button type="submit" class="save-city-btn btn pl-4 px-4">ADD</button>
+                <button type="button" class="btn btn-danger pr-4" data-bs-dismiss="modal" aria-label="Close">CANCEL</button>
+              </div>
             </div>
           </form>
         </div>
@@ -202,12 +202,14 @@
     <div class="modal fade" id="remove-city-modal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered justify-content-center">
         <div class="modal-content remove-modal mx-2 text-center">
-          <div class="modal-body p-4">
-            <h4 class="mt-2 text-center">Are you sure you want to delete this city from your list?</h4>
-            <p class="text-center remove-city-display"></p>
-            <button type="button" class="btn btn-danger pl-4 px-3 mx-2 float-start" id="remove-city-btn">REMOVE</button>
-            <button type="button" class="btn pr-4 mx-2 float-end" data-bs-dismiss="modal" aria-label="Close">GO BACK</button>
-          </div>
+          <form>
+            <div class="modal-body p-4">
+              <h4 class="mt-2 text-center">Are you sure you want to delete this city from your list?</h4>
+              <p class="text-center remove-city-display mb-3"></p>
+              <button type="submit" class="btn btn-danger pl-4 px-3 mx-2 my-3 float-start" id="remove-city-btn">REMOVE</button>
+              <button type="button" class="btn pr-4 mx-2 my-3 float-end" data-bs-dismiss="modal" aria-label="Close">GO BACK</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -216,13 +218,13 @@
       <div class="modal-dialog modal-dialog-centered justify-content-center">
         <div class="modal-content note-modal">
           <form class="p-4">
-            <div class="modal-body add-note-modal-body">
+            <div class="modal-body add-note-modal-body p-0">
               <h4 class="text-center">Add Note</h4>
               <label for="note-title" class="w-100">Title</label>
               <input type="text" name="note-title" id="note-title" class="form-label w-100 p-2">
               <label for="note-message" class="w-100">Notes</label>
               <textarea name="note-message" id="note-message" rows="8" class="form-label w-100 p-2 mb-3"></textarea>
-              <button type="button" class="btn px-3 mx-2 float-start" id="add-note-btn">ADD NOTE</button>
+              <button type="submit" class="btn px-3 mx-2 float-start" id="add-note-btn">ADD NOTE</button>
               <button type="button" class="btn btn-danger pr-3 mx-2 float-end" data-bs-dismiss="modal"
                 aria-label="Close">CANCEL</button>
             </div>
