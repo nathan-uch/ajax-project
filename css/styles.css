@@ -166,6 +166,7 @@ figure {
 
 /* ADD CITY MODAL */
 .add-modal {
+  margin: 0 auto;
   max-width: 400px;
 }
 
@@ -267,19 +268,22 @@ figure {
 
 /* REMOVE CITY MODAL */
 .remove-modal,
-.note-modal {
-  width: 85%;
-  min-height: 230px;
+.remove-modal .modal-body {
+  min-width: 300px;
+  min-height: 190px;
+  text-align: center;
 }
 
 .remove-city-display {
   font-size: 1.4rem;
   font-weight: bold;
-  margin: 1.5rem 0;
+  margin: 0;
 }
 
 /* ADD NOTE MODAL */
 .note-modal {
+  width: 85%;
+  min-width: 300px;
   min-height: 230px;
 }
 
