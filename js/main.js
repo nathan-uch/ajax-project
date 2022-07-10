@@ -1073,11 +1073,58 @@ function getMajorCities() {
 }
 
 function renderMajorCityCards() {
-  // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
-  //   <a href="#" class="major-city-card" >
-  //     <h5>Zurich</h5>
-  //     <i class="fa-solid fa-plane fa-lg position-absolute"></i>
-  //   </a>
-  // </div>
+  const $page1 = document.querySelector('.mc-page-1');
+  const $page2 = document.querySelector('.mc-page-2');
+  const $page3 = document.querySelector('.mc-page-3');
+  const $page4 = document.querySelector('.mc-page-4');
+  const $page5 = document.querySelector('.mc-page-5');
+  const $page6 = document.querySelector('.mc-page-6');
+  const $page7 = document.querySelector('.mc-page-7');
+  const $page8 = document.querySelector('.mc-page-8');
+  const $page9 = document.querySelector('.mc-page-8');
+  const allMajorCities = data.majorCities._links['ua:item'];
 
+  for (const num in allMajorCities) {
+    // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
+    //   <a href="#" class="major-city-card" >
+    //     <h5>Zurich</h5>
+    //     <i class="fa-solid fa-plane fa-lg position-absolute"></i>
+    //   </a>
+    // </div>
+
+    const $cardWrapper = document.createElement('div');
+    const $anchor = document.createElement('a');
+    const $city = document.createElement('h5');
+    const $planeIcon = document.createElement('i');
+
+    $cardWrapper.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
+    $anchor.className = 'major-city-card';
+    $anchor.setAttribute('href', '#');
+    $city.textContent = allMajorCities[num];
+    $planeIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
+
+    $cardWrapper.appendChild($anchor);
+    $anchor.appendChild($city);
+    $anchor.appendChild($planeIcon);
+
+    if (num < 29) {
+      $page1.appendChild($cardWrapper);
+    } else if (num > 29 && num < 59) {
+      $page2.appendChild($cardWrapper);
+    } else if (num > 59 && num < 89) {
+      $page3.appendChild($cardWrapper);
+    } else if (num > 89 && num < 119) {
+      $page4.appendChild($cardWrapper);
+    } else if (num > 119 && num < 149) {
+      $page5.appendChild($cardWrapper);
+    } else if (num > 149 && num < 179) {
+      $page6.appendChild($cardWrapper);
+    } else if (num > 179 && num < 209) {
+      $page7.appendChild($cardWrapper);
+    } else if (num > 209 && num < 239) {
+      $page8.appendChild($cardWrapper);
+    } else if (num > 239) {
+      $page9.appendChild($cardWrapper);
+    }
+  }
 }
