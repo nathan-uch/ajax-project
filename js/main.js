@@ -1100,7 +1100,7 @@ function renderMajorCityCards() {
     $cardWrapper.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
     $anchor.className = 'major-city-card';
     $anchor.setAttribute('href', '#');
-    $city.textContent = allMajorCities[num];
+    $city.textContent = allMajorCities[num].name;
     $planeIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
 
     $cardWrapper.appendChild($anchor);
