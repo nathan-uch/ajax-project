@@ -31,6 +31,8 @@ const $noteTitle = document.querySelector('#note-title');
 const $noteMessage = document.querySelector('#note-message');
 const $notesSection = document.querySelector('.user-city-notes-section');
 const $loadingSpinner = document.querySelector('.lds-ring');
+const $majorCityPages = document.querySelector('.mc-pages-container');
+const $mCPages = document.querySelectorAll('.major-cities-list');
 
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
@@ -43,7 +45,8 @@ $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityModal.addEventListener('submit', deleteCity);
 $addNotesModal.addEventListener('submit', addNotesClickedBtn);
-window.addEventListener('load', getMajorCities());
+window.addEventListener('load', getMajorCities);
+$majorCityPages.addEventListener('click', displayMCPage);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -1073,15 +1076,14 @@ function getMajorCities() {
 }
 
 function renderMajorCityCards() {
-  const $page1 = document.querySelector('.mc-page-1');
-  const $page2 = document.querySelector('.mc-page-2');
-  const $page3 = document.querySelector('.mc-page-3');
-  const $page4 = document.querySelector('.mc-page-4');
-  const $page5 = document.querySelector('.mc-page-5');
-  const $page6 = document.querySelector('.mc-page-6');
-  const $page7 = document.querySelector('.mc-page-7');
-  const $page8 = document.querySelector('.mc-page-8');
-  const $page9 = document.querySelector('.mc-page-8');
+  const $page1 = document.querySelector('.page-1');
+  const $page2 = document.querySelector('.page-2');
+  const $page3 = document.querySelector('.page-3');
+  const $page4 = document.querySelector('.page-4');
+  const $page5 = document.querySelector('.page-5');
+  const $page6 = document.querySelector('.page-6');
+  const $page7 = document.querySelector('.page-7');
+  const $page8 = document.querySelector('.page-8');
   const allMajorCities = data.majorCities._links['ua:item'];
 
   for (const num in allMajorCities) {
@@ -1107,24 +1109,35 @@ function renderMajorCityCards() {
     $anchor.appendChild($city);
     $anchor.appendChild($planeIcon);
 
-    if (num < 29) {
+    if (num <= 30) {
       $page1.appendChild($cardWrapper);
-    } else if (num > 29 && num < 59) {
+    } else if (num > 30 && num <= 60) {
       $page2.appendChild($cardWrapper);
-    } else if (num > 59 && num < 89) {
+    } else if (num > 60 && num <= 90) {
       $page3.appendChild($cardWrapper);
-    } else if (num > 89 && num < 119) {
+    } else if (num > 90 && num <= 120) {
       $page4.appendChild($cardWrapper);
-    } else if (num > 119 && num < 149) {
+    } else if (num > 120 && num <= 150) {
       $page5.appendChild($cardWrapper);
-    } else if (num > 149 && num < 179) {
+    } else if (num > 150 && num <= 180) {
       $page6.appendChild($cardWrapper);
-    } else if (num > 179 && num < 209) {
+    } else if (num > 180 && num <= 210) {
       $page7.appendChild($cardWrapper);
-    } else if (num > 209 && num < 239) {
+    } else if (num > 210) {
       $page8.appendChild($cardWrapper);
-    } else if (num > 239) {
-      $page9.appendChild($cardWrapper);
+    }
+  }
+}
+
+function displayMCPage(event) {
+  if (event.target.tagName === 'A') {
+    const pageNum = event.target.textContent;
+    for (let i = 0; i < $mCPages.length; i++) {
+      if ($mCPages[i].getAttribute('data-major-city-page') !== pageNum) {
+        $mCPages[i].classList.add('hidden');
+      } else if ($mCPages[i].getAttribute('data-major-city-page') === pageNum) {
+        $mCPages[i].classList.remove('hidden');
+      }
     }
   }
 }

@@ -109,6 +109,17 @@ body {
   width: 85%;
 }
 
+.mc-pages-container {
+  min-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mc-pages-container a {
+  color: rgb(0, 29, 110);
+  text-decoration: none;
+}
+
 /* CITY PROFILE */
 .profile-container {
   padding: 0 4rem;
