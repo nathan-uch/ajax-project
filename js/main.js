@@ -31,6 +31,7 @@ const $noteTitle = document.querySelector('#note-title');
 const $noteMessage = document.querySelector('#note-message');
 const $notesSection = document.querySelector('.user-city-notes-section');
 const $loadingSpinner = document.querySelector('.lds-ring');
+const $mCContainer = document.querySelector('.major-cities-container');
 const $majorCityPagesTop = document.querySelector('.mc-pages-container-top');
 const $majorCityPagesBot = document.querySelector('.mc-pages-container-bot');
 const $mCPages = document.querySelectorAll('.major-cities-list');
@@ -53,6 +54,7 @@ $majorCityPagesBot.addEventListener('click', displayMCPage);
 function getSearchResults(event) {
   event.preventDefault();
   $searchResultsRow.textContent = '';
+  $mCContainer.classList.add('hidden');
   $loadingSpinner.classList.remove('hidden');
   let searchValue = null;
   let searchRequest = 'https://api.teleport.org/api/cities/?search=';
@@ -160,8 +162,11 @@ function changeView(view) {
         $userCityCostTable.textContent = '';
         $notesSection.textContent = '';
         $dataView[v].classList.remove('hidden');
-      } else if (data.currentView === 'user-cities' || data.currentView === 'search') {
+      } else if (data.currentView === 'user-cities') {
         $dataView[v].classList.remove('hidden');
+      } else if (data.currentView === 'search') {
+        $dataView[v].classList.remove('hidden');
+        $mCContainer.classList.remove('hidden');
       }
     } else {
       $dataView[v].classList.add('hidden');
