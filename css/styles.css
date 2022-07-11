@@ -109,13 +109,15 @@ body {
   width: 85%;
 }
 
-.mc-pages-container {
+.mc-pages-container-top,
+.mc-pages-container-bot {
   min-width: 300px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.mc-pages-container a {
+.mc-pages-container-top a,
+.mc-pages-container-bot a {
   color: rgb(0, 29, 110);
   text-decoration: none;
 }

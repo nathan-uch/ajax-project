@@ -31,7 +31,8 @@ const $noteTitle = document.querySelector('#note-title');
 const $noteMessage = document.querySelector('#note-message');
 const $notesSection = document.querySelector('.user-city-notes-section');
 const $loadingSpinner = document.querySelector('.lds-ring');
-const $majorCityPages = document.querySelector('.mc-pages-container');
+const $majorCityPagesTop = document.querySelector('.mc-pages-container-top');
+const $majorCityPagesBot = document.querySelector('.mc-pages-container-bot');
 const $mCPages = document.querySelectorAll('.major-cities-list');
 
 $searchCity.addEventListener('submit', getSearchResults);
@@ -46,7 +47,8 @@ $sortOption.addEventListener('change', sortMyCities);
 $removeCityModal.addEventListener('submit', deleteCity);
 $addNotesModal.addEventListener('submit', addNotesClickedBtn);
 window.addEventListener('load', getMajorCities);
-$majorCityPages.addEventListener('click', displayMCPage);
+$majorCityPagesTop.addEventListener('click', displayMCPage);
+$majorCityPagesBot.addEventListener('click', displayMCPage);
 
 function getSearchResults(event) {
   event.preventDefault();
@@ -1109,27 +1111,28 @@ function renderMajorCityCards() {
     $anchor.appendChild($city);
     $anchor.appendChild($planeIcon);
 
-    if (num <= 30) {
+    if (num <= 29) {
       $page1.appendChild($cardWrapper);
-    } else if (num > 30 && num <= 60) {
+    } else if (num > 29 && num <= 59) {
       $page2.appendChild($cardWrapper);
-    } else if (num > 60 && num <= 90) {
+    } else if (num > 59 && num <= 89) {
       $page3.appendChild($cardWrapper);
-    } else if (num > 90 && num <= 120) {
+    } else if (num > 89 && num <= 119) {
       $page4.appendChild($cardWrapper);
-    } else if (num > 120 && num <= 150) {
+    } else if (num > 119 && num <= 149) {
       $page5.appendChild($cardWrapper);
-    } else if (num > 150 && num <= 180) {
+    } else if (num > 149 && num <= 179) {
       $page6.appendChild($cardWrapper);
-    } else if (num > 180 && num <= 210) {
+    } else if (num > 179 && num <= 209) {
       $page7.appendChild($cardWrapper);
-    } else if (num > 210) {
+    } else if (num > 209) {
       $page8.appendChild($cardWrapper);
     }
   }
 }
 
 function displayMCPage(event) {
+  event.preventDefault();
   if (event.target.tagName === 'A') {
     const pageNum = event.target.textContent;
     for (let i = 0; i < $mCPages.length; i++) {
