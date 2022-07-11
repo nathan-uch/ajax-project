@@ -133,11 +133,15 @@ function renderSearchResults() {
 
 function saveCityInfo(event) {
   resetDataCurrentCity();
-
   if (event.target.closest('.city-card') !== null) {
     data.currentCity.searchCardId = event.target.closest('.city-card').getAttribute('data-card-id');
     data.currentCity.cityObj = data.searchResults._embedded['city:search-results'][data.currentCity.searchCardId];
     changeView('city-profile');
+    const fullName = data.currentCity.cityObj.matching_full_name.split('');
+    const commaIndex = fullName.indexOf(',');
+    const countryIndex = commaIndex + 2;
+    data.currentCity.cityName = fullName.slice(0, commaIndex).join('');
+    data.currentCity.cityArea = fullName.splice(countryIndex, fullName.length - 1).join('');
     getCityData();
   }
 }
@@ -191,12 +195,6 @@ function removeHtmlTags(string) {
 }
 
 function getCityData() {
-  const fullName = data.currentCity.cityObj.matching_full_name.split('');
-  const commaIndex = fullName.indexOf(',');
-  const countryIndex = commaIndex + 2;
-  data.currentCity.cityName = fullName.slice(0, commaIndex).join('');
-  data.currentCity.cityArea = fullName.splice(countryIndex, fullName.length - 1).join('');
-
   const currentCityProfileUrl = data.currentCity.cityObj._links['city:item'].href;
   data.currentCity.cityProfileUrl = currentCityProfileUrl;
 
@@ -1094,8 +1092,8 @@ function renderMajorCityCards() {
   const allMajorCities = data.majorCities._links['ua:item'];
 
   for (const num in allMajorCities) {
-    // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
-    //   <a href="#" class="major-city-card" >
+    // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative" data-city-id="num">
+    //   <a href="#" class="major-city-card">
     //     <h5>Zurich</h5>
     //     <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //   </a>
@@ -1107,6 +1105,7 @@ function renderMajorCityCards() {
     const $planeIcon = document.createElement('i');
 
     $cardWrapper.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
+    $cardWrapper.setAttribute('data-city-id', num);
     $anchor.className = 'major-city-card';
     $anchor.setAttribute('href', '#');
     $city.textContent = allMajorCities[num].name;
@@ -1115,6 +1114,8 @@ function renderMajorCityCards() {
     $cardWrapper.appendChild($anchor);
     $anchor.appendChild($city);
     $anchor.appendChild($planeIcon);
+
+    $cardWrapper.addEventListener('click', majorCityClicked);
 
     if (num <= 29) {
       $page1.appendChild($cardWrapper);
@@ -1149,3 +1150,26 @@ function displayMCPage(event) {
     }
   }
 }
+
+function majorCityClicked(event) {
+  event.preventDefault();
+  const clickedId = event.target.closest('.city-card').getAttribute('data-city-id');
+  const clickedCity = data.majorCities._links['ua:item'][clickedId];
+  const cityProfileUrl = clickedCity.href;
+
+  const xhr6 = new XMLHttpRequest();
+  xhr6.open('GET', cityProfileUrl);
+  xhr6.reponseType = 'json';
+  xhr6.addEventListener('load', function () {
+    // const xhr6Result = JSON.parse(xhr6.response);
+
+  });
+  xhr6.send();
+
+}
+
+// const fullName = data.currentCity.cityObj.matching_full_name.split('');
+// const commaIndex = fullName.indexOf(',');
+// const countryIndex = commaIndex + 2;
+// data.currentCity.cityName = fullName.slice(0, commaIndex).join('');
+// data.currentCity.cityArea = fullName.splice(countryIndex, fullName.length - 1).join('');
