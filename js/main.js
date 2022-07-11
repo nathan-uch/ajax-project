@@ -36,6 +36,7 @@ const $majorCityPagesTop = document.querySelector('.mc-pages-container-top');
 const $majorCityPagesBot = document.querySelector('.mc-pages-container-bot');
 const $mCPages = document.querySelectorAll('.major-cities-list');
 
+window.addEventListener('load', getMajorCities);
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
@@ -47,7 +48,6 @@ $visitYear.addEventListener('change', clearMessage);
 $sortOption.addEventListener('change', sortMyCities);
 $removeCityModal.addEventListener('submit', deleteCity);
 $addNotesModal.addEventListener('submit', addNotesClickedBtn);
-window.addEventListener('load', getMajorCities);
 $majorCityPagesTop.addEventListener('click', displayMCPage);
 $majorCityPagesBot.addEventListener('click', displayMCPage);
 
@@ -195,7 +195,12 @@ function removeHtmlTags(string) {
 }
 
 function getCityData() {
-  const currentCityProfileUrl = data.currentCity.cityObj._links['city:item'].href;
+  let currentCityProfileUrl = null;
+  if (data.currentCity.cityObj._links['city:item'] !== undefined) {
+    currentCityProfileUrl = data.currentCity.cityObj._links['city:item'].href;
+  } else {
+    currentCityProfileUrl = data.currentCity.cityObj._links.self.href;
+  }
   data.currentCity.cityProfileUrl = currentCityProfileUrl;
 
   const xhr2 = new XMLHttpRequest();
@@ -1161,15 +1166,25 @@ function majorCityClicked(event) {
   xhr6.open('GET', cityProfileUrl);
   xhr6.reponseType = 'json';
   xhr6.addEventListener('load', function () {
-    // const xhr6Result = JSON.parse(xhr6.response);
+    const xhr6Result = JSON.parse(xhr6.response);
 
+    data.currentCity.cityCountry = xhr6Result._links['ua:countries'][0].name;
+    data.currentCity.cityName = xhr6Result.name;
+    const commaIndex = xhr6Result.full_name.indexOf(',');
+    data.currentCity.cityArea = xhr6Result.full_name.split('').splice(commaIndex + 2, xhr6Result.full_name.length - 1).join('');
+    data.currentCity.hasDetails = true;
+    const cityUrl = xhr6Result._links['ua:primary-cities'][0].href;
+    data.currentCity.cityProfileUrl = cityUrl;
+    const xhr7 = new XMLHttpRequest();
+    xhr7.open('GET', cityUrl);
+    xhr7.responseType = 'json';
+    xhr7.addEventListener('load', function () {
+      const xhr7Result = xhr7.response;
+      data.currentCity.cityObj = xhr7Result;
+      changeView('city-profile');
+      getCityData();
+    });
+    xhr7.send();
   });
   xhr6.send();
-
 }
-
-// const fullName = data.currentCity.cityObj.matching_full_name.split('');
-// const commaIndex = fullName.indexOf(',');
-// const countryIndex = commaIndex + 2;
-// data.currentCity.cityName = fullName.slice(0, commaIndex).join('');
-// data.currentCity.cityArea = fullName.splice(countryIndex, fullName.length - 1).join('');
