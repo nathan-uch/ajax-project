@@ -87,7 +87,7 @@ function renderSearchResults() {
     // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
     //    <i class="fa-solid fa-plane fa-lg position-absolute"></i>
     //    <a href="#" class="searched-card">
-    //        <h5 class="mt-3">City Name<h5>
+    //        <h5>City Name<h5>
     //        <p class="search-country">Area, Country<p>
     //    </a>
     // </div>
@@ -937,11 +937,11 @@ function renderUserCityDateAndReview(city) {
   //   <p class="my-2">Visited in February 2019</p>
   //   <p class="w-100 mb-2">Rate Los Angeles</p>
   //   <div class="rating-stars mb-3">
-  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="0">
-  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="1">
-  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="2">
-  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="3">
-  //     <img src="images/star-blank.svg" alt="rating-star" class="mx-1 star-icon" data-rating-id="4">
+  //     <img src="images/star-blank.svg" alt="rating star" class="mx-1 star-icon" data-rating-id="0">
+  //     <img src="images/star-blank.svg" alt="rating star" class="mx-1 star-icon" data-rating-id="1">
+  //     <img src="images/star-blank.svg" alt="rating star" class="mx-1 star-icon" data-rating-id="2">
+  //     <img src="images/star-blank.svg" alt="rating star" class="mx-1 star-icon" data-rating-id="3">
+  //     <img src="images/star-blank.svg" alt="rating star" class="mx-1 star-icon" data-rating-id="4">
   //   </div>
   //   <button type="button" class="btn add-btn col-12" data-bs-target="#add-modal" data-bs-toggle="modal">ADD NOTE</button>
   // </div>
@@ -954,7 +954,7 @@ function renderUserCityDateAndReview(city) {
 
   for (let s = 0; s < 5; s++) {
     const $star = document.createElement('img');
-    $star.setAttribute('alt', 'rating-star');
+    $star.setAttribute('alt', 'rating star');
     $star.setAttribute('data-rating-id', s);
     $star.className = 'mx-1 star-icon';
 
@@ -1074,6 +1074,7 @@ function renderNotes(city) {
 }
 
 function getMajorCities() {
+  $loadingSpinner.classList.remove('hidden');
   const majorCitiesUrl = 'https://api.teleport.org/api/urban_areas/';
   const xhr = new XMLHttpRequest();
   xhr.open('GET', majorCitiesUrl);
@@ -1121,6 +1122,8 @@ function renderMajorCityCards() {
     $anchor.appendChild($planeIcon);
 
     $cardWrapper.addEventListener('click', majorCityClicked);
+    $loadingSpinner.classList.add('hidden');
+    $mCContainer.classList.remove('hidden');
 
     if (num <= 29) {
       $page1.appendChild($cardWrapper);
@@ -1188,3 +1191,8 @@ function majorCityClicked(event) {
   });
   xhr6.send();
 }
+
+// const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+// const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+//   return new bootstrap.Tooltip(tooltipTriggerEl);
+// });

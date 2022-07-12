@@ -82,6 +82,16 @@ body {
   width: 85%;
 }
 
+.missing-info-icon {
+  background: url("/images/excl-dark.svg");
+  background-repeat: no-repeat;
+  top: 7px;
+  left: 7px;
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+
 .city-card .fa-plane {
   top: 50px;
   right: 20px;
@@ -91,6 +101,11 @@ body {
 
 .city-card:hover {
   background-color: #001d6e;
+}
+
+.city-card:hover .missing-info-icon {
+  background: url("/images/excl-light.svg");
+  background-repeat: no-repeat;
 }
 
 .city-card h5,
