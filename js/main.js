@@ -82,7 +82,6 @@ function renderSearchResults() {
   } else if (data.searchResults._embedded['city:search-results'].length === 0) {
     $searchResultsRow.textContent = 'There are no search matches. Try searching something else.';
   }
-
   for (let i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
     //    <i class="fa-solid fa-plane fa-lg position-absolute"></i>
@@ -93,10 +92,10 @@ function renderSearchResults() {
     // </div>
 
     const $column = document.createElement('div');
+    const $cardIcon = document.createElement('i');
     const $cityCard = document.createElement('a');
     const $cityName = document.createElement('h5');
     const $countryName = document.createElement('p');
-    const $cardIcon = document.createElement('i');
 
     const fullLength = data.searchResults._embedded['city:search-results'][i].matching_full_name.length;
     const commaIndex = data.searchResults._embedded['city:search-results'][i].matching_full_name.indexOf(',');
@@ -121,14 +120,15 @@ function renderSearchResults() {
     $countryName.textContent = country;
     $countryName.className = 'search-country';
     $cardIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
-
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
     $column.appendChild($cardIcon);
+
     $column.appendChild($cityCard);
     $loadingSpinner.classList.add('hidden');
     $searchResultsRow.appendChild($column);
   }
+
 }
 
 function saveCityInfo(event) {
@@ -1191,8 +1191,3 @@ function majorCityClicked(event) {
   });
   xhr6.send();
 }
-
-// const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-// const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-//   return new bootstrap.Tooltip(tooltipTriggerEl);
-// });

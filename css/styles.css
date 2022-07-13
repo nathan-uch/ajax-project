@@ -299,6 +299,11 @@ figure {
   color: rgb(255, 255, 255);
 }
 
+.city-card:active,
+.user-card:active {
+  transform: scale(0.97);
+}
+
 /* REMOVE CITY MODAL */
 .remove-modal,
 .remove-modal .modal-body {
