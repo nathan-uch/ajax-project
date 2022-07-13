@@ -37,6 +37,11 @@ main {
 }
 
 /* SEARCH CITY */
+.logo {
+  font-family: "Gochi Hand", cursive;
+  font-size: 2.5rem;
+}
+
 .searchbox {
   width: 60%;
   max-width: 380px;
@@ -456,6 +461,14 @@ figure {
 }
 
 @media screen and (max-width: 576px) {
+  .submit-btn {
+    font-size: 0.8rem;
+  }
+
+  .searchbox::placeholder {
+    font-size: 0.7rem;
+  }
+
   .city-card {
     flex: 0 0 auto;
     width: 65%;
@@ -464,6 +477,10 @@ figure {
 
   .city-card .fa-plane {
     right: 35px;
+  }
+
+  .table-container {
+    margin: 0 2rem;
   }
 }
 

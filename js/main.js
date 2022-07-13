@@ -208,7 +208,11 @@ function getCityData() {
   xhr2.reponseType = 'json';
   xhr2.addEventListener('load', function () {
     const xhr2Result = JSON.parse(xhr2.response);
-    data.currentCity.cityPop = xhr2Result.population.toLocaleString();
+    if (xhr2Result.population !== undefined) {
+      data.currentCity.cityPop = xhr2Result.population.toLocaleString();
+    } else {
+      data.currentCity.cityPop = 'Not found.';
+    }
     if (!xhr2Result._links['city:urban_area']) {
       data.currentCity.hasDetails = false;
       data.currentCity.citySummary = 'Sorry, there are no details about this city.';
