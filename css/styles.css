@@ -3,6 +3,10 @@ body {
   color: #001d6e;
 }
 
+main {
+  min-height: 100vh;
+}
+
 /* NAVBAR */
 .navbar {
   padding: 0 4rem;
@@ -52,6 +56,10 @@ body {
   background-color: #fff;
   color: #001d6e;
   border: 1px solid #001d6e;
+}
+
+.submit-btn:active {
+  transform: scale(0.97);
 }
 
 /* SEARCH RESULTS */
@@ -412,6 +420,29 @@ figure {
 
 .hidden {
   display: none;
+}
+
+/* FOOTER */
+.footer {
+  min-height: 75px;
+  background-color: #74afff;
+  color: white;
+  padding: 0 4rem;
+}
+
+.footer-header {
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+
+.footer-text {
+  font-size: 0.5rem;
+  text-decoration: none;
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: underline none none none;
 }
 
 @keyframes lds-ring {
