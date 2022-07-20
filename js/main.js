@@ -84,7 +84,7 @@ function renderSearchResults() {
   }
   for (let i = 0; i < data.searchResults._embedded['city:search-results'].length; i++) {
     // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative">
-    //    <i class="fa-solid fa-plane fa-lg position-absolute"></i>
+    //    <i class="fa-solid fa-shoe-prints position-absolute"></i>
     //    <a href="#" class="searched-card">
     //        <h5>City Name<h5>
     //        <p class="search-country">Area, Country<p>
@@ -119,7 +119,7 @@ function renderSearchResults() {
     $cityName.textContent = city;
     $countryName.textContent = country;
     $countryName.className = 'search-country';
-    $cardIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
+    $cardIcon.className = 'fa-solid fa-shoe-prints position-absolute';
     $cityCard.appendChild($cityName);
     $cityCard.appendChild($countryName);
     $column.appendChild($cardIcon);
@@ -1105,7 +1105,7 @@ function renderMajorCityCards() {
     // <div class="city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative" data-city-id="num">
     //   <a href="#" class="major-city-card">
     //     <h5>Zurich</h5>
-    //     <i class="fa-solid fa-plane fa-lg position-absolute"></i>
+    //     <i class="fa-solid fa-shoe-prints position-absolute"></i>
     //   </a>
     // </div>
 
@@ -1119,7 +1119,7 @@ function renderMajorCityCards() {
     $anchor.className = 'major-city-card';
     $anchor.setAttribute('href', '#');
     $city.textContent = allMajorCities[num].name;
-    $planeIcon.className = 'fa-solid fa-plane fa-lg position-absolute';
+    $planeIcon.className = 'fa-solid fa-shoe-prints position-absolute';
 
     $cardWrapper.appendChild($anchor);
     $anchor.appendChild($city);
