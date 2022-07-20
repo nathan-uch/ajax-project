@@ -147,7 +147,11 @@ main {
 .mc-pages-container-top a,
 .mc-pages-container-bot a {
   color: rgb(0, 29, 110);
+}
+
+.selected-page {
   text-decoration: none;
+  cursor: default;
 }
 
 /* CITY PROFILE */

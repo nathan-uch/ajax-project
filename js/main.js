@@ -35,6 +35,7 @@ const $mCContainer = document.querySelector('.major-cities-container');
 const $majorCityPagesTop = document.querySelector('.mc-pages-container-top');
 const $majorCityPagesBot = document.querySelector('.mc-pages-container-bot');
 const $mCPages = document.querySelectorAll('.major-cities-list');
+const $mCAnchors = document.querySelectorAll('.mc-anchors');
 
 window.addEventListener('load', getMajorCities);
 $searchCity.addEventListener('submit', getSearchResults);
@@ -1153,6 +1154,7 @@ function displayMCPage(event) {
   event.preventDefault();
   if (event.target.tagName === 'A') {
     const pageNum = event.target.textContent;
+    checkMCPageNum(pageNum);
     for (let i = 0; i < $mCPages.length; i++) {
       if ($mCPages[i].getAttribute('data-major-city-page') !== pageNum) {
         $mCPages[i].classList.add('hidden');
@@ -1194,4 +1196,14 @@ function majorCityClicked(event) {
     xhr7.send();
   });
   xhr6.send();
+}
+
+function checkMCPageNum(page) {
+  for (var i = 0; i < $mCAnchors.length; i++) {
+    if ($mCAnchors[i].textContent === page) {
+      $mCAnchors[i].classList.add('selected-page');
+    } else {
+      $mCAnchors[i].classList.remove('selected-page');
+    }
+  }
 }
