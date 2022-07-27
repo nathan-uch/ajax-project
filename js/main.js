@@ -677,8 +677,6 @@ function renderModalYears() {
 function saveCitytoUserList() {
   event.preventDefault();
   const parenthesis = data.currentCity.cityArea.indexOf('(');
-  data.currentCity.cityId = data.nextCityId;
-  data.nextCityId++;
   if (parenthesis !== -1) {
     data.currentCity.cityCountry = data.currentCity.cityArea.substring((data.currentCity.cityArea.indexOf(',') + 2), parenthesis - 1);
   } else {
@@ -690,6 +688,8 @@ function saveCitytoUserList() {
   data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
   const notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitType, data.currentCity.visitDate);
   if (notInUserList === true) {
+    data.currentCity.cityId = data.nextCityId;
+    data.nextCityId++;
     data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
     if (data.currentCity.visitType === 'lives') {
       data.hasLivingCity = true;
