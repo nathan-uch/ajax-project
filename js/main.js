@@ -684,7 +684,6 @@ function saveCitytoUserList() {
   }
   const year = $visitYear.options[$visitYear.selectedIndex].textContent;
   data.currentCity.visitDate = new Date(year, $visitMonth.options[$visitMonth.selectedIndex].value);
-  delete data.currentCity.searchCardId;
   data.currentCity.visitType = $typeOfVisit.options[$typeOfVisit.selectedIndex].value;
   const notInUserList = checkUserCities(data.currentCity.cityName, data.currentCity.visitType, data.currentCity.visitDate);
   if (notInUserList === true) {
@@ -696,6 +695,7 @@ function saveCitytoUserList() {
       $livesOption.setAttribute('disabled', true);
     }
     data.myEntries.push(data.currentCity);
+    resetDataCurrentCity();
     // const addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
     // addCityModal.hide();
     $addToMyCitiesModal.reset();
