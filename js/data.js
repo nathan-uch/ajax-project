@@ -1,6 +1,7 @@
 /* exported data */
 
 var data = {
+  majorCities: null,
   currentView: null,
   searchResults: null,
   nextCityId: 0,

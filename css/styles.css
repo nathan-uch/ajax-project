@@ -3,6 +3,10 @@ body {
   color: #001d6e;
 }
 
+main {
+  min-height: 100vh;
+}
+
 /* NAVBAR */
 .navbar {
   padding: 0 4rem;
@@ -28,11 +32,16 @@ body {
 
 .fa-shoe-prints {
   margin-left: 8px;
-  transform: rotate(-45deg);
+  transform: rotate(-45deg) scale(1.3);
   font-size: 1.2rem;
 }
 
 /* SEARCH CITY */
+.logo {
+  font-family: "Gochi Hand", cursive;
+  font-size: 2.5rem;
+}
+
 .searchbox {
   width: 60%;
   max-width: 380px;
@@ -54,6 +63,10 @@ body {
   border: 1px solid #001d6e;
 }
 
+.submit-btn:active {
+  transform: scale(0.97);
+}
+
 /* SEARCH RESULTS */
 .city-card {
   height: 100px;
@@ -63,6 +76,7 @@ body {
   box-shadow: 0 4px 3px 0 rgb(0, 0, 0, 0.25);
   overflow: hidden;
   padding: 0;
+  cursor: pointer;
 }
 
 .city-card a,
@@ -81,8 +95,18 @@ body {
   width: 85%;
 }
 
-.city-card .fa-plane {
-  top: 50px;
+.missing-info-icon {
+  background: url("/images/excl-dark.svg");
+  background-repeat: no-repeat;
+  top: 7px;
+  left: 7px;
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+
+.city-card .fa-shoe-prints {
+  top: 40px;
   right: 20px;
   color: rgba(0, 0, 0, 0);
   transition: color 1.5s;
@@ -90,6 +114,11 @@ body {
 
 .city-card:hover {
   background-color: #001d6e;
+}
+
+.city-card:hover .missing-info-icon {
+  background: url("/images/excl-light.svg");
+  background-repeat: no-repeat;
 }
 
 .city-card h5,
@@ -102,6 +131,27 @@ body {
   background-color: rgba(0, 0, 0, 0);
   color: white;
   margin-right: 3rem;
+}
+
+.major-city-card {
+  width: 85%;
+}
+
+.mc-pages-container-top,
+.mc-pages-container-bot {
+  min-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mc-pages-container-top a,
+.mc-pages-container-bot a {
+  color: rgb(0, 29, 110);
+}
+
+.selected-page {
+  text-decoration: none;
+  cursor: default;
 }
 
 /* CITY PROFILE */
@@ -125,9 +175,10 @@ figure {
 .caption {
   position: absolute;
   bottom: 0;
+  right: 0;
   right: 0.8rem;
   background-color: rgba(85, 85, 85, 0.5);
-  color: gray;
+  color: white;
   text-decoration: none;
   font-size: 6px;
   padding: 0 3px;
@@ -136,7 +187,7 @@ figure {
 .caption:hover,
 .caption:visited {
   text-decoration: none;
-  color: gray;
+  color: white;
 }
 
 .progress {
@@ -262,8 +313,13 @@ figure {
   color: white;
 }
 
-.city-card:hover .fa-plane {
+.city-card:hover .fa-shoe-prints {
   color: rgb(255, 255, 255);
+}
+
+.city-card:active,
+.user-card:active {
+  transform: scale(0.97);
 }
 
 /* REMOVE CITY MODAL */
@@ -376,6 +432,29 @@ figure {
   display: none;
 }
 
+/* FOOTER */
+.footer {
+  min-height: 75px;
+  background-color: #74afff;
+  color: white;
+  padding: 0 4rem;
+}
+
+.footer-header {
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+
+.footer-text {
+  font-size: 0.5rem;
+  text-decoration: none;
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: underline none none none;
+}
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);
@@ -387,14 +466,26 @@ figure {
 }
 
 @media screen and (max-width: 576px) {
+  .submit-btn {
+    font-size: 0.8rem;
+  }
+
+  .searchbox::placeholder {
+    font-size: 0.7rem;
+  }
+
   .city-card {
     flex: 0 0 auto;
     width: 65%;
     min-width: 280px;
   }
 
-  .city-card .fa-plane {
+  .city-card .fa-shoe-prints {
     right: 35px;
+  }
+
+  .table-container {
+    margin: 0 2rem;
   }
 }
 
