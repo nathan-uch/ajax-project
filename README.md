@@ -7,7 +7,7 @@ ROAM is an application for travel enthusiasts who want to create a list of citie
 
 Although I've traveled and lived in a few different countries, I know there are many places I've never been to but would enjoy exploring. This project allows me to find new places to travel and maybe even live in. I can also remember different trips I've had around the world.
 
-### LIVE WEBSITE:
+### Live App:
 https://nathan-uch.github.io/roam-city-finder/
 
 ## Technologies used:
