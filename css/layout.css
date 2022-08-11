@@ -8,3 +8,7 @@
   align-items: center;
   text-align: center;
 }
+
+.bold-text {
+  font-weight: 600;
+}
