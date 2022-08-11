@@ -38,6 +38,6 @@ https://nathan-uch.github.io/roam-city-finder/
 1. Clone the repository.
     ```shell
     git clone git@github.com:nathan-uch/roam-city-finder.git
-    cd sgt-react
+    cd roam-city-finder
     ```
 2. Enjoy coding!
