@@ -171,7 +171,7 @@ function changeView(view) {
         if (data.myEntries.length === 0) {
           const $EmptyListMsg = document.createElement('p');
           $EmptyListMsg.className = 'my-4';
-          $EmptyListMsg.textContent = 'Your city list is empty. Search a city to save them.';
+          $EmptyListMsg.textContent = 'Your city list is empty. Search a city to add them.';
           $userCitiesList.appendChild($EmptyListMsg);
         }
         $dataView[v].classList.remove('hidden');
@@ -223,7 +223,7 @@ function getCityData() {
     if (!xhr2Result._links['city:urban_area']) {
       data.currentCity.hasDetails = false;
       data.currentCity.citySummary = 'Sorry, there are no details about this city.';
-      data.currentCity.cityImageUrl = '../images/city-alt.jpg';
+      data.currentCity.cityImageUrl = 'images/city-alt.jpg';
       data.currentCity.cityImageAtt.authorName = 'Rafael De Nadai';
       data.currentCity.cityImageAtt.authorUrl = 'https://tinyurl.com/4udjv35y';
       renderImageAndTitle(data.currentCity);
@@ -658,7 +658,7 @@ function renderModalYears() {
   $modalYear.textContent = '';
   $modalMessage.textContent = '';
   if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lived' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'visited' || $typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'lives') {
-    for (let y = 1990; y < 2023; y++) {
+    for (let y = 1900; y < 2023; y++) {
       const $yearOpt = document.createElement('option');
       $yearOpt.setAttribute('value', 'year' + y);
       $yearOpt.text = y;
@@ -668,7 +668,7 @@ function renderModalYears() {
       $modalYear.appendChild($yearOpt);
     }
   } else if ($typeOfVisit.options[$typeOfVisit.selectedIndex].value === 'willVisit') {
-    for (let w = 2022; w < 2036; w++) {
+    for (let w = 2022; w < 2033; w++) {
       const $yearOpt2 = document.createElement('option');
       $yearOpt2.setAttribute('value', 'year' + w);
       $yearOpt2.text = w;
@@ -702,8 +702,8 @@ function saveCitytoUserList() {
     }
     data.myEntries.push(data.currentCity);
     resetDataCurrentCity();
-    // const addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
-    // addCityModal.hide();
+    const addCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-city-modal'));
+    addCityModal.hide();
     $addToMyCitiesModal.reset();
     $userCitiesList.textContent = '';
     renderMyCities();
@@ -730,7 +730,7 @@ function renderMyCities() {
     //   <button class="x-btn float-end" type="button" data-bs-target="#remove-city-modal" data-bs-toggle="modal"><i class="fa-regular fa-circle-xmark fa-lg"></i></button>
     //   <div class="col-12 col-sm-4 col-md-3 my-1 d-flex user-card">
     //     <a href="#">
-    //       <img class="card-img" src="../images/city-alt.jpg" alt="city-image">
+    //       <img class="card-img" src="images/city-alt.jpg" alt="city-image">
     //       <h5 class="mt-3 cName">city name</h5>
     //       <p class="mx-3 text-nowrap text-center country-card">country</p>
     //     </a>
@@ -916,8 +916,8 @@ function deleteCity(event) {
       }
     }
   }
-  // const deleteCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('remove-city-modal'));
-  // deleteCityModal.hide();
+  const deleteCityModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('remove-city-modal'));
+  deleteCityModal.hide();
 }
 
 function userCityClicked(event) {
@@ -1043,8 +1043,8 @@ function addNotesClickedBtn(event) {
   renderNotes(data.editCity);
   $addNotesModal.reset();
   chevronEvent();
-  // const addNoteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-note-modal'));
-  // addNoteModal.hide();
+  const addNoteModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('add-note-modal'));
+  addNoteModal.hide();
 }
 
 function renderNotes(city) {
