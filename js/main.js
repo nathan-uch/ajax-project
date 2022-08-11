@@ -168,6 +168,12 @@ function changeView(view) {
         $notesSection.textContent = '';
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'user-cities') {
+        if (data.myEntries.length === 0) {
+          const $EmptyListMsg = document.createElement('p');
+          $EmptyListMsg.className = 'my-4';
+          $EmptyListMsg.textContent = 'Your city list is empty. Search a city to save them.';
+          $userCitiesList.appendChild($EmptyListMsg);
+        }
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'search') {
         $dataView[v].classList.remove('hidden');
