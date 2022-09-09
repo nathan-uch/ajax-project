@@ -169,9 +169,10 @@ function changeView(view) {
         $dataView[v].classList.remove('hidden');
       } else if (data.currentView === 'user-cities') {
         if (data.myEntries.length === 0) {
+          $userCitiesList.textContent = '';
           const $EmptyListMsg = document.createElement('p');
           $EmptyListMsg.className = 'my-4';
-          $EmptyListMsg.textContent = 'Your city list is empty. Search a city to add them.';
+          $EmptyListMsg.textContent = 'Your city list is empty. Search a city to add one to your list.';
           $userCitiesList.appendChild($EmptyListMsg);
         }
         $dataView[v].classList.remove('hidden');
