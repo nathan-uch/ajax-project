@@ -39,6 +39,7 @@ const $mCPages = document.querySelectorAll('.major-cities-list');
 const $mCAnchors = document.querySelectorAll('.mc-anchors');
 
 window.addEventListener('load', getMajorCities);
+window.addEventListener('load', renderMyCities);
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
