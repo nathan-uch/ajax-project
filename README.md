@@ -30,7 +30,7 @@ https://nathan-uch.github.io/roam-city-finder/
 * User can view map of current city
 
 ## Preview:
-![ROAM](assets/demo.gif)
+![ROAM](assets/preview.gif)
 
 ## Future Features:
 * User can filter major cities alphabetically
