@@ -348,11 +348,25 @@ function initMap(latlon, isUserCity) {
   if (!isUserCity) {
     $mapCont.setAttribute('id', 'map1');
     const map = new google.maps.Map($mapCont, options); // eslint-disable-line
+    const maker = new google.maps.Marker({ // eslint-disable-line
+      position: {
+        lat: latlon.latitude,
+        lng: latlon.longitude
+      },
+      map
+    });
     $cityProfileDesc.appendChild($mapCont);
   } else if (isUserCity) {
     $userCityMap.textContent = '';
     $mapCont.setAttribute('id', 'map2');
     const map = new google.maps.Map($mapCont, options); // eslint-disable-line
+    const maker = new google.maps.Marker({ // eslint-disable-line
+      position: {
+        lat: latlon.latitude,
+        lng: latlon.longitude
+      },
+      map
+    });
     $userCityMap.appendChild($mapCont);
   }
 
