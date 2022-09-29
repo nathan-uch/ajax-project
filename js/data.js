@@ -42,13 +42,10 @@ var data = {
   myEntries: []
 };
 
-const prevUserEntries = localStorage.getItem('user-entries-local-storage');
-
-if (prevUserEntries !== null) {
-  data.myEntries = JSON.parse(prevUserEntries);
-}
-
 window.addEventListener('beforeunload', function () {
   const userEntries = JSON.stringify(data.myEntries);
   this.localStorage.setItem('user-entries-local-storage', userEntries);
+
+  const currentCityId = JSON.stringify(data.nextCityId);
+  this.localStorage.setItem('current-city-id-local-storage', currentCityId);
 });

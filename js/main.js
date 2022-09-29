@@ -39,7 +39,7 @@ const $mCPages = document.querySelectorAll('.major-cities-list');
 const $mCAnchors = document.querySelectorAll('.mc-anchors');
 
 window.addEventListener('load', getMajorCities);
-window.addEventListener('load', renderMyCities);
+window.addEventListener('load', getLocalStorageCitites);
 $searchCity.addEventListener('submit', getSearchResults);
 $searchResultsRow.addEventListener('click', saveCityInfo);
 $searchCitiesAnchor.addEventListener('click', switchNavbarPage);
@@ -1254,5 +1254,15 @@ function checkMCPageNum(page) {
     } else {
       $mCAnchors[i].classList.remove('selected-page');
     }
+  }
+}
+
+function getLocalStorageCitites() {
+  const prevUserEntries = localStorage.getItem('user-entries-local-storage');
+  const lastCityId = localStorage.getItem('current-city-id-local-storage');
+  if (prevUserEntries !== null) {
+    data.myEntries = JSON.parse(prevUserEntries);
+    data.nextCityId = Number(JSON.parse(lastCityId));
+    renderMyCities();
   }
 }
