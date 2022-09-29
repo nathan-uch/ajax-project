@@ -22,6 +22,7 @@ const $modalMessage = document.querySelector('.modal-message');
 const $sortOption = document.querySelector('#sort-cities');
 const $removeCityDisplay = document.querySelector('.remove-city-display');
 const $userCityHeader = document.querySelector('.user-city-head');
+const $userCityMap = document.querySelector('.user-city-map-section');
 const $userCityDescription = document.querySelector('.user-city-description-section');
 const $userCityAbout = document.querySelector('.user-city-about-section');
 const $userCityScores = document.querySelector('.user-city-scores-row');
@@ -216,6 +217,7 @@ function getCityData() {
   xhr2.reponseType = 'json';
   xhr2.addEventListener('load', function () {
     const xhr2Result = JSON.parse(xhr2.response);
+    data.currentCity.latlon = xhr2Result.location.latlon;
     if (xhr2Result.population !== undefined) {
       data.currentCity.cityPop = xhr2Result.population.toLocaleString();
     } else {
@@ -257,6 +259,7 @@ function getCityData() {
         data.currentCity.scores.leisure = Math.round(xhr4Result.categories[14].score_out_of_10);
         data.currentCity.scores.outdoors = Math.round(xhr4Result.categories[16].score_out_of_10);
         renderCityDescription(data.currentCity);
+        initMap(data.currentCity.latlon, false);
         renderCityScores(data.currentCity);
       });
       xhr4.send();
@@ -335,6 +338,26 @@ function getCityData() {
   renderModalYears();
 }
 
+function initMap(latlon, isUserCity) {
+  if (!latlon) return;
+  const $mapCont = document.createElement('div');
+  const options = {
+    zoom: 7,
+    center: { lat: latlon.latitude, lng: latlon.longitude }
+  };
+  if (!isUserCity) {
+    $mapCont.setAttribute('id', 'map1');
+    const map = new google.maps.Map($mapCont, options); // eslint-disable-line
+    $cityProfileDesc.appendChild($mapCont);
+  } else if (isUserCity) {
+    $userCityMap.textContent = '';
+    $mapCont.setAttribute('id', 'map2');
+    const map = new google.maps.Map($mapCont, options); // eslint-disable-line
+    $userCityMap.appendChild($mapCont);
+  }
+
+}
+
 function renderImageAndTitle(city) {
   //   <figure>
   //     <img src="" class="img-fluid" alt="city">
@@ -383,6 +406,7 @@ function renderCityDescription(city) {
 
   $cityDesc.textContent = city.citySummary;
   $cityDesc.className = 'p-3';
+  $pop.className = 'mb-2';
   $pop.textContent = 'Estimated Population: ' + city.cityPop;
 
   if (data.currentView === 'city-profile') {
@@ -629,6 +653,7 @@ function resetDataCurrentCity() {
     visitType: null,
     monthNum: null,
     rating: null,
+    latlon: {},
     notes: [],
 
     cityImageAtt: {
@@ -821,6 +846,7 @@ function sortMyCities(event) {
   data.myEntries = entriesArray;
   $userCityHeader.textContent = '';
   $userCityDescription.textContent = '';
+  $userCityMap.textContent = '';
   $userCityAbout.textContent = '';
   $userCityScores.textContent = '';
   $userCityLeisureTable.textContent = '';
@@ -935,6 +961,7 @@ function userCityClicked(event) {
     changeView('user-city-profile');
     renderImageAndTitle(clickedCity);
     renderUserCityDateAndReview(clickedCity);
+    initMap(clickedCity.latlon, true);
     renderCityDescription(clickedCity);
     renderCityScores(clickedCity);
     renderLeisureTable(clickedCity);
@@ -1122,7 +1149,7 @@ function renderMajorCityCards() {
     const $city = document.createElement('h5');
     const $planeIcon = document.createElement('i');
 
-    $cardWrapper.className = 'city-card m-2 col-sm-4 col-md-3 d-flex center-all position-relative';
+    $cardWrapper.className = 'city-card m-2 col-sm-5 col-md-3 d-flex center-all position-relative';
     $cardWrapper.setAttribute('data-city-id', num);
     $anchor.className = 'major-city-card';
     $anchor.setAttribute('href', '#');

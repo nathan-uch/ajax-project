@@ -22,6 +22,7 @@ var data = {
     visitType: null,
     monthNum: null,
     rating: null,
+    latlon: {},
     notes: [],
 
     cityImageAtt: {
