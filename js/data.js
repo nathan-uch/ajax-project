@@ -41,3 +41,11 @@ var data = {
   editCity: null,
   myEntries: []
 };
+
+window.addEventListener('beforeunload', function () {
+  const userEntries = JSON.stringify(data.myEntries);
+  this.localStorage.setItem('user-entries-local-storage', userEntries);
+
+  const currentCityId = JSON.stringify(data.nextCityId);
+  this.localStorage.setItem('current-city-id-local-storage', currentCityId);
+});
