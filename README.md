@@ -16,6 +16,7 @@ https://nathan-uch.github.io/roam-city-finder/
 * JavaScript
 * AJAX
 * API - [Teleport.org](https://developers.teleport.org/)
+* Google Maps API
 * Bootstrap 5
 
 ## Features:
@@ -26,6 +27,7 @@ https://nathan-uch.github.io/roam-city-finder/
 * User can delete cities from their list
 * User can add notes to their cities
 * User can view and sort major cities
+* User can view map of current city
 
 ## Preview:
 ![ROAM](assets/demo.gif)
